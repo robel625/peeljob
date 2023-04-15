@@ -1,0 +1,17 @@
+from django.contrib import admin
+from peeldb.models import User,Country, State, City, Skill, Industry 
+admin.site.register(Country)
+admin.site.register(State)
+admin.site.register(City)
+admin.site.register(Skill)
+admin.site.register(Industry)
+admin.site.register(User)
+# admin.site.register(Google)
+# admin.site.register(Facebook)
+# admin.site.register(UserEmail)
+# admin.site.register(FacebookFriend)
+# admin.site.register(GitHub)
+# admin.site.register(Twitter)
+# admin.site.register(TwitterFollower)
+# admin.site.register(TwitterFriend)
+# admin.site.register(Qualification)
