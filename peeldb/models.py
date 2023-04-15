@@ -51,11 +51,11 @@ class Industry(models.Model):
         job_url = '/' + str(self.slug) + '-industry-jobs/'
         return job_url
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(industry__in=[self], status='Live')
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(industry__in=[self], status='Live')
 
-    # def get_no_of_all_jobposts(self):
-    #     return JobPost.objects.filter(industry__in=[self])
+    def get_no_of_all_jobposts(self):
+        return JobPost.objects.filter(industry__in=[self])
 
 class Keyword(models.Model):
     name = models.CharField(max_length=1000)
@@ -186,8 +186,8 @@ class Qualification(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(edu_qualification__in=[self])
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(edu_qualification__in=[self])
 
 
 class Country(models.Model):
@@ -198,8 +198,8 @@ class Country(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(location__state__country=self, status='Live')
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(location__state__country=self, status='Live')
 
 
 class State(models.Model):
@@ -212,8 +212,8 @@ class State(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(location__in=City.objects.filter(state=self), status='Live')
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(location__in=City.objects.filter(state=self), status='Live')
 
     def get_state_cities(self):
         cities = self.state.annotate(
@@ -247,20 +247,20 @@ class Skill(models.Model):
         job_url = '/' + str(self.slug) + '-jobs/'
         return job_url
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(skills__in=[self], status='Live')
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(skills__in=[self], status='Live')
 
-    # def get_no_of_jobposts_all(self):
-    #     return JobPost.objects.filter(skills__in=[self])
+    def get_no_of_jobposts_all(self):
+        return JobPost.objects.filter(skills__in=[self])
 
-    # def get_no_of_subscriptions(self):
-    #     return Subscriber.objects.filter(skill=self)
+    def get_no_of_subscriptions(self):
+        return Subscriber.objects.filter(skill=self)
 
-    # def get_no_of_applicants(self):
-    #     return User.objects.filter(skills__skill=self)
+    def get_no_of_applicants(self):
+        return User.objects.filter(skills__skill=self)
 
-    # def get_no_of_resume_applicants(self):
-    #     return AgencyResume.objects.filter(skill=self)
+    def get_no_of_resume_applicants(self):
+        return AgencyResume.objects.filter(skill=self)
 
     def get_meta_data(self):
         if self.meta:
@@ -277,8 +277,8 @@ class FunctionalArea(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(functional_area__in=[self])
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(functional_area__in=[self])
 
 
 class Language(models.Model):
@@ -318,11 +318,11 @@ class City(models.Model):
         job_url = '/jobs-in-' + str(self.slug) + '/'
         return job_url
 
-    # def get_no_of_jobposts(self):
-    #     return JobPost.objects.filter(location__in=[self], status='Live')
+    def get_no_of_jobposts(self):
+        return JobPost.objects.filter(location__in=[self], status='Live')
 
-    # def get_no_of_all_jobposts(self):
-    #     return JobPost.objects.filter(location__in=[self])
+    def get_no_of_all_jobposts(self):
+        return JobPost.objects.filter(location__in=[self])
 
     def get_meta_data(self):
         if self.meta:
@@ -364,38 +364,38 @@ class Company(models.Model):
             return True
         return False
 
-    # def get_company_admin(self):
-    #     return User.objects.filter(is_admin=True, company=self).first()
+    def get_company_admin(self):
+        return User.objects.filter(is_admin=True, company=self).first()
 
-    # def get_company_recruiters(self):
-    #     return User.objects.filter(company=self)
+    def get_company_recruiters(self):
+        return User.objects.filter(company=self)
 
-    # def get_company_jobposts(self):
-    #     return JobPost.objects.filter(user__company=self)
+    def get_company_jobposts(self):
+        return JobPost.objects.filter(user__company=self)
 
-    # def get_jobposts(self):
-    #     return JobPost.objects.filter(company=self, status='Live')
+    def get_jobposts(self):
+        return JobPost.objects.filter(company=self, status='Live')
 
-    # def get_total_jobposts(self):
-    #     return JobPost.objects.filter(company=self)
+    def get_total_jobposts(self):
+        return JobPost.objects.filter(company=self)
 
-    # def get_company_tickets(self):
-    #     return Ticket.objects.filter(user__company=self)
+    def get_company_tickets(self):
+        return Ticket.objects.filter(user__company=self)
 
-    # def get_company_menu(self):
-    #     return Menu.objects.filter(company=self)
+    def get_company_menu(self):
+        return Menu.objects.filter(company=self)
 
-    # def get_active_company_menu(self):
-    #     return Menu.objects.filter(company=self, status=True).order_by('id')
+    def get_active_company_menu(self):
+        return Menu.objects.filter(company=self, status=True).order_by('id')
 
-    # def get_live_jobposts(self):
-    #     return JobPost.objects.filter(user__company=self, status='Live')
+    def get_live_jobposts(self):
+        return JobPost.objects.filter(user__company=self, status='Live')
 
-    # def get_unique_recruiters(self):
-    #     job_posts = list(set(list(JobPost.objects.filter(
-    #         company=self, status='Live').values_list('user', flat=True))))
-    #     users = User.objects.filter(id__in=job_posts)
-    #     return users
+    def get_unique_recruiters(self):
+        job_posts = list(set(list(JobPost.objects.filter(
+            company=self, status='Live').values_list('user', flat=True))))
+        users = User.objects.filter(id__in=job_posts)
+        return users
 
     def get_absolute_url(self):
         return '/' + str(self.slug) + '-job-openings/'
