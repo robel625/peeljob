@@ -1,0 +1,3 @@
+$(".cancelbutton").click(function(e){window.location="/";});$("form#personalform").submit(function(e){e.preventDefault();$.post(".",$("form#personalform").serialize(),function(data){if(data.error){open_dialog("Some content Missing",'Error!')
+$('p.hint').remove();if(data.captcha_response){$('.captcha').append('<p class="hint"><b>'+data.captcha_response+'</b></p>');}
+for(var key in data.response){$('#'+key).after('<p class="hint">'+data.response[key]+'</p>');}}else{open_dialog_with_url("Your request has been registered, we will reach you soon",'Success!','/')}},'json');});;

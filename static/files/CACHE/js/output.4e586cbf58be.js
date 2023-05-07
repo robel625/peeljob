@@ -1,0 +1,4 @@
+$(".cancelbutton").click(function(e){window.location="/profile/";});$(function(){$("#from_date").datepicker({changeMonth:true,changeYear:true,yearRange:"1950:2020"});});$(function(){$("#to_date").datepicker({changeMonth:true,changeYear:true,yearRange:"1950:2020"});});$("select#skills").select2({placeholder:"Skills Used",maximumSelectionSize:6});$("form#projectform").submit(function(e){e.preventDefault();$.post(".",$("form#projectform").serialize(),function(data){if(data.error){if(data.response_message){open_dialog(data.response_message,'Error!')}
+$('p.hint').remove();$('.add_another').removeClass('save_other')
+for(var key in data.response){$('#'+key).parent().append('<p class="hint">'+data.response[key]+'</p>');}}else{if($('.add_another').hasClass('save_other')){open_dialog_with_url('Your profile has been updated successfully','Success!!!',".")}
+else{open_dialog_with_url('Your profile has been updated successfully','Success!!!',"/profile/")}}},'json');});;

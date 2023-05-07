@@ -24,6 +24,20 @@ services:
     ports:
       - "5050:80"
 
+  
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    # environment:
+    #   MONGO_INITDB_DATABASE: mongo1
+    #   MONGO_INITDB_ROOT_USERNAME: mongo1
+    #   MONGO_INITDB_ROOT_PASSWORD: mongo1
+    volumes:
+      - ./db-data/mongo/:/data/db
+
   # elasticsearch:
   #   container_name: elasticsearch_ecommercev2
   #   image: elasticsearch:7.14.2
@@ -39,12 +53,18 @@ services:
   #   depends_on:
   #     - pgdb
 
-  # redis:
-  #   container_name: redis
-  #   restart: always
-  #   image: redis:alpine
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  # memcached:
+  #   container_name: some-memcached
+  #   image: launcher.gcr.io/google/memcached1
   #   ports:
-  #     - "6379:6379"
+  #     - '11211:11211'
 
   # celery:
   #   container_name: celery_ecommercev2

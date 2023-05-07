@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-%6h5in6*eo94u13uhulm_j0=fk6(1u%qgxb!kyf3(fv%3ty*vq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "192.168.0.4"]
 
 
 # Application definition
@@ -39,22 +39,44 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "peeldb", 
+    "pjob",
+    "mpcomp",
+    'dashboard',
+    'recruiter',
+    "candidate",
+    "tickets",
+    "search",
+    "agency",
      # 'django_simple_forum',
     'simple_pagination',
     'django_blog_it',
+    'compressor',
+    'imagekit',
+    'sorl.thumbnail',
+    'haystack',
+    'tellme',
 ]
 
 AUTH_USER_MODEL = 'peeldb.User'
+LOGIN_URL = '/'
 
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+MONGO_DB = 'local'
+# MONGO_USER = 'mongo1'
+# MONGO_PWD = 'mongo1'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # 'jobsp.middlewares.CsrfMiddleware',
+    'jobsp.middlewares.DetectMobileBrowser',
 ]
 
 ROOT_URLCONF = "jobsp.urls"
@@ -70,6 +92,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "peeldb.context_processors.get_pj_icons",
             ],
         },
     },
@@ -124,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIMEZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 
@@ -136,7 +159,96 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+COMPRESS_ROOT = 'static/files/'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'compressor.finders.CompressorFinder',
+)
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE_CONTEXT = {
+'STATIC_URL': STATIC_URL,
+}
+
+# COMPRESS_OUTPUT_DIR = 'CACHE'
+# COMPRESS_URL = STATIC_URL
+# COMPRESS_ENABLED = True
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+    ('text/x-sass', 'sass {infile} {outfile}'),
+    ('text/x-scss', 'sass {infile} {outfile}'),
+)
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# MEDIA_URL = '/media'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CACHES = {
+'default': {
+'BACKEND': 'django_redis.cache.RedisCache',
+'LOCATION': 'redis://localhost:6379/0',
+'OPTIONS': {
+'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+}
+}
+}
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+    },
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_DEFAULT_OPERATOR = 'OR'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 1
+
+
+# LOCAL_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = 'UTC'
+
+DEFAULT_FROM_EMAIL = 'robelgulima@gmail.com'
+INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
+MAIL_SENDER = 'robelgulima@gmail.com'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_HOST = 'smtp.mailosaur.net'
+# EMAIL_HOST_USER = 'gqynzoli@mailosaur.net'
+# EMAIL_HOST_PASSWORD = 'bAc1oPDgJRKHkLSVejnythfcxr876lxE'
+# EMAIL_PORT =  '587'
+
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '234f7429728d59'
+EMAIL_HOST_PASSWORD = '149e364b2c721f'
+EMAIL_PORT = '2525'

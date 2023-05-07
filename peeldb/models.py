@@ -1,13 +1,13 @@
 from decimal import Decimal
 import json
-from django.core.validators import MinValueValidator
+# from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from mptt.models import MPTTModel, TreeForeignKey
+# from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.postgres.fields import ArrayField
 # JSONField
 from django.db.models import JSONField
-from datetime import datetime
+import datetime
 import hashlib
 # import arrow
 from django.db.models import Q, Count, F
@@ -18,7 +18,10 @@ import re
 # from oauth2client.contrib.django_util.models import CredentialsField
 from google.oauth2.credentials import Credentials
 from django_blog_it.django_blog_it.models import Post
-# from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
+from django.core.files.storage import FileSystemStorage
+
+local_storage = FileSystemStorage(location='/media/file')
 
 # from microurl import google_mini
 
@@ -35,8 +38,7 @@ STATUS = (
     ('InActive', 'InActive'),
 )
 
-current_date = datetime.strptime(
-    str(datetime.now().date()), "%Y-%m-%d").strftime("%Y-%m-%d")
+current_date = datetime.datetime.fromisoformat(str(datetime.date.today())).strftime("%y-%m-%d")
 
 
 class Industry(models.Model):
@@ -167,7 +169,7 @@ COMPANY_TYPES = (
 def img_url(self, filename):
     hash_ = hashlib.md5()
     hash_.update(
-        str(filename).encode('utf-8') + str(datetime.now()).encode('utf-8'))
+        str(filename).encode('utf-8') + current_date.encode('utf-8'))
     file_hash = hash_.hexdigest()
 
     if self.__class__.__name__ == "Company":
@@ -229,9 +231,10 @@ SKILL_TYPE = (
 )
 
 class Skill(models.Model):
+    file_prepend = "icon/img/"
     name = models.CharField(max_length=500)
     status = models.CharField(choices=STATUS, max_length=10)
-    icon = models.CharField(max_length=1000)
+    icon = models.FileField(null=True, blank=True, upload_to=img_url)
     slug = models.SlugField(max_length=500)
     meta_title = models.TextField(default='')
     meta_description = models.TextField(default='')
@@ -351,7 +354,8 @@ class Company(models.Model):
     slug = models.SlugField(max_length=5000)
     meta_title = models.TextField(default='')
     meta_description = models.TextField(default='')
-    campaign_icon = models.CharField(max_length=3000, null=True)
+    campaign_icon = models.FileField(
+        max_length=1000, upload_to=img_url, null=True, blank=True)
     created_from = models.CharField(max_length=200, default='')
 
     def is_company(self):

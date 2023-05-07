@@ -1,0 +1,5 @@
+$(".cancelbutton").click(function(e){window.location="/profile/";});$('#current_job').click(function(e){if($('#current_job').is(":checked")){$("#to_date").val('');$("#to_date").attr("disabled","disabled");}
+else{$("#to_date").removeAttr("disabled");}});$("form#experienceform").submit(function(e){e.preventDefault();$.post(".",$("form#experienceform").serialize(),function(data){if(data.error){$('p.hint').remove();$('.add_another').removeClass('save_other')
+if(data.response_message){open_dialog(data.response_message,'Info!')}
+for(var key in data.response){$('#'+key).after('<p class="hint">'+data.response[key]+'</p>');}}else{if($('.add_another').hasClass('save_other')){open_dialog_with_url('Your profile has been updated successfully','Success!!!',"/experience/add/")}
+else{open_dialog_with_url('Your profile has been updated successfully','Success!!!',"/profile/")}}},'json');});;
