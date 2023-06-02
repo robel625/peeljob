@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-%6h5in6*eo94u13uhulm_j0=fk6(1u%qgxb!kyf3(fv%3ty*vq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "192.168.0.4"]
+ALLOWED_HOSTS =  ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "peeldb", 
     "pjob",
     "mpcomp",
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     "tickets",
     "search",
     "agency",
+    "social",
      # 'django_simple_forum',
     'simple_pagination',
     'django_blog_it',
@@ -65,6 +67,20 @@ MONGO_PORT = 27017
 MONGO_DB = 'local'
 # MONGO_USER = 'mongo1'
 # MONGO_PWD = 'mongo1'
+
+# Haystack settings for Elasticsearch
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'peeldb.backends.ConfigurableElasticSearchEngine',
+
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'job_haystack',
+        'TIMEOUT': 60,
+    },
+}
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_DEFAULT_OPERATOR = 'OR'
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -152,6 +168,8 @@ TIMEZONE = 'Asia/Calcutta'
 USE_I18N = True
 
 USE_TZ = True
+
+SITE_ID = 1
 
 
 # Static files (CSS, JavaScript, Images)
@@ -252,3 +270,4 @@ EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
 EMAIL_HOST_USER = '234f7429728d59'
 EMAIL_HOST_PASSWORD = '149e364b2c721f'
 EMAIL_PORT = '2525'
+

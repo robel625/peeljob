@@ -48,7 +48,7 @@
         <div class="ind_type sty">
           <i class="fa fa-briefcase"></i>
           {%for industry in job.industry.all %}
-            <a href="{% url 'job_industries' industry.slug %}" target="_blank">{{ industry.name|get_industry_name }}{% if forloop.last %}{% else %}, {% endif%}</a>
+            <a href="{}" target="_blank">{{ industry.name|get_industry_name }}{% if forloop.last %}{% else %}, {% endif%}</a>
           {% endfor %}
         </div>
         <span class="sty">

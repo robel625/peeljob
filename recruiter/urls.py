@@ -55,7 +55,7 @@ urlpatterns = [
         account_activation, name="account_activation"),
     # re_path(r'^twitter_login/$', twitter_login, name="twitter_login"),
     # re_path(r'^google_connect/$', google_connect, name='google_connect'),
-    # re_path(r'^google_login/$', google_login, name='google_login'),
+    re_path(r'^google_login/$', google_login, name='google_login'),
     # re_path(r'^facebook_login/$', facebook_login, name='facebook_login'),
     # re_path(r'^linkedin_login/$', linkedin_login, name="linkedin_login"),
 

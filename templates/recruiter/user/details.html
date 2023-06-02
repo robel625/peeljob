@@ -43,7 +43,7 @@
                 <option value="">Select A Status</option>
                 {% for status in martial_status %}
                 <option value="{{ status.0 }}"
-                {% if status.0|slugify user.marital_status|slugify %}
+                {% if status.0|slugify == user.marital_status|slugify %}
                 selected {% endif %}>{{ status.1 }}</option>
                 {% endfor %}
               </select>
@@ -109,7 +109,7 @@
                 <option value="">Select A Location</option>
                 {% for country in countries %}
                 <option value="{{ country.id }}"
-                {% if country.id|slugify user.nationality|slugify %}
+                {% if country.id|slugify == user.nationality|slugify %}
                 selected {% endif %}>{{ country.name }}</option>
                 {% endfor %}
               </select>
@@ -122,7 +122,7 @@
                 <option value="">select a state</option>
                 {% for state in states %}
                 <option value="{{ state.id }}" class="hide" id="{{ state.country.id }}"
-                {% if state.id|slugify user.state.id|slugify %}
+                {% if state.id|slugify == user.state.id|slugify %}
                 selected {% endif %}>{{ state.name }}</option>
                 {% endfor %}
               </select>
@@ -136,7 +136,7 @@
                 {% for city in cities %}
                 <option value="{{ city.id }}" class="hide"
                 id="{{ city.state.id }}_{{ city.state.country.id }}"
-                {% if city.id|slugify user.city.id|slugify %}
+                {% if city.id|slugify == user.city.id|slugify %}
                 selected {% endif %}>{{ city.name }}</option>
                 {% endfor %}
               </select>

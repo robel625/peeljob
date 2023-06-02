@@ -383,6 +383,7 @@ def index(request, **kwargs):
 
 
 def job_locations(request, location, **kwargs):
+    print("rggggggggggr job_locations  ")
     current_url = reverse('job_locations', kwargs={'location': location})
     if kwargs.get('page_num') == '1' or request.GET.get('page') == '1':
         return redirect(current_url, permanent=True)
@@ -411,6 +412,7 @@ def job_locations(request, location, **kwargs):
     if request.POST.get('location'):
         save_search_results.delay(request.META['REMOTE_ADDR'], request.POST, job_list.count() if job_list else 0, request.user.id)
     if job_list:
+        print("rggggggggggr job_locations  ")
         items_per_page = 20
         searched_industry = searched_skills = searched_edu = ''
         if request.GET.get('job_type'):

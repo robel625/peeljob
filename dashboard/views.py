@@ -837,7 +837,7 @@ def delete_user(request, user_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def country(request):
     if request.method == 'GET':
         countries = Country.objects.all().order_by('name')
@@ -1538,10 +1538,10 @@ def industries(request):
         return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def delete_industry(request, industry_id):
-#     Industry.objects.get(id=industry_id).delete()
-#     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+@permission_required("activity_edit")
+def delete_industry(request, industry_id):
+    Industry.objects.get(id=industry_id).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 # @permission_required("activity_view", "activity_edit")
@@ -1782,23 +1782,23 @@ def post_detail(request, post_id):
                                                                 })
 
 
-# def status_change(request, post_id):
-#     post = JobPost.objects.get(id=post_id)
-#     if post.status == "Live":
-#         post.status = "Expired"
-#         post.save()
-#     else:
-#         post.status = "Live"
-#         post.save()
-#     c = {'job_post': post, 'user': post.user}
-#     t = loader.get_template('email/jobpost.html')
-#     subject = "PeelJobs JobPost Status"
-#     rendered = t.render(c)
-#     mto = post.user.email
-#     mfrom = settings.DEFAULT_FROM_EMAIL
-#     user_active = True if post.user.is_active else False
-#     Memail(mto, mfrom, subject, rendered, user_active)
-#     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+def status_change(request, post_id):
+    post = JobPost.objects.get(id=post_id)
+    if post.status == "Live":
+        post.status = "Expired"
+        post.save()
+    else:
+        post.status = "Live"
+        post.save()
+    c = {'job_post': post, 'user': post.user}
+    t = loader.get_template('email/jobpost.html')
+    subject = "PeelJobs JobPost Status"
+    rendered = t.render(c)
+    mto = post.user.email
+    mfrom = settings.DEFAULT_FROM_EMAIL
+    user_active = True if post.user.is_active else False
+    Memail(mto, mfrom, subject, rendered, user_active)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @permission_required("activity_edit")
@@ -1825,107 +1825,107 @@ def recruiter_paid_status_change(request, user_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_edit")
-# def deactivate_job(request, job_post_id):
+@permission_required("activity_edit")
+def deactivate_job(request, job_post_id):
 
-#     job_post = get_object_or_404(JobPost, id=job_post_id)
-#     # need to delete job post on fb, twitter and linkedin
-#     posts = FacebookPost.objects.filter(
-#         job_post=job_post).exclude(post_status='Deleted')
-#     for each in posts:
-#         del_jobpost_peel_fb(request.user, each)
-#         del_jobpost_fb(job_post.user, each)
-#     posts = TwitterPost.objects.filter(job_post=job_post)
+    job_post = get_object_or_404(JobPost, id=job_post_id)
+    # need to delete job post on fb, twitter and linkedin
+    posts = FacebookPost.objects.filter(
+        job_post=job_post).exclude(post_status='Deleted')
+    for each in posts:
+        del_jobpost_peel_fb(request.user, each)
+        del_jobpost_fb(job_post.user, each)
+    posts = TwitterPost.objects.filter(job_post=job_post)
 
-#     job_post.previous_status = job_post.status
-#     job_post.status = 'Disabled'
-#     job_post.save()
+    job_post.previous_status = job_post.status
+    job_post.status = 'Disabled'
+    job_post.save()
 
-#     data = {'error': False, 'response': 'Job Post deactivated',
-#             'job_type': job_post.job_type}
-#     return HttpResponse(json.dumps(data))
-
-
-# @permission_required("activity_edit")
-# def delete_job(request, job_post_id):
-#     job_post = get_object_or_404(JobPost, id=job_post_id)
-#     job_type = job_post.job_type
-#     posts = FacebookPost.objects.filter(
-#         job_post=job_post).exclude(post_status='Deleted')
-#     for each in posts:
-#         del_jobpost_fb(job_post.user, each)
-#     posts = TwitterPost.objects.filter(job_post=job_post)
-#     for each in posts:
-#         del_jobpost_tw(job_post.user, each)
-
-#     job_post.delete()
-
-#     data = {'error': False,
-#             'response': 'Job Post deleted Successfully', 'job_type': job_type}
-#     return HttpResponse(json.dumps(data))
+    data = {'error': False, 'response': 'Job Post deactivated',
+            'job_type': job_post.job_type}
+    return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def publish_job(request, job_post_id):
-#     job_post = get_object_or_404(JobPost, id=job_post_id)
-#     if job_post.status == 'Pending':
-#         job_post.status = 'Published'
-#         # postonpeel_fb.delay(job_post.user, job_post)
-#         # if job_post.post_on_fb:
-#         #     fbpost.delay(job_post.user, job_post)
-#         #     postonpage.delay(job_post.user, job_post)
-#         #     # need to check this condition
-#         #     # if emp['peelfbpost']:
-#         # posts = FacebookPost.objects.filter(job_post=job_post, page_or_group='group', is_active=True, post_status='Deleted')
-#         # for group in job_post.fb_groups:
-#         #     fb_group = FacebookGroup.objects.get(user=job_post.user, group_id=group)
-#         #     is_active = True
-#         #     postongroup.delay(job_post.user, job_post, fb_group, is_active)
-#         #     # need to get accetoken for peeljobs twitter page
-#         # if job_post.post_on_tw:
-#         #     postontwitter.delay(job_post.user, job_post, 'Profile')
-#         #     # postontwitter(request.user, post, 'Page')
-#     else:
-#         job_post.status = 'Pending'
-#     posts = FacebookPost.objects.filter(job_post=job_post)
-#     for each in posts:
-#         del_jobpost_fb(job_post.user, each)
-#     posts = TwitterPost.objects.filter(job_post=job_post)
-#     for each in posts:
-#         del_jobpost_tw(job_post.user, each)
+@permission_required("activity_edit")
+def delete_job(request, job_post_id):
+    job_post = get_object_or_404(JobPost, id=job_post_id)
+    job_type = job_post.job_type
+    posts = FacebookPost.objects.filter(
+        job_post=job_post).exclude(post_status='Deleted')
+    for each in posts:
+        del_jobpost_fb(job_post.user, each)
+    posts = TwitterPost.objects.filter(job_post=job_post)
+    for each in posts:
+        del_jobpost_tw(job_post.user, each)
 
-#     job_post.save()
-#     job_type = job_post.job_type
-#     data = {'error': False,
-#             'response': 'Job Post Published Successfully', 'job_type': job_type,
-#             'status': job_post.status}
-#     return HttpResponse(json.dumps(data))
+    job_post.delete()
+
+    data = {'error': False,
+            'response': 'Job Post deleted Successfully', 'job_type': job_type}
+    return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def enable_job(request, job_post_id):
-#     job_post = get_object_or_404(JobPost, id=job_post_id)
-#     job_post.status = job_post.previous_status
-#     job_post.save()
-#     if job_post.post_on_fb:
-#         fbpost.delay(job_post.user.id, job_post_id)
-#         postonpage.delay(job_post.user.id, job_post_id)
-#         # need to check this condition
-#         # if emp['peelfbpost']:
-#         postonpeel_fb(job_post)
-#     posts = FacebookPost.objects.filter(
-#         job_post=job_post, page_or_group='group', is_active=True, post_status='Deleted')
-#     for group in posts:
-#         fb_group = FacebookGroup.objects.get(
-#             user=job_post.user, group_id=group.page_or_group_id)
-#         postongroup.delay(job_post.id, fb_group.id)
-#         # need to get accetoken for peeljobs twitter page
-#     if job_post.post_on_tw:
-#         postontwitter.delay(job_post.user.id, job_post_id, 'Profile')
-#         # postontwitter(request.user, post, 'Page')
+@permission_required("activity_edit")
+def publish_job(request, job_post_id):
+    job_post = get_object_or_404(JobPost, id=job_post_id)
+    if job_post.status == 'Pending':
+        job_post.status = 'Published'
+        # postonpeel_fb.delay(job_post.user, job_post)
+        # if job_post.post_on_fb:
+        #     fbpost.delay(job_post.user, job_post)
+        #     postonpage.delay(job_post.user, job_post)
+        #     # need to check this condition
+        #     # if emp['peelfbpost']:
+        # posts = FacebookPost.objects.filter(job_post=job_post, page_or_group='group', is_active=True, post_status='Deleted')
+        # for group in job_post.fb_groups:
+        #     fb_group = FacebookGroup.objects.get(user=job_post.user, group_id=group)
+        #     is_active = True
+        #     postongroup.delay(job_post.user, job_post, fb_group, is_active)
+        #     # need to get accetoken for peeljobs twitter page
+        # if job_post.post_on_tw:
+        #     postontwitter.delay(job_post.user, job_post, 'Profile')
+        #     # postontwitter(request.user, post, 'Page')
+    else:
+        job_post.status = 'Pending'
+    posts = FacebookPost.objects.filter(job_post=job_post)
+    for each in posts:
+        del_jobpost_fb(job_post.user, each)
+    posts = TwitterPost.objects.filter(job_post=job_post)
+    for each in posts:
+        del_jobpost_tw(job_post.user, each)
 
-#     data = {'error': False, 'response': 'Job Post enabled Successfully'}
-#     return HttpResponse(json.dumps(data))
+    job_post.save()
+    job_type = job_post.job_type
+    data = {'error': False,
+            'response': 'Job Post Published Successfully', 'job_type': job_type,
+            'status': job_post.status}
+    return HttpResponse(json.dumps(data))
+
+
+@permission_required("activity_edit")
+def enable_job(request, job_post_id):
+    job_post = get_object_or_404(JobPost, id=job_post_id)
+    job_post.status = job_post.previous_status
+    job_post.save()
+    if job_post.post_on_fb:
+        fbpost.delay(job_post.user.id, job_post_id)
+        postonpage.delay(job_post.user.id, job_post_id)
+        # need to check this condition
+        # if emp['peelfbpost']:
+        postonpeel_fb(job_post)
+    posts = FacebookPost.objects.filter(
+        job_post=job_post, page_or_group='group', is_active=True, post_status='Deleted')
+    for group in posts:
+        fb_group = FacebookGroup.objects.get(
+            user=job_post.user, group_id=group.page_or_group_id)
+        postongroup.delay(job_post.id, fb_group.id)
+        # need to get accetoken for peeljobs twitter page
+    if job_post.post_on_tw:
+        postontwitter.delay(job_post.user.id, job_post_id, 'Profile')
+        # postontwitter(request.user, post, 'Page')
+
+    data = {'error': False, 'response': 'Job Post enabled Successfully'}
+    return HttpResponse(json.dumps(data))
 
 
 # @permission_required("activity_view", "activity_edit")
@@ -2054,41 +2054,41 @@ def functional_area_status(request, functional_area_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def industry_status(request, industry_id):
-#     industry = Industry.objects.filter(id=industry_id).first()
-#     if industry:
-#         industry.status = 'InActive' if industry.status == 'Active' else 'Active'
-#         industry.save()
-#         data = {
-#             'error': False, 'response': 'Industry Status Changed Successfully',
-#             "page": request.POST.get("page") if request.POST.get("page") else 1}
-#     else:
-#         data = {'error': True, 'response': 'Industry not exists',
-#                 "page": request.POST.get("page") if request.POST.get("page") else 1}
-#     return HttpResponse(json.dumps(data))
+@permission_required("activity_edit")
+def industry_status(request, industry_id):
+    industry = Industry.objects.filter(id=industry_id).first()
+    if industry:
+        industry.status = 'InActive' if industry.status == 'Active' else 'Active'
+        industry.save()
+        data = {
+            'error': False, 'response': 'Industry Status Changed Successfully',
+            "page": request.POST.get("page") if request.POST.get("page") else 1}
+    else:
+        data = {'error': True, 'response': 'Industry not exists',
+                "page": request.POST.get("page") if request.POST.get("page") else 1}
+    return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def qualification_status(request, qualification_id):
-#     qualification = Qualification.objects.filter(id=qualification_id).first()
-#     if qualification:
-#         qualification.status = 'InActive' if qualification.status == 'Active' else 'Active'
-#         qualification.save()
-#         data = {
-#             'error': False, 'response': 'Qualification Status Changed Successfully',
-#             "page": request.POST.get("page") if request.POST.get("page") else 1}
-#     else:
-#         data = {'error': True, 'response': 'Qualification not exists',
-#                 "page": request.POST.get("page") if request.POST.get("page") else 1}
-#     return HttpResponse(json.dumps(data))
+@permission_required("activity_edit")
+def qualification_status(request, qualification_id):
+    qualification = Qualification.objects.filter(id=qualification_id).first()
+    if qualification:
+        qualification.status = 'InActive' if qualification.status == 'Active' else 'Active'
+        qualification.save()
+        data = {
+            'error': False, 'response': 'Qualification Status Changed Successfully',
+            "page": request.POST.get("page") if request.POST.get("page") else 1}
+    else:
+        data = {'error': True, 'response': 'Qualification not exists',
+                "page": request.POST.get("page") if request.POST.get("page") else 1}
+    return HttpResponse(json.dumps(data))
 
-# POST = (
-#     ('Shortlisted', 'Shortlisted'),
-#     ('Selected', 'Selected'),
-#     ('Rejected', 'Rejected'),
-#     ('Process', 'Process')
-# )
+POST = (
+    ('Shortlisted', 'Shortlisted'),
+    ('Selected', 'Selected'),
+    ('Rejected', 'Rejected'),
+    ('Process', 'Process')
+)
 
 
 # @permission_required("activity_edit")
@@ -2113,36 +2113,36 @@ def new_template(request):
         return render(request, 'dashboard/mail/new_mailtemplate.html', {'applicant_status': POST})
 
 
-# @permission_required("activity_edit")
-# def edit_template(request, template_id):
-#     mailtemplates = MailTemplate.objects.filter(id=template_id)
-#     if mailtemplates:
-#         mailtemplate = mailtemplates[0]
-#         if request.method == "POST":
-#             validate_mailtemplate = MailTemplateForm(
-#                 request.POST, instance=mailtemplate)
-#             if validate_mailtemplate.is_valid():
-#                 mailtemplate = validate_mailtemplate.save(commit=False)
-#                 mailtemplate.modified_on = datetime.utcnow()
-#                 if 'show_recruiter' in request.POST.keys() and str(request.POST.get('show_recruiter')) == 'True':
-#                     mailtemplate.show_recruiter = True
-#                     mailtemplate.applicant_status = request.POST.get(
-#                         'applicant_status')
-#                 else:
-#                     mailtemplate.show_recruiter = False
-#                 mailtemplate.save()
+@permission_required("activity_edit")
+def edit_template(request, template_id):
+    mailtemplates = MailTemplate.objects.filter(id=template_id)
+    if mailtemplates:
+        mailtemplate = mailtemplates[0]
+        if request.method == "POST":
+            validate_mailtemplate = MailTemplateForm(
+                request.POST, instance=mailtemplate)
+            if validate_mailtemplate.is_valid():
+                mailtemplate = validate_mailtemplate.save(commit=False)
+                mailtemplate.modified_on = datetime.utcnow()
+                if 'show_recruiter' in request.POST.keys() and str(request.POST.get('show_recruiter')) == 'True':
+                    mailtemplate.show_recruiter = True
+                    mailtemplate.applicant_status = request.POST.get(
+                        'applicant_status')
+                else:
+                    mailtemplate.show_recruiter = False
+                mailtemplate.save()
 
-#                 mailtemplate.save()
-#                 data = {'error': False, 'message':
-#                         'Successfully saved template, now you can see it, edit it, send to recruiters!'}
-#             else:
-#                 data = {'error': True, 'message': validate_mailtemplate.errors}
-#             return HttpResponse(json.dumps(data))
-#         return render(request, 'dashboard/mail/edit_mailtemplate.html', {'email_template': mailtemplate, 'applicant_status': POST})
-#     reason = "The URL may be misspelled or the page you're looking for is no longer available."
-#     return render(request, 'dashboard/404.html', {'message_type': '404',
-#                                                   'message': 'Sorry, the page you requested can not be found',
-#                                                   'reason': reason}, status=404)
+                mailtemplate.save()
+                data = {'error': False, 'message':
+                        'Successfully saved template, now you can see it, edit it, send to recruiters!'}
+            else:
+                data = {'error': True, 'message': validate_mailtemplate.errors}
+            return HttpResponse(json.dumps(data))
+        return render(request, 'dashboard/mail/edit_mailtemplate.html', {'email_template': mailtemplate, 'applicant_status': POST})
+    reason = "The URL may be misspelled or the page you're looking for is no longer available."
+    return render(request, 'dashboard/404.html', {'message_type': '404',
+                                                  'message': 'Sorry, the page you requested can not be found',
+                                                  'reason': reason}, status=404)
 
 
 # @permission_required("activity_view", "activity_edit")
@@ -2507,269 +2507,269 @@ def new_govt_job(request, job_type):
         return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def edit_govt_job(request, post_id):
-#     job_posts = JobPost.objects.filter(id=post_id, user=request.user)
-#     if request.method == 'GET':
-#         if job_posts:
-#             job_post = job_posts[0]
-#             countries = Country.objects.all().order_by('name')
-#             skills = list(Skill.objects.filter(status='Active'))
-#             skills.extend(job_post.skills.filter(status='InActive'))
-#             industries = list(
-#                 Industry.objects.filter(status='Active').order_by('name'))
-#             industries.extend(job_post.industry.filter(status='InActive'))
-#             cities = City.objects.filter(status='Enabled').order_by('name')
-#             qualifications = list(
-#                 Qualification.objects.filter(status='Active').order_by('name'))
-#             qualifications.extend(
-#                 job_post.edu_qualification.filter(status='InActive'))
+@permission_required("activity_edit")
+def edit_govt_job(request, post_id):
+    job_posts = JobPost.objects.filter(id=post_id, user=request.user)
+    if request.method == 'GET':
+        if job_posts:
+            job_post = job_posts[0]
+            countries = Country.objects.all().order_by('name')
+            skills = list(Skill.objects.filter(status='Active'))
+            skills.extend(job_post.skills.filter(status='InActive'))
+            industries = list(
+                Industry.objects.filter(status='Active').order_by('name'))
+            industries.extend(job_post.industry.filter(status='InActive'))
+            cities = City.objects.filter(status='Enabled').order_by('name')
+            qualifications = list(
+                Qualification.objects.filter(status='Active').order_by('name'))
+            qualifications.extend(
+                job_post.edu_qualification.filter(status='InActive'))
 
-#             functional_area = list(
-#                 FunctionalArea.objects.filter(status='Active').order_by('name'))
-#             functional_area.extend(
-#                 job_post.functional_area.filter(status='InActive'))
-#             fb_groups = FacebookPost.objects.filter(
-#                 job_post=job_post, page_or_group='group', post_status='Posted').order_by('-id')
-#             companies = Company.objects.filter(
-#                 company_type='Company', is_active=True).order_by('name')
-#             return render(request, 'dashboard/jobpost/edit.html', {'fb_groups': fb_groups,
-#                                                                    'job_types': JOB_TYPE,
-#                                                                    'qualifications': qualifications,
-#                                                                    'functional_area': functional_area,
-#                                                                    'years': YEARS, 'months': MONTHS,
-#                                                                    'job_post': job_post,
-#                                                                    'industries': industries,
-#                                                                    'countries': countries,
-#                                                                    'skills': skills,
-#                                                                    'cities': cities,
-#                                                                    'gov_job_type': GOV_JOB_TYPE,
-#                                                                    'companies': companies})
-#         else:
-#             message = 'Sorry, No Job Posts Found'
-#         return render(request, 'dashboard/404.html', {'message': message}, status=404)
+            functional_area = list(
+                FunctionalArea.objects.filter(status='Active').order_by('name'))
+            functional_area.extend(
+                job_post.functional_area.filter(status='InActive'))
+            fb_groups = FacebookPost.objects.filter(
+                job_post=job_post, page_or_group='group', post_status='Posted').order_by('-id')
+            companies = Company.objects.filter(
+                company_type='Company', is_active=True).order_by('name')
+            return render(request, 'dashboard/jobpost/edit.html', {'fb_groups': fb_groups,
+                                                                   'job_types': JOB_TYPE,
+                                                                   'qualifications': qualifications,
+                                                                   'functional_area': functional_area,
+                                                                   'years': YEARS, 'months': MONTHS,
+                                                                   'job_post': job_post,
+                                                                   'industries': industries,
+                                                                   'countries': countries,
+                                                                   'skills': skills,
+                                                                   'cities': cities,
+                                                                   'gov_job_type': GOV_JOB_TYPE,
+                                                                   'companies': companies})
+        else:
+            message = 'Sorry, No Job Posts Found'
+        return render(request, 'dashboard/404.html', {'message': message}, status=404)
 
-#     job_post = job_posts[0]
-#     validate_post = JobPostForm(
-#         request.POST, user=request.user, instance=job_posts[0])
+    job_post = job_posts[0]
+    validate_post = JobPostForm(
+        request.POST, user=request.user, instance=job_posts[0])
 
-#     errors = validate_post.errors
+    errors = validate_post.errors
 
-#     # for i in range(1, no_of_locations):
-#     #     venue_details = 'venue_details_' + str(i)
-#     #     location = 'show_location_' + str(i)
-#     #     final_location = 'final_location_' + str(i)
-#     #     if request.POST[venue_details] and request.POST[final_location]:
-#     #         pass
-#     #     else:
-#     #         if not request.POST[final_location]:
-#     #             errors[final_location] = 'This field is required'
+    # for i in range(1, no_of_locations):
+    #     venue_details = 'venue_details_' + str(i)
+    #     location = 'show_location_' + str(i)
+    #     final_location = 'final_location_' + str(i)
+    #     if request.POST[venue_details] and request.POST[final_location]:
+    #         pass
+    #     else:
+    #         if not request.POST[final_location]:
+    #             errors[final_location] = 'This field is required'
 
-#     for key, value in request.POST.items():
+    for key, value in request.POST.items():
 
-#         if 'final_industry' in request.POST.keys():
-#             for industry in json.loads(request.POST['final_industry']):
-#                 for key, value in industry.items():
-#                     if not value:
-#                         errors[key] = 'This field is required'
-#         if 'final_functional_area' in request.POST.keys():
-#             for functional_area in json.loads(request.POST['final_functional_area']):
-#                 for key, value in functional_area.items():
-#                     if not value:
-#                         errors[key] = 'This field is required'
+        if 'final_industry' in request.POST.keys():
+            for industry in json.loads(request.POST['final_industry']):
+                for key, value in industry.items():
+                    if not value:
+                        errors[key] = 'This field is required'
+        if 'final_functional_area' in request.POST.keys():
+            for functional_area in json.loads(request.POST['final_functional_area']):
+                for key, value in functional_area.items():
+                    if not value:
+                        errors[key] = 'This field is required'
 
-#         if 'final_edu_qualification' in request.POST.keys():
-#             for qualification in json.loads(request.POST['final_edu_qualification']):
-#                 for key, value in qualification.items():
-#                     if not value:
-#                         errors[key] = 'This field is required'
+        if 'final_edu_qualification' in request.POST.keys():
+            for qualification in json.loads(request.POST['final_edu_qualification']):
+                for key, value in qualification.items():
+                    if not value:
+                        errors[key] = 'This field is required'
 
-#         if 'final_skills' in request.POST.keys():
-#             for skill in json.loads(request.POST['final_skills']):
-#                 for key, value in skill.items():
-#                     if not value:
-#                         errors[key] = 'This field is required'
+        if 'final_skills' in request.POST.keys():
+            for skill in json.loads(request.POST['final_skills']):
+                for key, value in skill.items():
+                    if not value:
+                        errors[key] = 'This field is required'
 
-#     if not errors:
-#         post = validate_post.save(commit=False)
-#         post.fresher = request.POST.get('min_year') == 0
-#         post.min_salary = request.POST.get('min_salary', 0) if request.POST.get('min_salary', 0) else 0
-#         post.max_salary = request.POST.get('max_salary', 0) if request.POST.get('max_salary', 0) else 0
-#         post.pincode = request.POST.get('pincode', '')
-#         if request.POST.get('visa_required'):
-#             post.visa_required = True
-#             visa_country = Country.objects.get(
-#                 id=request.POST.get('visa_country'))
-#             post.visa_country = visa_country
-#             post.visa_type = request.POST.get('visa_type')
-#         else:
-#             post.visa_required = False
-#             post.visa_type = ''
-#             post.visa_country = None
-#         # post.published_on = datetime.now()
-#         if request.POST.get('published_date'):
-#             start_date = datetime.strptime(request.POST.get(
-#                 'published_date'), '%m/%d/%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
-#             date_format = "%Y-%m-%d %H:%M:%S"
-#             published_date = datetime.strptime(start_date, date_format)
-#             post.published_date = published_date
-#         if request.POST.get('major_skill'):
-#             skill = Skill.objects.filter(id=request.POST.get('major_skill'))
-#             if skill:
-#                 post.major_skill = skill[0]
+    if not errors:
+        post = validate_post.save(commit=False)
+        post.fresher = request.POST.get('min_year') == 0
+        post.min_salary = request.POST.get('min_salary', 0) if request.POST.get('min_salary', 0) else 0
+        post.max_salary = request.POST.get('max_salary', 0) if request.POST.get('max_salary', 0) else 0
+        post.pincode = request.POST.get('pincode', '')
+        if request.POST.get('visa_required'):
+            post.visa_required = True
+            visa_country = Country.objects.get(
+                id=request.POST.get('visa_country'))
+            post.visa_country = visa_country
+            post.visa_type = request.POST.get('visa_type')
+        else:
+            post.visa_required = False
+            post.visa_type = ''
+            post.visa_country = None
+        # post.published_on = datetime.now()
+        if request.POST.get('published_date'):
+            start_date = datetime.strptime(request.POST.get(
+                'published_date'), '%m/%d/%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+            date_format = "%Y-%m-%d %H:%M:%S"
+            published_date = datetime.strptime(start_date, date_format)
+            post.published_date = published_date
+        if request.POST.get('major_skill'):
+            skill = Skill.objects.filter(id=request.POST.get('major_skill'))
+            if skill:
+                post.major_skill = skill[0]
 
-#         post.status = request.POST.get('status')
-#         post.published_message = request.POST.get('published_message')
+        post.status = request.POST.get('status')
+        post.published_message = request.POST.get('published_message')
 
-#         company = Company.objects.get(id=request.POST.get('company'))
-#         post.company = company
-#         post.company_links = request.POST.get('company_links')
-#         post.company_emails = request.POST.get('company_emails')
+        company = Company.objects.get(id=request.POST.get('company'))
+        post.company = company
+        post.company_links = request.POST.get('company_links')
+        post.company_emails = request.POST.get('company_emails')
 
-#         post.job_type = request.POST.get('job_type')
-#         post.min_year = request.POST.get('min_year', 0)
-#         post.min_month = request.POST.get('min_month', 0)
-#         post.max_year = request.POST.get('max_year', 0)
-#         post.max_month = request.POST.get('max_month', 0)
+        post.job_type = request.POST.get('job_type')
+        post.min_year = request.POST.get('min_year', 0)
+        post.min_month = request.POST.get('min_month', 0)
+        post.max_year = request.POST.get('max_year', 0)
+        post.max_month = request.POST.get('max_month', 0)
 
-#         if request.POST.get('job_type') == 'government':
-#             post.vacancies = request.POST.get('vacancies')
-#             if request.POST.get('application_fee'):
-#                 post.application_fee = request.POST.get('application_fee')
-#             post.govt_job_type = request.POST.get('govt_job_type')
-#             post.age_relaxation = request.POST.get('age_relaxation')
-#             post.important_dates = request.POST.get('important_dates')
-#             post.how_to_apply = request.POST.get('how_to_apply')
-#             post.selection_process = request.POST.get('selection_process')
+        if request.POST.get('job_type') == 'government':
+            post.vacancies = request.POST.get('vacancies')
+            if request.POST.get('application_fee'):
+                post.application_fee = request.POST.get('application_fee')
+            post.govt_job_type = request.POST.get('govt_job_type')
+            post.age_relaxation = request.POST.get('age_relaxation')
+            post.important_dates = request.POST.get('important_dates')
+            post.how_to_apply = request.POST.get('how_to_apply')
+            post.selection_process = request.POST.get('selection_process')
 
-#             govt_from_date = datetime.strptime(
-#                 request.POST.get('govt_from_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
+            govt_from_date = datetime.strptime(
+                request.POST.get('govt_from_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
-#             post.govt_from_date = govt_from_date
-#             govt_to_date = datetime.strptime(
-#                 request.POST.get('govt_to_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
+            post.govt_from_date = govt_from_date
+            govt_to_date = datetime.strptime(
+                request.POST.get('govt_to_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
-#             post.govt_to_date = govt_to_date
+            post.govt_to_date = govt_to_date
 
-#             if request.POST.get('govt_exam_date'):
-#                 govt_exam_date = datetime.strptime(
-#                     request.POST.get('govt_exam_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
+            if request.POST.get('govt_exam_date'):
+                govt_exam_date = datetime.strptime(
+                    request.POST.get('govt_exam_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
-#                 post.govt_exam_date = govt_exam_date
+                post.govt_exam_date = govt_exam_date
 
-#                 post.last_date = govt_exam_date
-#             else:
-#                 post.last_date = govt_to_date
+                post.last_date = govt_exam_date
+            else:
+                post.last_date = govt_to_date
 
-#         if request.POST.get('status') == 'Pending':
-#             if request.POST.get('fb_post') == 'on':
-#                 post.post_on_fb = True
-#                 post.fb_groups = request.POST.getlist('fb_groups')
+        if request.POST.get('status') == 'Pending':
+            if request.POST.get('fb_post') == 'on':
+                post.post_on_fb = True
+                post.fb_groups = request.POST.getlist('fb_groups')
 
-#             if request.POST.get('tw_post') == 'on':
-#                 post.post_on_tw = True
+            if request.POST.get('tw_post') == 'on':
+                post.post_on_tw = True
 
-#             if request.POST.get('ln_post') == 'on':
-#                 post.post_on_ln = True
+            if request.POST.get('ln_post') == 'on':
+                post.post_on_ln = True
 
-#             t = loader.get_template('email/jobpost.html')
-#             c = {'job_post': post, 'user': post.user}
-#             subject = "PeelJobs New JobPost"
-#             rendered = t.render(c)
-#             mto = [settings.DEFAULT_FROM_EMAIL]
-#             mfrom = settings.DEFAULT_FROM_EMAIL
-#             Memail(mto, mfrom, subject, rendered, True)
-#             post.save()
+            t = loader.get_template('email/jobpost.html')
+            c = {'job_post': post, 'user': post.user}
+            subject = "PeelJobs New JobPost"
+            rendered = t.render(c)
+            mto = [settings.DEFAULT_FROM_EMAIL]
+            mfrom = settings.DEFAULT_FROM_EMAIL
+            Memail(mto, mfrom, subject, rendered, True)
+            post.save()
 
-#         post.location.clear()
-#         post.skills.clear()
-#         post.industry.clear()
-#         post.functional_area.clear()
-#         post.edu_qualification.clear()
-#         post.keywords.clear()
+        post.location.clear()
+        post.skills.clear()
+        post.industry.clear()
+        post.functional_area.clear()
+        post.edu_qualification.clear()
+        post.keywords.clear()
 
-#         if 'final_skills' in request.POST.keys():
+        if 'final_skills' in request.POST.keys():
 
-#             add_other_skills(
-#                 post, json.loads(request.POST['final_skills']), request.user)
-#         if 'final_edu_qualification' in request.POST.keys():
-#             add_other_qualifications(
-#                 post, json.loads(request.POST['final_edu_qualification']), request.user)
-#         if 'final_industry' in request.POST.keys():
-#             add_other_industry(
-#                 post, json.loads(request.POST['final_industry']), request.user)
-#         if 'final_functional_area' in request.POST.keys():
-#             add_other_functional_area(
-#                 post, json.loads(request.POST['final_functional_area']), request.user)
+            add_other_skills(
+                post, json.loads(request.POST['final_skills']), request.user)
+        if 'final_edu_qualification' in request.POST.keys():
+            add_other_qualifications(
+                post, json.loads(request.POST['final_edu_qualification']), request.user)
+        if 'final_industry' in request.POST.keys():
+            add_other_industry(
+                post, json.loads(request.POST['final_industry']), request.user)
+        if 'final_functional_area' in request.POST.keys():
+            add_other_functional_area(
+                post, json.loads(request.POST['final_functional_area']), request.user)
 
-#         if 'other_location' in request.POST.keys():
-#             temp = loader.get_template('recruiter/email/add_other_fields.html')
-#             subject = "PeelJobs New JobPost"
-#             mto = [settings.DEFAULT_FROM_EMAIL]
-#             mfrom = settings.DEFAULT_FROM_EMAIL
+        if 'other_location' in request.POST.keys():
+            temp = loader.get_template('recruiter/email/add_other_fields.html')
+            subject = "PeelJobs New JobPost"
+            mto = [settings.DEFAULT_FROM_EMAIL]
+            mfrom = settings.DEFAULT_FROM_EMAIL
 
-#             c = {'job_post': post, 'user': request.user,
-#                  'value': request.POST['other_location'], 'type': 'Location'}
-#             rendered = temp.render(c)
-#             Memail(mto, mfrom, subject, rendered, True)
+            c = {'job_post': post, 'user': request.user,
+                 'value': request.POST['other_location'], 'type': 'Location'}
+            rendered = temp.render(c)
+            Memail(mto, mfrom, subject, rendered, True)
 
-#         post.job_interview_location.clear()
+        post.job_interview_location.clear()
 
-#         no_of_locations = int(
-#             json.loads(request.POST['no_of_interview_location']))+1
-#         add_interview_location(request.POST, post, no_of_locations)
+        no_of_locations = int(
+            json.loads(request.POST['no_of_interview_location']))+1
+        add_interview_location(request.POST, post, no_of_locations)
 
-#         post.edu_qualification.add(*request.POST.getlist('edu_qualification'))
-#         post.location.add(*request.POST.getlist('location'))
-#         post.skills.add(*request.POST.getlist('skills'))
-#         post.industry.add(*request.POST.getlist('industry'))
-#         post.functional_area.add(*request.POST.getlist('functional_area'))
+        post.edu_qualification.add(*request.POST.getlist('edu_qualification'))
+        post.location.add(*request.POST.getlist('location'))
+        post.skills.add(*request.POST.getlist('skills'))
+        post.industry.add(*request.POST.getlist('industry'))
+        post.functional_area.add(*request.POST.getlist('functional_area'))
 
-#         for kw in request.POST.getlist('keywords'):
-#             key = Keyword.objects.filter(name=kw)
-#             if not kw == '':
-#                 if not key:
-#                     keyword = Keyword.objects.create(name=kw)
-#                     post.keywords.add(keyword)
-#                 else:
-#                     post.keywords.add(key[0])
+        for kw in request.POST.getlist('keywords'):
+            key = Keyword.objects.filter(name=kw)
+            if not kw == '':
+                if not key:
+                    keyword = Keyword.objects.create(name=kw)
+                    post.keywords.add(keyword)
+                else:
+                    post.keywords.add(key[0])
 
-#         if post.job_type == 'walk-in':
-#             post.vacancies = 0
-#             post.walkin_contactinfo = request.POST.get('walkin_contactinfo')
-#             walkin_from_date = datetime.strptime(
-#                 request.POST.get('walkin_from_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
+        if post.job_type == 'walk-in':
+            post.vacancies = 0
+            post.walkin_contactinfo = request.POST.get('walkin_contactinfo')
+            walkin_from_date = datetime.strptime(
+                request.POST.get('walkin_from_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
-#             post.walkin_from_date = walkin_from_date
-#             walkin_to_date = datetime.strptime(
-#                 request.POST.get('walkin_to_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
+            post.walkin_from_date = walkin_from_date
+            walkin_to_date = datetime.strptime(
+                request.POST.get('walkin_to_date'), "%m/%d/%Y").strftime("%Y-%m-%d")
 
-#             post.walkin_to_date = walkin_to_date
-#             if request.POST.get('walkin_time'):
-#                 post.walkin_time = request.POST.get('walkin_time')
+            post.walkin_to_date = walkin_to_date
+            if request.POST.get('walkin_time'):
+                post.walkin_time = request.POST.get('walkin_time')
 
-#             post.last_date = walkin_to_date
-#         post.save()
-#         if post.major_skill and post.major_skill not in post.skills.all():
-#             post.skills.add(post.major_skill)
-#         data = {
-#             'error': False, 'response': 'Job Post Updated', 'post': job_post.id,
-#             'job_type': post.job_type}
-#         return HttpResponse(json.dumps(data))
-#     else:
-#         data = {'error': True, 'response': errors}
+            post.last_date = walkin_to_date
+        post.save()
+        if post.major_skill and post.major_skill not in post.skills.all():
+            post.skills.add(post.major_skill)
+        data = {
+            'error': False, 'response': 'Job Post Updated', 'post': job_post.id,
+            'job_type': post.job_type}
+        return HttpResponse(json.dumps(data))
+    else:
+        data = {'error': True, 'response': errors}
 
-#         return HttpResponse(json.dumps(data))
+        return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
-# def preview_job(request, post_id):
-#     job_post = JobPost.objects.filter(id=post_id, user=request.user)
-#     if job_post:
-#         if job_post[0].status == 'Draft':
-#             return render(request, 'dashboard/jobpost/preview.html', {'job': job_post[0]})
-#     message = 'No Job Preview Available'
-#     return render(request, 'dashboard/404.html', {'message': message}, status=404)
+@permission_required("activity_edit")
+def preview_job(request, post_id):
+    job_post = JobPost.objects.filter(id=post_id, user=request.user)
+    if job_post:
+        if job_post[0].status == 'Draft':
+            return render(request, 'dashboard/jobpost/preview.html', {'job': job_post[0]})
+    message = 'No Job Preview Available'
+    return render(request, 'dashboard/404.html', {'message': message}, status=404)
 
 
 # @permission_required("activity_edit", "activity_view")
@@ -3263,94 +3263,94 @@ def applicants_mail(request):
                                                                   'last_page': no_pages})
 
 
-# def edit_job_title(request, post_id):
-#     job_post = get_object_or_404(JobPost, id=post_id)
-#     companies = Company.objects.filter()
-#     skills = Skill.objects.all().order_by('name')
-#     countries = Country.objects.all().order_by('name')
-#     cities = City.objects.all().order_by('name')
-#     qualifications = Qualification.objects.all().order_by('name')
-#     industries = Industry.objects.all().order_by('name')
-#     functional_areas = FunctionalArea.objects.all().order_by('name')
-#     if request.POST:
-#         validate_jobpost = JobPostTitleForm(request.POST, instance=job_post)
-#         send_mail = job_post.status != 'Live'
-#         if validate_jobpost.is_valid():
-#             job_post.title = request.POST.get('title', '')
-#             job_post.description = request.POST.get('description')
-#             job_post.status = request.POST.get('post_status')
-#             job_post.pincode = request.POST.get('pincode', '')
-#             job_post.company_emails = request.POST.get('company_emails', '')
-#             # job_post.published_on = datetime.now()
-#             job_post.published_message = request.POST.get(
-#                 'published_message', '')
-#             if request.POST.get('meta_description'):
-#                 job_post.meta_description = request.POST.get(
-#                     'meta_description')
-#             if request.POST.get('meta_title'):
-#                 job_post.meta_title = request.POST.get('meta_title')
-#             if request.POST.get('company'):
-#                 job_post.company_id = request.POST.get('company')
-#             if request.POST.getlist('skills'):
-#                 job_post.skills.clear()
-#                 job_post.skills.add(*request.POST.getlist('skills'))
-#             if request.POST.getlist('location'):
-#                 job_post.location.clear()
-#                 job_post.location.add(*request.POST.getlist('location'))
-#             if request.POST.getlist('edu_qualification'):
-#                 job_post.edu_qualification.clear()
-#                 job_post.edu_qualification.add(
-#                     *request.POST.getlist('edu_qualification'))
-#             if request.POST.getlist('industry'):
-#                 job_post.industry.clear()
-#                 job_post.industry.add(*request.POST.getlist('industry'))
-#             if request.POST.getlist('functional_area'):
-#                 job_post.functional_area.clear()
-#                 job_post.functional_area.add(
-#                     *request.POST.getlist('functional_area'))
-#             if request.POST.get('salary_type'):
-#                 job_post.salary_type = request.POST.get('salary_type')
-#             job_post.min_salary = request.POST.get('min_salary') or 0
-#             job_post.max_salary = request.POST.get('max_salary') or 0
-#             if request.POST.get('major_skill'):
-#                 skill = Skill.objects.filter(
-#                     id=request.POST.get('major_skill'))
-#                 if skill:
-#                     job_post.major_skill = skill[0]
-#             job_url = get_absolute_url(job_post)
-#             job_post.slug = job_url
-#             #job_post.minified_url = google_mini('https://peeljobs.com' + job_url, settings.MINIFIED_URL)
-#             job_post.save()
-#             if job_post.major_skill and job_post.major_skill not in job_post.skills.all():
-#                 job_post.skills.add(job_post.major_skill)
-#             job_post.job_interview_location.clear()
+def edit_job_title(request, post_id):
+    job_post = get_object_or_404(JobPost, id=post_id)
+    companies = Company.objects.filter()
+    skills = Skill.objects.all().order_by('name')
+    countries = Country.objects.all().order_by('name')
+    cities = City.objects.all().order_by('name')
+    qualifications = Qualification.objects.all().order_by('name')
+    industries = Industry.objects.all().order_by('name')
+    functional_areas = FunctionalArea.objects.all().order_by('name')
+    if request.POST:
+        validate_jobpost = JobPostTitleForm(request.POST, instance=job_post)
+        send_mail = job_post.status != 'Live'
+        if validate_jobpost.is_valid():
+            job_post.title = request.POST.get('title', '')
+            job_post.description = request.POST.get('description')
+            job_post.status = request.POST.get('post_status')
+            job_post.pincode = request.POST.get('pincode', '')
+            job_post.company_emails = request.POST.get('company_emails', '')
+            # job_post.published_on = datetime.now()
+            job_post.published_message = request.POST.get(
+                'published_message', '')
+            if request.POST.get('meta_description'):
+                job_post.meta_description = request.POST.get(
+                    'meta_description')
+            if request.POST.get('meta_title'):
+                job_post.meta_title = request.POST.get('meta_title')
+            if request.POST.get('company'):
+                job_post.company_id = request.POST.get('company')
+            if request.POST.getlist('skills'):
+                job_post.skills.clear()
+                job_post.skills.add(*request.POST.getlist('skills'))
+            if request.POST.getlist('location'):
+                job_post.location.clear()
+                job_post.location.add(*request.POST.getlist('location'))
+            if request.POST.getlist('edu_qualification'):
+                job_post.edu_qualification.clear()
+                job_post.edu_qualification.add(
+                    *request.POST.getlist('edu_qualification'))
+            if request.POST.getlist('industry'):
+                job_post.industry.clear()
+                job_post.industry.add(*request.POST.getlist('industry'))
+            if request.POST.getlist('functional_area'):
+                job_post.functional_area.clear()
+                job_post.functional_area.add(
+                    *request.POST.getlist('functional_area'))
+            if request.POST.get('salary_type'):
+                job_post.salary_type = request.POST.get('salary_type')
+            job_post.min_salary = request.POST.get('min_salary') or 0
+            job_post.max_salary = request.POST.get('max_salary') or 0
+            if request.POST.get('major_skill'):
+                skill = Skill.objects.filter(
+                    id=request.POST.get('major_skill'))
+                if skill:
+                    job_post.major_skill = skill[0]
+            job_url = get_absolute_url(job_post)
+            job_post.slug = job_url
+            #job_post.minified_url = google_mini('https://peeljobs.com' + job_url, settings.MINIFIED_URL)
+            job_post.save()
+            if job_post.major_skill and job_post.major_skill not in job_post.skills.all():
+                job_post.skills.add(job_post.major_skill)
+            job_post.job_interview_location.clear()
 
-#             no_of_locations = int(
-#                 json.loads(request.POST['no_of_interview_location']))+1
-#             add_interview_location(request.POST, job_post, no_of_locations)
-#             if job_post.status == 'Live' and send_mail:
-#                 t = loader.get_template('email/jobpost.html')
-#                 c = {'job_post': job_post, 'user': job_post.user}
-#                 subject = "PeelJobs JobPost Status"
-#                 rendered = t.render(c)
-#                 mto = [job_post.user.email]
-#                 mfrom = settings.DEFAULT_FROM_EMAIL
-#                 user_active = True if job_post.user.is_active else False
-#                 Memail(mto, mfrom, subject, rendered, user_active)
-#             data = {"error": False, 'response': 'Company Updated successfully'}
-#             return HttpResponse(json.dumps(data))
-#         else:
-#             data = {"error": True, 'response': validate_jobpost.errors}
-#             return HttpResponse(json.dumps(data))
-#     return render(request, 'dashboard/jobpost/edit_job_title.html', {"job_post": job_post,
-#                                                                      'companies': companies,
-#                                                                      'skills': skills,
-#                                                                      'countries': countries,
-#                                                                      'qualifications': qualifications,
-#                                                                      'status': JobPost.POST_STATUS,
-#                                                                      'cities': cities,
-#                                                                      'industries': industries,
-#                                                                      'functional_areas': functional_areas})
+            no_of_locations = int(
+                json.loads(request.POST['no_of_interview_location']))+1
+            add_interview_location(request.POST, job_post, no_of_locations)
+            if job_post.status == 'Live' and send_mail:
+                t = loader.get_template('email/jobpost.html')
+                c = {'job_post': job_post, 'user': job_post.user}
+                subject = "PeelJobs JobPost Status"
+                rendered = t.render(c)
+                mto = [job_post.user.email]
+                mfrom = settings.DEFAULT_FROM_EMAIL
+                user_active = True if job_post.user.is_active else False
+                Memail(mto, mfrom, subject, rendered, user_active)
+            data = {"error": False, 'response': 'Company Updated successfully'}
+            return HttpResponse(json.dumps(data))
+        else:
+            data = {"error": True, 'response': validate_jobpost.errors}
+            return HttpResponse(json.dumps(data))
+    return render(request, 'dashboard/jobpost/edit_job_title.html', {"job_post": job_post,
+                                                                     'companies': companies,
+                                                                     'skills': skills,
+                                                                     'countries': countries,
+                                                                     'qualifications': qualifications,
+                                                                     'status': JobPost.POST_STATUS,
+                                                                     'cities': cities,
+                                                                     'industries': industries,
+                                                                     'functional_areas': functional_areas})
 
 
 # @permission_required("activity_edit", "activity_view")

@@ -45,15 +45,15 @@
           </div>
           <div class="top_menu">
           <ul>
-            <li><a href="{}" class="settings">Clear Cache</a>
+            <li><a href="{% url "dashboard:clear_cache" %}" class="settings">Clear Cache</a>
             </li>
-            <li><a href="{}" class="admin"><i class='fa fa-user-plus'></i>Admin</a>
+            <li><a href="{% url "dashboard:admin_user_list" %}" class="admin"><i class='fa fa-user-plus'></i>Admin</a>
             </li>
             <!--<li><a class="requiter"><i class='fa fa-user'></i>Recruiters</a></li>-->
             <li><a class="settings"><i class='fa fa-cogs'></i>Settings</a>
             <ul class="sub_list">
-            <li><a href="{}">Change Password</a></li>
-            <li><a href="{}">Logout</a></li>
+            <li><a href="{% url "dashboard:change_password" %}">Change Password</a></li>
+            <li><a href="{% url "get_out" %}">Logout</a></li>
             </ul>
             </li>
           </ul>

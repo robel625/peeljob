@@ -90,7 +90,7 @@
           {% if user.nationality %}
           <div class="detail_each">
             <label>Nationality</label>
-            <span class='value'>{% for country in countries%}{% if country.id|slugify user.nationality|slugify %} {{ country.name }} {% endif %}{% endfor%}</span>
+            <span class='value'>{% for country in countries%}{% if country.id|slugify == user.nationality|slugify %} {{ country.name }} {% endif %}{% endfor%}</span>
           </div>
           {% endif %}
           <!--/ detail each -->

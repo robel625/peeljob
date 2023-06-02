@@ -133,14 +133,14 @@
                           <li><a href="/calendar/{% now "Y" %}/">Calendar</a></li>
                           <li><a href="/blog/">Blog</a></li>
                           <li class="visible-xs"><a href="/?referer=gmail">Login/Register</a></li>
-                          <li class="visible-xs"><a href="{}">Recruiter Login</a></li>
+                          <li class="visible-xs"><a href="{% url 'post_job' %}">Recruiter Login</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right hidden-xs">
                           <li class="jobseeker_auth"><!-- <a href="" class="login_modal">Jobseeker Login</a> -->
                             <span class="title">Job Seeker</span>
                             <div class="items"><a href="#" class="login_modal">Login</a> <a href="#" class="new_account">Register</a></div>
                           </li>
-                          <li><a href="{}">Recruiter Login</a></li>
+                          <li><a href="{% url 'post_job' %}">Recruiter Login</a></li>
                         </ul>
                         </div>
                         <!-- /.navbar-collapse -->
@@ -177,7 +177,7 @@
                         <input type="hidden" name="next" value="{{request.GET.next}}">
                       </div>
                       <button type="submit" class="btn btn-default">Login</button>
-                       <div id="customBtn" class="customGPlusSignIn" data-href='{}'>
+                       <div id="customBtn" class="customGPlusSignIn" data-href='{% url 'recruiter:google_login' %}'>
                         <span class="icon"></span>
                         <span class="buttonText">Sign in With Google</span>
                       </div>

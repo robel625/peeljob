@@ -441,9 +441,9 @@ def save_job_post(validate_post, request):
         job_post_company.address = request.POST['company_address']
         job_post_company.profile = request.POST['company_description']
         job_post_company.website = request.POST['company_website']
-        if 'company_logo' in request.FILES:
-            file_path = get_aws_file_path(request.FILES.get('company_logo'), 'company/logo/', slugify(request.POST['company_name']))
-            job_post_company.profile_pic = file_path
+        # if 'company_logo' in request.FILES:
+        #     file_path = get_aws_file_path(request.FILES.get('company_logo'), 'company/logo/', slugify(request.POST['company_name']))
+        #     job_post_company.profile_pic = file_path
         job_post_company.save()
     else:
         job_post_company = Company.objects.create(name=request.POST['company_name'],
@@ -454,9 +454,9 @@ def save_job_post(validate_post, request):
                                                   email=request.user.email,
                                                   created_from='job_post',
                                                   website=request.POST['company_website'])
-        if request.FILES.get('company_logo'):
-            file_path = get_aws_file_path(request.FILES.get('company_logo'), 'company/logo/', slugify(request.POST['company_name']))
-            job_post_company.profile_pic = file_path
+        # if request.FILES.get('company_logo'):
+        #     file_path = get_aws_file_path(request.FILES.get('company_logo'), 'company/logo/', slugify(request.POST['company_name']))
+        #     job_post_company.profile_pic = file_path
         job_post_company.save()
     validate_post.company = job_post_company
     validate_post.slug = get_absolute_url(validate_post)

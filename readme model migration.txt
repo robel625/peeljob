@@ -13,6 +13,8 @@ uncommet  from django_blog_it.django_blog_it.models import Post
 python manage.py makemigrations django_blog_it
 python manage.py migrate django_blog_it
 
+python manage.py migrate sites
+
 uncomment all under BlogAttachment 
 py manage.py makemigrations 
 py manage.py migrate 
@@ -21,6 +23,10 @@ py manage.py createsuperuser
 py manage.py load_initial_data
 python manage.py compress
 py manage.py runserver  
+
+
+curl -X GET "localhost:9200/_cluster/health?pretty"   in cmd   to see elastic search is working
+python manage.py rebuild_index
 
 if admin login can't open, change in user class is_active to default=True, is_active = models.BooleanField(default=True)
 

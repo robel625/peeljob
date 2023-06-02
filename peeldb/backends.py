@@ -2,7 +2,7 @@ from haystack.backends.elasticsearch_backend import ElasticsearchSearchEngine
 from haystack.backends.elasticsearch_backend import ElasticsearchSearchQuery
 from haystack.constants import DEFAULT_ALIAS
 from haystack.inputs import Clean, Exact, PythonData, Raw
-from django.utils import six
+# from django.utils import six
 
 
 class CustomElasticsearchSearchQuery(ElasticsearchSearchQuery):
@@ -19,7 +19,7 @@ class CustomElasticsearchSearchQuery(ElasticsearchSearchQuery):
             if hasattr(value, 'values_list'):
                 value = list(value)
 
-            if isinstance(value, six.string_types):
+            if isinstance(value, str):
                 # It's not an ``InputType``. Assume ``Clean``.
                 value = Clean(value)
             else:
@@ -62,7 +62,7 @@ class CustomElasticsearchSearchQuery(ElasticsearchSearchQuery):
                     # Iterate over terms & incorportate the converted form of each into the query.
                     terms = []
 
-                    if isinstance(prepared_value, six.string_types):
+                    if isinstance(prepared_value, str):
                         for possible_value in prepared_value.split(' '):
                             terms.append(filter_types[filter_type] % self.backend._from_python(possible_value))
                     else:
