@@ -68,7 +68,7 @@
       <span>
       {%for skill in job.skills.all %}
         {% if skill.status == 'Active' %}
-          <a class="tag" style="color:#676767;" href="{% url 'job_skills' skill.slug %}">{{ skill.name }}</a>
+          <a class="tag" style="color:#676767;" href="{}">{{ skill.name }}</a>
         {% else %}
           <a class="tag" style="color:#676767;">{{ skill.name }}</a>
         {% endif %}
@@ -98,7 +98,7 @@
     </div>
     <div class='job_detail'>
       <span class='heading'>Industry</span>
-      <span> {%for industry in job.industry.all %}<a href="{% url 'job_industries' industry.slug %}" target="_blank">{{ industry.name|get_industry_name }}{% if forloop.last %}{% else %}, {% endif%}</a>{% endfor %}</span>
+      <span> {%for industry in job.industry.all %}<a href="{}" target="_blank">{{ industry.name|get_industry_name }}{% if forloop.last %}{% else %}, {% endif%}</a>{% endfor %}</span>
     </div>
     <div class='job_detail'>
       <span class='heading'>Functional Area</span>
@@ -111,7 +111,7 @@
     <div class='job_detail'>
       <span class='heading'>Education</span>
       <span>
-      {%for qualification in job.get_active_qualification %}<a href="{% url 'job_skills' qualification.slug %}">{{ qualification.name }}</a> {% if forloop.last %}{% else %},{% endif%}{% empty %}Not Specified{% endfor %}</span>
+      {%for qualification in job.get_active_qualification %}<a href="{}">{{ qualification.name }}</a> {% if forloop.last %}{% else %},{% endif%}{% empty %}Not Specified{% endfor %}</span>
     </div>
     {% if job.company %}
       <div class='job_detail'>

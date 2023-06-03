@@ -23,7 +23,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.template.defaultfilters import slugify
-from django_blog_it.django_blog_it.models import Post
+# from django_blog_it.django_blog_it.models import Post
 from django.core.cache import cache
 from microurl import google_mini
 # from twython.api import Twython

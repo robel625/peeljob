@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import re
 # from oauth2client.contrib.django_util.models import CredentialsField
 from google.oauth2.credentials import Credentials
-from django_blog_it.django_blog_it.models import Post
+# from django_blog_it.django_blog_it.models import Post
 from django.utils.translation import gettext_lazy as _
 from django.core.files.storage import FileSystemStorage
 
@@ -1821,7 +1821,7 @@ class BlogAttachment(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     attached_file = models.FileField(
         max_length=1000, null=True, blank=True, upload_to=img_url)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
 
 def updating_skills_jobposts(skill, update_skill):

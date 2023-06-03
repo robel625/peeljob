@@ -36,7 +36,7 @@
           {% elif current_page == 2  %}
           <li class="sitemap-parent"><a href="{% url 'jobs_by_skill' %}">Skills</a></li>
               {% for skill in skills %}
-               <li class="sitemap-child"><a href="{% url 'job_skills' skill.slug %}">Jobs For {{ skill.name }}</a></li>
+               <li class="sitemap-child"><a href="{}">Jobs For {{ skill.name }}</a></li>
             {% endfor %}
           {% elif current_page == 3  %}
           <li class="sitemap-parent"><a>Jobs by Educations</a></li>
@@ -70,7 +70,7 @@
           <li class="sitemap-parent"><a href="{% url 'jobs_by_industry' %}">Industry</a></li>
             {% get_all_industries as industries %}
               {% for industry in industries %}
-               <li class="sitemap-child"><a href="{% url 'job_industries' industry.slug %}">Jobs For {{ industry.name }}</a></li>
+               <li class="sitemap-child"><a href="{}">Jobs For {{ industry.name }}</a></li>
             {% endfor %}
           {% elif current_page == 7  %}
             <li class="sitemap-parent"><a href="{% url 'internship_jobs' %}">Internships</a></li>

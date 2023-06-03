@@ -66,7 +66,7 @@
     <!-- ticket each -->
     <div class="ticket_each">
     <span class='heading'>Profile<a  href="{% url 'my:edit_personalinfo' %}"><span class='pj-edit edit_i'>edit</span></a></span>
-    {% if request.user.permanent_address ''%}
+    {% if request.user.permanent_address == ''%}
     <p>Please Complete Your Profile to apply relevant jobs for your profile and get you dream job</p>{% else %}
     <div class="detail_each">
       <span class='detail_heading'>First Name</span><span class='description'>{{ request.user.first_name }}</span>
@@ -96,7 +96,7 @@
       <span class='detail_heading'>Marital Status</span><span class='description'>{{ request.user.marital_status }}</span>
     </div>
     <div class="detail_each">
-      <span class='detail_heading'>Gender</span><span class='description'>{%if request.user.gender 'F' %}Female{% else %}Male{% endif %}</span>
+      <span class='detail_heading'>Gender</span><span class='description'>{%if request.user.gender == 'F' %}Female{% else %}Male{% endif %}</span>
     </div>
     <div class="detail_each">
       <span class='detail_heading'>Date of Birth</span><span class='description'>{{ request.user.dob }}</span>
@@ -110,7 +110,7 @@
     <span class='heading'>Resume Upload</span>
     <div class="detail_each">
     {% if request.user.resume %}
-      <span class="heading download" id="{{ request.user.resume|get_s3_url }}">{{ request.user.resume|get_resume_name }}</span>{% endif %}
+      <span class="heading download" id="{}">{{ request.user.resume|get_resume_name }}</span>{% endif %}
     <form name="resumeupload" id="resumeupload" method="post" action="{% url 'my:upload_resume' %}">
       <input type='file' name="resume" id="resume">
       <div class="button_row">
@@ -123,13 +123,13 @@
     <!-- ticket each -->
     <div class="ticket_each">
       <span class='heading'>Profile Description<a  href="{% url 'my:edit_profile_description' %}"><span class='pj-add add_i'>edit</span></a></span>
-    {% ifnot request.user.profile_description ''%}
+    {% if request.user.profile_description != ''%}
       <div class="detail_each">
       <span>{{ request.user.profile_description}}</span>
       </div>
     {% else %}
     <p>Please Complete Your Profile Description</p>
-    {% endifnotequal %}
+    {% endif %}
     </div>
     <!--/ ticket each -->
     <div class="ticket_each">
@@ -169,7 +169,7 @@
         </div>
       {% else %}
         <p>Please Complete Your Professional Information</p>
-      {% endifnotequal %}
+      {% endif %}
     </div>
     <!--/ ticket each -->
     <!-- ticket each -->

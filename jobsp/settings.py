@@ -51,18 +51,18 @@ INSTALLED_APPS = [
     "social",
      # 'django_simple_forum',
     'simple_pagination',
-    'django_blog_it',
+    # 'django_blog_it',
     'compressor',
     'imagekit',
     'sorl.thumbnail',
     'haystack',
-    'tellme',
+    # 'tellme',
 ]
 
 AUTH_USER_MODEL = 'peeldb.User'
 LOGIN_URL = '/'
 
-MONGO_HOST = 'localhost'
+MONGO_HOST = 'mongodb'
 MONGO_PORT = 27017
 MONGO_DB = 'local'
 # MONGO_USER = 'mongo1'
@@ -133,7 +133,7 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "HOST": "pgdb",
         "PORT": "5432",
     }
 }
@@ -217,7 +217,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {
 'default': {
 'BACKEND': 'django_redis.cache.RedisCache',
-'LOCATION': 'redis://localhost:6379/0',
+'LOCATION': 'redis://redis:6379/0',
 'OPTIONS': {
 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
 }

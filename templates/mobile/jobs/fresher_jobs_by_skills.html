@@ -55,11 +55,11 @@
       {% if all_skills %}
         {% if job_type == 'fresher' %}
             {% for skill in all_skills|dictsort:"name" %}
-            <a href="{% url 'skill_fresher_jobs' skill.slug %}"> {{skill.name}} Jobs </a>
+            <a href="{}"> {{skill.name}} Jobs </a>
             {% endfor %}
             {% else %}
              {% for skill in all_skills|dictsort:"name" %}
-            <a href="{% url 'skill_walkin_jobs' skill.slug %}"> {{skill.name}} Jobs </a>
+            <a href="{}"> {{skill.name}} Jobs </a>
             {% endfor %}
             {% endif %}
       {% else %}

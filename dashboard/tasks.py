@@ -12,7 +12,7 @@ from django.conf import settings
 # from pytz import timezone
 from django.db.models import Q, F
 from django.template import loader, Template, Context
-from django_blog_it.django_blog_it.models import Category, Post, Tags
+# from django_blog_it.django_blog_it.models import Category, Post, Tags
 from django.db.models import Case, When
 from microurl import google_mini
 from twython.api import Twython
@@ -1575,24 +1575,24 @@ def sitemap_generation():
     # blog categories
     blog_categories_xml_cont = xml_cont
 
-    categories = Category.objects.filter(is_active=True)
-    for category in categories:
-        if Post.objects.filter(status='Published'):
-            blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/category/' + \
-                category.slug + '/'
-            blog_categories_xml_cont = blog_categories_xml_cont + end_url
+    # categories = Category.objects.filter(is_active=True)
+    # for category in categories:
+    #     # if Post.objects.filter(status='Published'):
+    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/category/' + \
+    #             category.slug + '/'
+    #         blog_categories_xml_cont = blog_categories_xml_cont + end_url
 
-    tags = Tags.objects.filter()
-    for tag in tags:
-        if Post.objects.filter(tags__in=[tag], status='Published'):
-            blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/tags/' + \
-                tag.slug + '/'
-            blog_categories_xml_cont = blog_categories_xml_cont + end_url
+    # tags = Tags.objects.filter()
+    # for tag in tags:
+        # if Post.objects.filter(tags__in=[tag], status='Published'):
+    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/tags/' + \
+    #             tag.slug + '/'
+    #         blog_categories_xml_cont = blog_categories_xml_cont + end_url
 
-    dates = []
-    for each_object in Post.objects.filter(category__is_active=True, status="Published").order_by('created_on').values('created_on'):
-        for date in each_object.values():
-            dates.append((date.year, date.month, 1))
+    # dates = []
+    # for each_object in Post.objects.filter(category__is_active=True, status="Published").order_by('created_on').values('created_on'):
+    #     for date in each_object.values():
+    #         dates.append((date.year, date.month, 1))
     dates = list(set(dates))
 
     for each in dates:
@@ -1608,9 +1608,9 @@ def sitemap_generation():
     # blog categories
     blog_posts_xml_cont = xml_cont
 
-    posts = Post.objects.filter(status="Published").order_by('-created_on')
-    for post in posts:
-        blog_posts_xml_cont = blog_posts_xml_cont + '<url><loc>https://peeljobs.com/blog/' + post.slug + '/' + end_url
+    # posts = Post.objects.filter(status="Published").order_by('-created_on')
+    # for post in posts:
+    #     blog_posts_xml_cont = blog_posts_xml_cont + '<url><loc>https://peeljobs.com/blog/' + post.slug + '/' + end_url
 
     blog_posts_xml_cont = blog_posts_xml_cont + '</urlset>'
 

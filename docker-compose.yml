@@ -2,6 +2,20 @@ version: "3.8"
 
 services:
 
+  web:
+    restart: always
+    container_name: web_peelJobs
+    build:
+      context: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - pgdb
+
   pgdb:
     container_name: pgdb_peeljob
     image: postgres

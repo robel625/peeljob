@@ -42,7 +42,7 @@ from recruiter.views import index
 from psite.views import ( get_out )
 # from psite.views import (contact, sitemap, get_out, pages,
 #                          custom_500, sitemap_xml, users_login, custom_404, auth_return)
-from django_blog_it import urls as django_blog_it_urls
+# from django_blog_it import urls as django_blog_it_urls
 
 
 urlpatterns = [
@@ -89,14 +89,14 @@ urlpatterns = [
     re_path(r'^email-unsubscribe/(?P<message_id>[a-zA-Z0-9_-]+.*?)/$',
         applicant_unsubscribing, name="applicant_unsubscribing"),
 
-    re_path(r'^blog/', include(django_blog_it_urls)),
-    # re_path(r'^social/', include('social.urls', namespace="social")),
+    # re_path(r'^blog/', include(django_blog_it_urls)),
+    re_path(r'^social/', include('social.urls', namespace="social")),
 
     re_path(r'^dashboard/', include('dashboard.urls', namespace="dashboard")),
     re_path(r'^recruiter/', include('recruiter.urls', namespace="recruiter")),
     re_path(r'^agency/', include('agency.urls', namespace="agency")),
 
-    re_path(r'^tellme/', include("tellme.urls")),
+    # re_path(r'^tellme/', include("tellme.urls")),
 
     re_path(r'^post-job/$', index, name='post_job'),
     re_path(r'^bounces/$', bounces),

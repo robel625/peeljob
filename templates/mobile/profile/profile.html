@@ -112,7 +112,7 @@
     <!-- ticket each -->
     <div class="ticket_each">
     <span class='heading'>Profile<a  href="{% url 'my:edit_personalinfo' %}"><span class='pj-edit edit_i'></span></a></span>
-    {% if request.user.firstname ''%}
+    {% if request.user.firstname == ''%}
     <p class="error">Please Complete Your Profile to apply relevant jobs for your profile and get you dream job</p>{% else %}
     <div class="detail_each">
       <span class='detail_heading'>First Name</span>{% if request.user.first_name %}<span class='description'>{{ request.user.first_name }}{% else %}<span class="error">Not Specified</span></span>{% endif %}
@@ -171,23 +171,23 @@
     <!-- ticket each -->
     <div class="ticket_each">
       <span class='heading'>Profile Description<a  href="{% url 'my:edit_profile_description' %}"><span class='pj-edit edit_i'></span></a></span>
-    {% ifnot request.user.profile_description ''%}
+    {% if request.user.profile_description != ''%}
       <div class="detail_each">
       <span>{{ request.user.profile_description}}</span>
       </div>
     {% else %}
     <p class="error" >Please Complete Your Profile Description</p>
-    {% endifnotequal %}
+    {% endif %}
     </div>
  <!-- ticket each -->
     <div class="ticket_each">
     <span class='heading'>Resume Upload</span>
     <div class="detail_each resume_class">
     {% if request.user.resume %}
-      <span class="heading download" id="{{ request.user.resume|get_s3_url }}">
+      <span class="heading download" id="{}">
       <div class="resume_title">{{ request.user.resume|get_resume_name }}</div>
         <span class="pull-right">
-          <a href="{{ request.user.resume|get_s3_url }}" target="_blank" class="download"  >Download</a>
+          <a href="{}" target="_blank" class="download"  >Download</a>
            <a href="#" class="delete delete-resume">Delete</a>
         <br clear="all">
       </span>
@@ -225,7 +225,7 @@
           <span class='detail_heading'>Total Experience(Y)</span><span class='description'>{% if request.user.year %}{{ request.user.year }} Year(s) {{ request.user.month }} Month(s){% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
         <div class="detail_each">
-          <span class='detail_heading'>Prefered Industry</span><span class='description'>{% if request.user.prefered_industry %}<a href="{% url 'job_industries' request.user.prefered_industry.slug %}" target="_blank">{{ request.user.prefered_industry.name }}</a>{% else %}<span class="error">Not Specified</span>{% endif %}</span>
+          <span class='detail_heading'>Prefered Industry</span><span class='description'>{% if request.user.prefered_industry %}<a href="{}" target="_blank">{{ request.user.prefered_industry.name }}</a>{% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
         <div class="detail_each">
           <span class='detail_heading'>Current Salary</span><span class='description'>{% if request.user.current_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ request.user.current_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
@@ -321,7 +321,7 @@
     <div class='table_each'>
       <div class="edit_del_row"><a href="{% url 'my:edit_technicalskill' skill.id %}" id="{{ skill.id }}"><span class='pj-edit edit_i'></span></a><a href="{% url 'my:delete_technicalskill' skill.id %}" class='technicalskill-delete' id="{{ skill.id }}"><span class='pj-delete del_i'></span></a></div>
       <div class="detail_each">
-        <span class='detail_heading'>Name</span><span class='description'><a href="{% url 'job_skills' skill.skill.slug %}" target="_blank"> {{ skill.skill.name }}</a></span>
+        <span class='detail_heading'>Name</span><span class='description'><a href="{}" target="_blank"> {{ skill.skill.name }}</a></span>
       </div>
       <div class="detail_each">
         <span class='detail_heading'>Experience</span><span class='description'>{% if skill.year %}{{ skill.year }} Yr {{ skill.month }} months{% else %}Not Specified{% endif %}</span>
@@ -361,7 +361,7 @@
         <span class='detail_heading'>Duration</span><span class='description'>{{ project.from_date }} - {% if project.to_date %}{{ project.to_date }}{% else %}Not Specified{% endif %}</span>
       </div>
       <div class="detail_each">
-        <span class='detail_heading'>Skills</span><span class='description'>{% for skill in project.skills.all %}<a href="{% url 'job_skills' skill.slug %}" target="_blank">{{ skill.name }}</a> {% if forloop.last %}{% else %},{% endif%}{% endfor %}</span>
+        <span class='detail_heading'>Skills</span><span class='description'>{% for skill in project.skills.all %}<a href="{}" target="_blank">{{ skill.name }}</a> {% if forloop.last %}{% else %},{% endif%}{% endfor %}</span>
       </div>
       <div class="detail_each">
         <span class='detail_heading'>Location</span><span class='description'>{% if project.location %}{{ project.location.name }}{% else %}Not Specified{% endif %}</span>

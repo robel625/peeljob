@@ -54,7 +54,7 @@
   </div>
     <div class="skills_results skills">
       {% for skill in all_skills %}
-        <a href="{% url 'job_skills' skill.slug %}"> {{skill.name}} Jobs </a>
+        <a href="{}"> {{skill.name}} Jobs </a>
       {% empty %}
         <a>No Skills Available Here.</a>
       {% endfor %}

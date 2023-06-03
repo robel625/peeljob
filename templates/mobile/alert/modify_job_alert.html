@@ -97,7 +97,7 @@
         <select class="input experience" name="min_year" id="min_year">
         <option value="" default>Min Year</option>
         {% for year in years %}
-          <option value="{{ year.0 }}" id="{{ forloop.counter }}" {% if job_alert.min_year|slugify year.0 %} selected {% endif %}>{{ year.1}}</option>
+          <option value="{{ year.0 }}" id="{{ forloop.counter }}" {% if job_alert.min_year|slugify == year.0 %} selected {% endif %}>{{ year.1}}</option>
         {% endfor %}
         </select>
       </div>
@@ -109,7 +109,7 @@
         <select class="input experience" name="max_year" id="max_year">
           <option value="" default>Max year</option>
           {% for year in years %}
-          <option value="{{ year.0 }}" id="{{ forloop.counter }}" {% if job_alert.max_year|slugify year.0 %} selected {% endif %}>{{ year.1}}</option>
+          <option value="{{ year.0 }}" id="{{ forloop.counter }}" {% if job_alert.max_year|slugify == year.0 %} selected {% endif %}>{{ year.1}}</option>
         {% endfor %}
         </select>
       </div>
