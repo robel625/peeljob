@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,12 +58,13 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'haystack',
     # 'tellme',
+    'django_celery_beat',
 ]
 
 AUTH_USER_MODEL = 'peeldb.User'
 LOGIN_URL = '/'
 
-MONGO_HOST = 'mongodb'
+MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 MONGO_DB = 'local'
 # MONGO_USER = 'mongo1'
@@ -133,7 +135,7 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "pgdb",
+        "HOST": "localhost",
         "PORT": "5432",
     }
 }
@@ -217,7 +219,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {
 'default': {
 'BACKEND': 'django_redis.cache.RedisCache',
-'LOCATION': 'redis://redis:6379/0',
+'LOCATION': 'redis://localhost:6379/0',
 'OPTIONS': {
 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
 }
@@ -246,15 +248,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/1'
-
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-
-CELERY_TIMEZONE = 'UTC'
-
 DEFAULT_FROM_EMAIL = 'robelgulima@gmail.com'
 INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
 MAIL_SENDER = 'robelgulima@gmail.com'
@@ -271,3 +264,87 @@ EMAIL_HOST_USER = '234f7429728d59'
 EMAIL_HOST_PASSWORD = '149e364b2c721f'
 EMAIL_PORT = '2525'
 
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_IMPORTS = ("social.tasks", "dashboard.tasks", "recruiter.tasks")
+
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_TIMEZONE = 'UTC'
+
+CELERY_BEAT_SCHEDULE = {
+    # Executes every day evening at 5:00 PM GMT +5.30
+    'moving-published-jobs-to-live': {
+        'task': 'dashboard.tasks.jobpost_published',
+        'schedule': crontab(minute='*', day_of_week='mon,tue,wed,thu,fri,sat'),
+    },
+    'sending-today-applied-users-info-to-recruiters': {
+        'task': 'dashboard.tasks.recruiter_jobpost_applicants',
+        'schedule': crontab(hour='16', minute='00', day_of_week='mon,tue,wed,thu,fri,sat'),
+    },
+    'sending-profile_update-notifications-to-applicants': {
+        'task': 'dashboard.tasks.applicants_notifications',
+        'schedule': crontab(hour='16', minute='00', day_of_week='mon,tue,wed,thu,fri,sat'),
+    },
+    'sending-daily-statistics-report-to-admins': {
+        'task': 'dashboard.tasks.daily_report',
+        'schedule': crontab(hour='08', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'sending-weekly-jobs-notifications-to-applicants': {
+        'task': 'dashboard.tasks.applicants_job_notifications',
+        'schedule': crontab(hour='09', minute='00', day_of_week='mon'),
+    },
+    'all-users-profile-update-and-birthday-notifications': {
+        'task': 'dashboard.tasks.alerting_applicants',
+        'schedule': crontab(hour='10', minute='05', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'alerting-all-inactive-users-and-applicants-resume-upload-notifications': {
+        'task': 'dashboard.tasks.applicants_profile_update_notifications',
+        'schedule': crontab(hour='09', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'sending-profile-update-notifications-two-hours-after-registering': {
+        'task': 'dashboard.tasks.applicants_profile_update_notifications_two_hours',
+        'schedule': crontab(hour='*/2', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'walkin-notifications-to-applicants': {
+        'task': 'dashboard.tasks.applicants_walkin_job_notifications',
+        'schedule': crontab(hour='09', minute='00', day_of_week='thu'),
+    },
+    'handling-sendgrid-bounces': {
+        'task': 'dashboard.tasks.handle_sendgrid_bounces',
+        'schedule': crontab(hour='03', minute='10', day_of_week='mon,tue,wed,thu,fri,sat'),
+    },
+    'daily-sitemap-generation': {
+        'task': 'dashboard.tasks.sitemap_generation',
+        'schedule': crontab(hour='00', minute='10', day_of_week='mon,tue,wed,thu,fri,sat'),
+    },
+    'sending-today-live-jobs-to-users-based-on-profile': {
+        'task': 'dashboard.tasks.job_alerts_to_users',
+        'schedule': crontab(hour='17', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'sending-today-live-jobs-to-alerts': {
+        'task': 'dashboard.tasks.job_alerts_to_alerts',
+        'schedule': crontab(hour='10', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'sending-today-live-jobs-to-subscribers': {
+        'task': 'dashboard.tasks.job_alerts_to_subscribers',
+        'schedule': crontab(hour='18', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'checking-meta-data': {
+        'task': 'dashboard.tasks.check_meta_data',
+        'schedule': crontab(hour='*/6', minute='00', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+    'recruiter-profile-update-notifications': {
+        'task': 'dashboard.tasks.recruiter_profile_update_notifications',
+        'schedule': crontab(hour='09', minute='30', day_of_week='mon'),
+    },
+    'haystack-rebuilding-indexes': {
+        'task': 'dashboard.tasks.rebuilding_index',
+        'schedule': crontab(hour='00', minute='20', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
+    },
+
+}

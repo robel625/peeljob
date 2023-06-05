@@ -1015,7 +1015,6 @@ def get_autocomplete(request):
 
 
 def new_user(request):  # pragma: no mccabe
-    print("rgrggggggr",request)
     if request.method == 'GET':
         if request.GET.get('q'):
             data = get_autocomplete(request)
@@ -1056,7 +1055,6 @@ def new_user(request):  # pragma: no mccabe
                 show_errors = True
         else: 
             user_obj = User_Form(request.POST)
-            print("rgrgrgrg",user_obj)
             show_errors = True if user_obj.is_valid() else False
         if show_errors:
             payload = {'secret': '6LdZcgkTAAAAAGkY3zbzO4lWhqCStbWUef_6MWW-', 'response':

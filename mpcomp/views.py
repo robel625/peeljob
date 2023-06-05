@@ -129,7 +129,7 @@ def get_prev_after_pages_count(page, no_pages):
 
 def mongoconnection():
     from pymongo import MongoClient
-    client = MongoClient('mongodb://mongodb:27017/')
+    client = MongoClient('mongodb://localhost:27017/')
     # db_list = client.list_database_names()
     # for db_name in db_list:
     #   print(db_name)

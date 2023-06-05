@@ -153,10 +153,10 @@
     <section class="job_list">
       <!-- tabs -->
       <div class="tab_row row mt">
-        <a href="{% url 'agency:company_recruiter_profile' recruiter.id %}"><span class="tab_button {% if job_status "active" %}active{% endif %}">
+        <a href="{% url 'agency:company_recruiter_profile' recruiter.id %}"><span class="tab_button {% if job_status == "active" %}active{% endif %}">
         Active Jobs
         </span></a>
-        <a href="{% url 'agency:company_recruiter_profile' recruiter.id %}?job_status=inactive"><span class="tab_button {% if job_status "inactive" %}active{% endif %}">
+        <a href="{% url 'agency:company_recruiter_profile' recruiter.id %}?job_status=inactive"><span class="tab_button {% if job_status == "inactive" %}active{% endif %}">
         Inactive Jobs
         </span></a>
         <form name="jobtypeform" id="jobtypeform" method="get">

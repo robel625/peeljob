@@ -19,6 +19,8 @@ uncomment all under BlogAttachment
 py manage.py makemigrations 
 py manage.py migrate 
 
+python manage.py migrate django_celery_beat
+
 py manage.py createsuperuser
 py manage.py load_initial_data
 python manage.py compress

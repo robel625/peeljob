@@ -1,0 +1,30 @@
+Backup
+   connect to postgres through pgadmin
+   on db left click and Backup  
+   create a Backup
+
+   click process  =>  top right on the screen
+   and their goin to be file icon  click it
+   and then a folder icon   click it
+   then selecte a file and download it through download icon on the top screen
+
+restore
+    1. Copy the backup file from your Windows file system to the Docker container. To do so, you can use the following command in the Docker container:
+            docker cp <file_path_on_windows> <container_name>:<container_directory_path>
+     eg: docker cp peeljob_tabel3.sql  postgress:/app/peeljob_table3.sql
+
+
+   2. Log in to the Docker container using the following command:
+            docker exec -it <container_name> bash
+      eg: docker exec -it pgdb_peeljob /bin/bash
+
+   3. Once you are logged in to the Docker container, navigate to the directory where you copied the backup file using the `cd` command.
+
+   4. Use the `pg_restore` command to restore the database from the backup file. You can use the following command:
+         pg_restore -U <username> -d <database_name> <backup_file_name>
+     eg: pg_restore -U postgres -d backuptest peeljob_table3.sql
+
+
+
+    
+  
