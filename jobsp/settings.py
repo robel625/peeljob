@@ -64,7 +64,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'peeldb.User'
 LOGIN_URL = '/'
 
-MONGO_HOST = 'localhost'
+MONGO_HOST = 'mongodb'
 MONGO_PORT = 27017
 MONGO_DB = 'local'
 # MONGO_USER = 'mongo1'
@@ -73,11 +73,9 @@ MONGO_DB = 'local'
 # Haystack settings for Elasticsearch
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'peeldb.backends.ConfigurableElasticSearchEngine',
-
-        'URL': 'http://127.0.0.1:9200/',
+        'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
+        'URL': 'http://elasticsearch:9200/',
         'INDEX_NAME': 'job_haystack',
-        'TIMEOUT': 60,
     },
 }
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
@@ -135,7 +133,7 @@ DATABASES = {
         "NAME": "postgres",
         "USER": "postgres",
         "PASSWORD": "postgres",
-        "HOST": "localhost",
+        "HOST": "pgdb",
         "PORT": "5432",
     }
 }
@@ -219,7 +217,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {
 'default': {
 'BACKEND': 'django_redis.cache.RedisCache',
-'LOCATION': 'redis://localhost:6379/0',
+'LOCATION': 'redis://redis:6379/0',
 'OPTIONS': {
 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
 }
@@ -229,16 +227,6 @@ CACHES = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_CACHE_ALIAS = 'default'
-
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-    },
-}
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
-HAYSTACK_DEFAULT_OPERATOR = 'OR'
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 1
-
 
 # LOCAL_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
@@ -266,13 +254,13 @@ EMAIL_PORT = '2525'
 
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_IMPORTS = ("social.tasks", "dashboard.tasks", "recruiter.tasks")
 
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TIMEZONE = 'UTC'
 
@@ -348,3 +336,21 @@ CELERY_BEAT_SCHEDULE = {
     },
 
 }
+
+# fb app
+FB_APP_ID = '547723917061958'
+FB_SECRET = 'eefeb3487586bd2d03de3cc893dcc12b'
+# FB_PEELJOBS_PAGEID = os.getenv('FBPEELJOBSPAGEID')
+
+# FB_ACCESS_TOKEN = os.getenv('FBACCESSTOKEN')
+# FB_PAGE_ACCESS_TOKEN = os.getenv('FBPAGEACCESSTOKEN')
+# FB_GROUP_ACCESS_TOKEN = os.getenv('FBGROUPACCESSTOKEN')
+# FB_ALL_GROUPS_TOKEN = os.getenv('FBALLGROUPSTOKEN')
+# FB_DEL_ACCESS_TOKEN = os.getenv('FBDELACCESSTOKEN')
+# REC_FB_ACCESS_TOKEN = os.getenv('RECFBACCESSTOKEN')
+
+
+GIT_APP_ID = '37471e928f959d8b88ab'
+GIT_APP_SECRET = 'c0071dd6af6b177b54fd7b0d987c3a89d5a40388'
+
+CONTACT_NUMBER = "0910118088"

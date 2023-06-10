@@ -1,3 +1,4 @@
+from __future__ import absolute_import, unicode_literals
 import json
 import math
 import urllib
@@ -28,6 +29,10 @@ from peeldb.models import (AppliedJobs, City, Company, User,
 
 db = mongoconnection()
 
+
+@shared_task
+def add(x,y):
+    return x + y
 
 @shared_task
 def rebuilding_index():
@@ -124,7 +129,7 @@ def job_alerts_to_alerts():
 
 @shared_task()
 def jobpost_published():
-    jobposts = JobPost.objects.filter(status='Published')
+    jobposts = JobPost.objects.filter(status='Pending')
     for job in jobposts:
         # asia_timezone = timezone(settings.TIMEZONE)
         # asia_time = datetime.now(asia_timezone).strftime('%Y-%m-%d %H:%M:%S')
@@ -135,6 +140,7 @@ def jobpost_published():
         # if str(job.last_date) >= str(current_date):
         # if str(job_date) == str(asia_time) or str(job_date) <=
         # str(asia_time):
+        print("published") 
         job.status = 'Live'
         job.published_on = datetime.now()
         job_url = get_absolute_url(job)

@@ -156,8 +156,8 @@ urlpatterns = [
     re_path(r'^jobs-for-(?P<industry>[-\w]+)-industry/$', job_industries),
     re_path(r'^jobs-for-(?P<industry>[-\w]+)-industry/(?P<page_num>[0-9]+)/$', job_industries),
 
-    re_path(r'^(?P<skill>[a-z0-9-.*?]+)-jobs/$', job_skills, name="job_skills"),
-    re_path(r'^(?P<skill>[a-z0-9-.*?]+)-jobs/(?P<page_num>[0-9]+)/$', job_skills),
+    re_path(r'^(?P<skill>[A-Za-z0-9-.*?]+)-jobs/$', job_skills, name="job_skills"),
+    re_path(r'^(?P<skill>[A-Za-z0-9-.*?]+)-jobs/(?P<page_num>[0-9]+)/$', job_skills),
 
     re_path(r'^page/(?P<page_name>([a-z0-9-])+)/$', pages, name="pages"),
 

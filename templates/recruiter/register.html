@@ -112,24 +112,24 @@
                           <div class="collapse navbar-collapse" id='navbarCollapse'>
                         <ul class="nav navbar-nav main_menu">
                           <li class="dropdown megamenu-fw hidden-xs">
-                            <a href="{}" class="dropdown-toggle latest-jobs" data-toggle="dropdown" role="button" aria-expanded="false">Latest Jobs<span class="caret"></span></a>
+                            <a href="{% url 'jobs:index' %}" class="dropdown-toggle latest-jobs" data-toggle="dropdown" role="button" aria-expanded="false">Latest Jobs<span class="caret"></span></a>
                             <ul class="dropdown-menu megamenu-content" role="menu">
                               <li>
                                 {% include "mega_menu.html" %}
                               </li>
                             </ul>
                           </li>
-                          <li class="visible-xs"><a href="{}">Jobs</a></li>
-                          <li><a href="{}">Fresher Jobs</a></li>
-                          <li><a href="{}">Walkin Jobs</a></li>
-                          <li class="visible-xs"><a href="{}">Jobs By Location</a></li>
-                          <li class="visible-xs"><a href="{}">Jobs By Industry</a></li>
-                          <li class="visible-xs"><a href="{}">Jobs By Skills</a></li>
-                          <li class="visible-xs"><a href="{}">Jobs By Degrees</a></li>
-                          <li><a href="{}">Internship</a></li>
-                          <li><a href="{}">Companies</a></li>
+                          <li class="visible-xs"><a href="{% url 'jobs:index' %}">Jobs</a></li>
+                          <li><a href="{% url 'fresher_jobs_by_skills' 'fresher' %}">Fresher Jobs</a></li>
+                          <li><a href="{% url 'fresher_jobs_by_skills' 'walkin' %}">Walkin Jobs</a></li>
+                          <li class="visible-xs"><a href="{% url "jobs_by_location" 'jobs' %}">Jobs By Location</a></li>
+                          <li class="visible-xs"><a href="{% url "jobs_by_industry" %}">Jobs By Industry</a></li>
+                          <li class="visible-xs"><a href="{% url "jobs_by_skill" %}">Jobs By Skills</a></li>
+                          <li class="visible-xs"><a href="{% url "jobs_by_degree" %}">Jobs By Degrees</a></li>
+                          <li><a href="{% url 'internship_jobs'%}">Internship</a></li>
+                           <li><a href="{% url 'companies' %}">Companies</a></li>
                           <li><a href="{% url 'recruiters' %}">Recruiters</a></li>
-                          <li><a href="{}">Job Alerts</a></li>
+                          <li><a href="{% url 'my:alerts_list'%}">Job Alerts</a></li>
                           <li><a href="/calendar/{% now "Y" %}/">Calendar</a></li>
                           <li><a href="/blog/">Blog</a></li>
                           <li class="visible-xs"><a href="/?referer=gmail">Login/Register</a></li>
@@ -307,7 +307,7 @@
             <ul>
               <li class="facebook_li"><a href="{}" target="_blank"><i class='fa fa-facebook fb'></i><span>Sign in with <span>FaceBook</span></span></a></li>
               <li class="linkedin_li"><a href="{}" target="_blank"><i class='fa fa-linkedin in'></i><span>Sign in with <span>LinkedIn</span></span></a></li>
-              <li class="github_li"><a href="{}" target="_blank"><i class='fa fa-github git'></i><span>Sign in with <span>GitHub</span></span></a></li>
+              <li class="github_li"><a href="{% url 'social:github_login' %}" target="_blank"><i class='fa fa-github git'></i><span>Sign in with <span>GitHub</span></span></a></li>
             </ul>
             <div class="customGPlusSignIn" data-href='{}'>
               <span class="icon"></span>

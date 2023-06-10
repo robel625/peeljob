@@ -27,15 +27,15 @@ python manage.py compress
 py manage.py runserver  
 
 
-curl -X GET "localhost:9200/_cluster/health?pretty"   in cmd   to see elastic search is working
-python manage.py rebuild_index
-
 if admin login can't open, change in user class is_active to default=True, is_active = models.BooleanField(default=True)
 
 
+curl -X GET "127.0.0.1:9200/_cluster/health?pretty"   in cmd   to see elastic search is working
+curl -X GET "elasticsearch:9200/_cluster/health?pretty"   in docker web terminal  to see elastic search is working
+python3 manage.py rebuild_index
 
 in postgres table  add slug , with thi query  
-UPDATE public.peeldb_skill SET slug = REPLACE(name, ' ', '_');
+UPDATE public.peeldb_skill SET slug = LOWER(REPLACE(name, ' ', '-'));
 
 
 

@@ -41,7 +41,9 @@ from psite.forms import (SubscribeForm, UserEmailRegisterForm, UserPassChangeFor
 from .refine_search import refined_search
 from django.db.models import Prefetch
 from django.core.cache import cache
-from dashboard.tasks import save_search_results
+# from dashboard.tasks import save_search_results
+
+from peeldb.models import (SearchResult)
 
 db = mongoconnection()
 
@@ -381,9 +383,34 @@ def index(request, **kwargs):
     template = 'mobile/jobs/list.html' if request.is_mobile else 'jobs/jobs_list.html'
     return render(request, template, data)
 
+def save_search_results(ip_address, data, results, user):
+    user = User.objects.filter(id=user).first()
+    search_result = SearchResult.objects.create(ip_address=ip_address)
+    skills = data.get('q', '').strip(', ')
+    locations = data.get('location', '').strip(', ')
+    search_result.search_text = {"skills": skills, "locations": locations}
+    if skills:
+        search_skills = skills.split(', ')
+        for skill in search_skills:
+            skills = Skill.objects.filter(Q(slug__iexact=skill) | Q(name__iexact=skill))
+            if skills:
+                search_result.skills.add(skills[0].id)
+            else:
+                search_result.other_skill += ',' + skill if search_result.other_skill else skill
+    if locations:
+        serch_locations = locations.split(', ')
+        for loc in serch_locations:
+            location = City.objects.filter(Q(slug__iexact=loc) | Q(name__iexact=loc))
+            if location:
+                search_result.locations.add(location[0].id)
+            else:
+                search_result.other_location += ',' + loc if search_result.other_location else loc
+    if user:
+        search_result.user = user
+    search_result.job_post = results
+    search_result.save()
 
 def job_locations(request, location, **kwargs):
-    print("rggggggggggr job_locations  ")
     current_url = reverse('job_locations', kwargs={'location': location})
     if kwargs.get('page_num') == '1' or request.GET.get('page') == '1':
         return redirect(current_url, permanent=True)
@@ -410,9 +437,10 @@ def job_locations(request, location, **kwargs):
     else:
         job_list = []
     if request.POST.get('location'):
-        save_search_results.delay(request.META['REMOTE_ADDR'], request.POST, job_list.count() if job_list else 0, request.user.id)
+        print("55555555", request.META['REMOTE_ADDR'], request.POST, job_list.count() if job_list else 0,request.user.id)
+        save_search_results(request.META['REMOTE_ADDR'], request.POST, job_list.count() if job_list else 0, request.user.id)
+        
     if job_list:
-        print("rggggggggggr job_locations  ")
         items_per_page = 20
         searched_industry = searched_skills = searched_edu = ''
         if request.GET.get('job_type'):
@@ -482,9 +510,12 @@ def list_deserializer(key, value, flags):
 
 
 def job_skills(request, skill, **kwargs):
-    from pymemcache.client.base import Client
+    # from pymemcache.client.base import Client
 
-    client = Client(('localhost', 11211), deserializer=list_deserializer)
+    # client = Client(('localhost', 11211), deserializer=list_deserializer)
+
+    import redis
+    redis_client = redis.Redis(host='redis', port=6379, db=0)
 
     current_url = reverse('job_skills', kwargs={'skill': skill})
     if kwargs.get('page_num') == '1' or request.GET.get('page') == '1':
@@ -494,19 +525,28 @@ def job_skills(request, skill, **kwargs):
         url = current_url + request.GET.get('page') + '/'
         return redirect(url, permanent=True)
 
-    final_skill = client.get('final_skill' + skill)
-    if not final_skill:
-        final_skill = get_valid_skills_list(skill)
-        client.set('final_skill' + skill, final_skill, expire=60 * 60 * 24)
-    if final_skill == b'[]':
+    final_skill_json = redis_client.get('final_skill' + skill)
+    # if final_skill_json :
+    #    final_skill = json.loads(final_skill_json.decode('utf-8'))
+    if not final_skill_json:
+        final_skill = get_valid_skills_list(skill) 
+        final_skill_json = json.dumps(final_skill)
+        redis_client.set('final_skill' + skill,  final_skill_json.encode('utf-8'), ex=60 * 60 * 24)
+    
+    final_skill = json.loads(final_skill_json)
+    if final_skill == '[]':
         final_skill = []
 
-    final_edu = client.get('final_edu' + skill)
-    if not final_edu:
+    final_edu_json = redis_client.get('final_edu' + skill)
+    # if final_edu_json:
+    #    final_edu = json.loads(final_edu_json.decode('utf-8'))
+    if not final_edu_json:
         final_edu = get_valid_qualifications(skill)
-        client.set('final_edu' + skill, final_edu, expire=60 * 60 * 24)
+        final_edu_json = json.dumps(final_edu)
+        redis_client.set('final_edu' + skill,  final_edu_json.encode('utf-8'), ex=60 * 60 * 24)
 
-    if final_edu == b'[]':
+    final_edu = json.loads(final_edu_json)
+    if final_edu == '[]':
         final_edu = []
     if request.POST.get('refine_search') == 'True':
         job_list, searched_skills, searched_locations, searched_industry, searched_edu, searched_states = refined_search(request.POST)
@@ -526,7 +566,7 @@ def job_skills(request, skill, **kwargs):
         skill, searched_skills.filter(name__in=final_skill), searched_edu.filter(name__in=final_edu))
 
     if request.POST.get('q'):
-        save_search_results.delay(request.META['REMOTE_ADDR'], request.POST, job_list.count(), request.user.id)
+        save_search_results(request.META['REMOTE_ADDR'], request.POST, job_list.count(), request.user.id)
 
     if job_list.count() > 0:
 
@@ -1527,7 +1567,7 @@ def skill_fresher_jobs(request, skill_name, **kwargs):
         jobs_list = searched_skills = []
     if request.POST.get('q'):
         ip_address = request.META['REMOTE_ADDR']
-        save_search_results.delay(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
+        save_search_results(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
     if jobs_list:
         no_of_jobs = jobs_list.count()
         items_per_page = 20
@@ -1615,7 +1655,7 @@ def location_fresher_jobs(request, city_name, **kwargs):
         jobs_list = searched_locations = []
     if request.POST.get('location') or request.POST.get('q'):
         ip_address = request.META['REMOTE_ADDR']
-        save_search_results.delay(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
+        save_search_results(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
     if jobs_list:
         no_of_jobs = jobs_list.count()
         items_per_page = 20
@@ -1715,7 +1755,7 @@ def skill_location_walkin_jobs(request, skill_name, **kwargs):
         jobs_list = []
     if request.POST.get('location') or request.POST.get('q'):
         ip_address = request.META['REMOTE_ADDR']
-        save_search_results.delay(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
+        save_search_results(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
     if jobs_list:
         no_of_jobs = jobs_list.count()
         items_per_page = 20
@@ -1817,7 +1857,7 @@ def skill_location_wise_fresher_jobs(request, skill_name, city_name, **kwargs):
         jobs_list = []
     if request.POST.get('location') or request.POST.get('q'):
         ip_address = request.META['REMOTE_ADDR']
-        save_search_results.delay(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
+        save_search_results(ip_address, request.POST, jobs_list.count() if jobs_list else 0, request.user.id)
     if jobs_list:
         no_of_jobs = jobs_list.count()
         items_per_page = 20

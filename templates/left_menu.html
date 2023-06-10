@@ -120,9 +120,9 @@
           </li>
         {% else %}
           {% for skill in related_skills|slice:'10' %}
-            <li class="walkin_block" id="{% url 'job_skills' skill.0.slug %}">
+            <li class="walkin_block" id="{}">
               <strong class="title">
-                <a href="{% url 'job_skills' skill.0.slug %}" target="_blank">{{ skill.0.name }} Jobs</a>
+                <a href="{}" target="_blank">{{ skill.0.name }} Jobs</a>
               </strong>
             </li>
           {% endfor %}

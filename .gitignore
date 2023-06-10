@@ -8,7 +8,6 @@ venv/
 .DS_Store
 .pytest_cache
 
-.media
 .db-data
 .staticfile
 .cache 

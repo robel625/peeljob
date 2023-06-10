@@ -1,20 +1,20 @@
-version: "3.8"
+version: "3.9"
 
 services:
 
-  # web:
-  #   restart: always
-  #   container_name: web_peelJobs
-  #   build:
-  #     context: .
-  #   command: python3 manage.py runserver 0.0.0.0:8000
-  #   volumes:
-  #     - .:/usr/src/app
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - redis
-  #     - pgdb
+  web:
+    restart: always
+    container_name: web_peelJobs
+    build:
+      context: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - pgdb
 
   pgdb:
     container_name: pgdb_peeljob
@@ -61,7 +61,7 @@ services:
       - bootstrap.memory_lock=true
       - ES_JAVA_OPTS=-Xms128m -Xmx128m
     ports:
-      - "9200:9200"
+      - "5211:5211"
     depends_on:
       - pgdb
 
@@ -113,3 +113,12 @@ services:
       - FLOWER_PORT=8888
     ports:
       - 8888:8888
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:7.10.2
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    environment:
+      - 'ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]'
