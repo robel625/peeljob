@@ -86,7 +86,7 @@
                   <div class="detail">
                     <div class="detail_title">Salary <span class="pull-right">:</span></div>
                     <div class="detail_content">
-                      {% if job_alert.min_salary and job_alert.max_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary|get_formatted_salary }} - {{ job_alert.max_salary|get_formatted_salary }}
+                      {% if job_alert.min_salary and job_alert.max_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary }} - {{ job_alert.max_salary}}
                       {% elif job_alert.min_salary %}
                       <i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary|get_formatted_salary  }} 
                       {% elif job_alert.max_salary%}

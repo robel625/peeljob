@@ -93,7 +93,7 @@
                               <ul class="col-md-2 information industries_parts">
                                 <li><a href="{% url 'jobs_by_industry' %}">Industry</a></li>
                                 {% for industry in total_industries %}
-                                <li><a href="{% url 'job_industries' industry.slug %}">{{ industry.name|get_industry_name }} Jobs</a></li>
+                                <li><a href="{}">{{ industry.name|get_industry_name }} Jobs</a></li>
                                 {% endfor %}
                               </ul>
                               <ul class="col-md-2 information location_parts">
@@ -445,32 +445,14 @@
                       <span class="reg_skill_err"></span>
                     </div>
                   </div>
-                  <div class="form-group" style="margin-top:5px">
-                    <label class="col-sm-4 control-label">Experience</label>
-                    <div class="col-sm-8">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <select class="form-control" name="year" id="user_register_year">
-                              <option value=''>Year</option>
-                            
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <select class="form-control" name="month" id="user_register_month">
-                              <option value=''>Month</option>
-                           
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                 
                   <div class="form-group" style="margin-top:5px">
                     <label class="col-sm-4 control-label">Resume</label>
                     <div class="col-sm-8">
                       <span class="resume_class">
                         <input type="file" name="resume" id="user_register_resume" accept=".docx, .odt, .doc, .rtf, .text, .pdf">
                       </span>
-                      <p class="help_text">doc, docx, pdf, odt - 300kb max</p>
+                      <p class="help_text">doc, docx, pdf, odt - 500kb max</p>
                       <div>
                         <input type="checkbox" name="email_notifications"> <span>I agree to receive notifications from PeelJobs</span>
                       </div>
@@ -697,7 +679,7 @@
                       <span class="resume_class">
                         <input type="file" name="resume" id="user_register_resume" accept=".docx, .odt, .doc, .rtf, .text, .pdf">
                       </span>
-                      <p class="help_text">doc, docx, pdf, odt - 300kb max</p>
+                      <p class="help_text">doc, docx, pdf, odt - 500kb max</p>
                       <div>
                        
                       </div>

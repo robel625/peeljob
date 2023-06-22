@@ -84,10 +84,10 @@ class UserEmailRegisterForm(forms.ModelForm):
                 ftype = fo.content_type
                 size = fo.size / 1024
                 if str(ftype) in sup_formates:
-                    if size < 300 and size > 0:
+                    if size < 500 and size > 0:
                         return fo
                     else:
-                        raise forms.ValidationError('File Size must be less than 300 kb')
+                        raise forms.ValidationError('File Size must be less than 500 kb')
                 else:
                     raise forms.ValidationError('Upload valid format files EX: Doc, Docx, Pdf')
 

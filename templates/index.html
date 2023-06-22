@@ -139,6 +139,56 @@
             </div>
           </div>
           <!-- register_block ends here -->
+          <!-- latest_jobs starts here -->
+          <div class="latest_jobs row mar_lr_0">
+            <div class="heading text-uppercase">Latest Jobs<!--<a class="pull-right view-more" href="#">View More</a>--></div>
+            <div class="row jobs_columns">
+              {% for job in jobs_list %}
+               {% with job.get_absolute_url as job_url %}
+                <div class="col-md-4 col-sm-6 job_outer_col">
+                  <div class="job_col latest_jobs_class" id='{{ job.slug }}'>
+                  <strong class="title" ><a href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ job.slug }}" >{{ job.title }} [{% if job.min_year == 0 and job.max_year == 0 %}Fresher{% else %}{{ job.min_year }} - {{ job.max_year }} Years{% endif %}]</a></strong>
+                  {% if job.company.is_active and job.company.slug %}
+                    <p><a href="{}">{{job.company.name|capfirst}}</a></p>
+                  {% elif job.company %}
+                    <p>{{job.company.name|capfirst}}</p>
+                  {% elif job.company_name %}
+                    <p>{{job.company_name|capfirst}}</p>
+                  {% endif %}
+                  <p>{% if job.min_salary == 0 %}{% else %}<i class="fa fa-inr" aria-hidden="true"></i> <span >{{ job.get_job_salary.0 }} P.A</span>{% endif %}</p>
+                  <p class="location" ><i class="fa fa-map-marker"></i> {%for location in job.location.all %}
+                  {% if location.status == 'Enabled' %}
+                    <a href="{{location.get_job_url}}">{{ location.name }}</a>
+                  {% else %}
+                    <a style="cursor:default">{{ location.name }}</a>
+                  {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
+                  <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                    <p>
+                      {% if job.job_type == 'walk-in' %}
+                    {% elif job.user.is_superuser %}
+                      {% if job.company_emails %}
+                       <a href="mailto:{{ job.get_company_emails }}?subject={{ job.title }}%20-%20PeelJobs&body={{ job.get_job_minified_url }}" class="apply send_mail{% if request.user.is_active %} active{% endif %}{% if request.user.profile_completion_percentage > 50 %} completed{% endif %}{% if request.user.is_authenticated %} logged{% endif %}">Apply Now</a>
+                      {% endif %}
+                    {% else %}
+                    {% if request.user.is_authenticated %}
+                      {% if request.user.id|is_applied_for_job:job.pk %}
+                      <a href="{{ job_url }}" class="apply">Applied</a>
+                      {% else%}
+                        <a href="#" class="apply job_apply  applicant_apply" id="{{ job.pk }}" data-href="{{ job_url }}?job_apply=applied">Apply Now</a>
+                      {% endif %}
+                    {% else %}
+                      <a href="#" class='apply job_apply job_apply_login' id="{{ job.pk }}" data-href="{{ job_url }}?job_apply=applied">Apply Now</a>
+                    {% endif %}
+                  {% endif %}
+                    </p>
+                  </div>
+                </div>
+               {% endwith %}
+              {% endfor %}
+              <a class="pull-right view-more" href="/jobs/">View More</a>
+            </div>
+          </div>
+          <!-- latest_jobs ends here -->
           <!-- skills_companies starts here -->
           <div class="row mar_lr_0 skills_locations">
             <!-- Nav tabs -->
@@ -216,7 +266,7 @@
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/java-jobs/">
                   <img src="{% static 'static/skills1/java_logo.png' %}" alt="Java Jobs" />
                   </a></div>
-                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/asp-dot-net-jobs/"><img src="{% static 'static/skills1/asp-dot-net.png' %}" alt="ASP.net Jobs" /></a></div>
+                  <!-- <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/asp-dot-net-jobs/"><img src="{% static 'static/skills1/asp-dot-net.png' %}" alt="ASP.net Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bootstrap-jobs/"><img src="{% static 'static/skills1/bootstrap.png' %}" alt="Bootstrap Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/css-jobs/"><img src="{% static 'static/skills/CSS.png' %}" alt="Css Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/adobe-photoshop-jobs/"><img src="{% static 'static/skills1/Adobe_Photoshop.png' %}" alt="Adobe Photoshop Jobs" /></a></div>
@@ -232,7 +282,7 @@
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/c-sharp-jobs/"><img src="{% static 'static/skills1/c-sharp.png' %}" alt="c-sharp Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/xml-jobs/"><img src="{% static 'static/skills1/xml-logo.png' %}" alt="Xml Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/hibernate-jobs/"><img src="{% static 'static/skills1/hibernate.png' %}" alt="Hibernate Jobs" /></a></div>
-                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bpo-jobs/"><img src="{% static 'static/skills1/bpo.png' %}" alt="BPO Jobs" /></a></div>
+                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bpo-jobs/"><img src="{% static 'static/skills1/bpo.png' %}" alt="BPO Jobs" /></a></div> -->
 
 
                 </div>
@@ -264,56 +314,7 @@
           {% endcache %}
 
           <!-- top_locations edns here -->
-          <!-- latest_jobs starts here -->
-          <div class="latest_jobs row mar_lr_0">
-            <div class="heading text-uppercase">Latest Jobs<!--<a class="pull-right view-more" href="#">View More</a>--></div>
-            <div class="row jobs_columns">
-              {% for job in jobs_list %}
-               {% with job.get_absolute_url as job_url %}
-                <div class="col-md-4 col-sm-6 job_outer_col">
-                  <div class="job_col latest_jobs_class" id='{{ job.slug }}'>
-                  <strong class="title" ><a href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{{ job.slug }}" >{{ job.title }} [{% if job.min_year == 0 and job.max_year == 0 %}Fresher{% else %}{{ job.min_year }} - {{ job.max_year }} Years{% endif %}]</a></strong>
-                  {% if job.company.is_active and job.company.slug %}
-                    <p><a href="{}">{{job.company.name|capfirst}}</a></p>
-                  {% elif job.company %}
-                    <p>{{job.company.name|capfirst}}</p>
-                  {% elif job.company_name %}
-                    <p>{{job.company_name|capfirst}}</p>
-                  {% endif %}
-                  <p>{% if job.min_salary == 0 %}{% else %}<i class="fa fa-inr" aria-hidden="true"></i> <span >{{ job.get_job_salary.0 }} P.A</span>{% endif %}</p>
-                  <p class="location" ><i class="fa fa-map-marker"></i> {%for location in job.location.all %}
-                  {% if location.status == 'Enabled' %}
-                    <a href="{{location.get_job_url}}">{{ location.name }}</a>
-                  {% else %}
-                    <a style="cursor:default">{{ location.name }}</a>
-                  {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                  <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" class="apply">{{ job.job_type|get_string }}</a></p>-->
-                    <p>
-                      {% if job.job_type == 'walk-in' %}
-                    {% elif job.user.is_superuser %}
-                      {% if job.company_emails %}
-                       <a href="mailto:{{ job.get_company_emails }}?subject={{ job.title }}%20-%20PeelJobs&body={{ job.get_job_minified_url }}" class="apply send_mail{% if request.user.is_active %} active{% endif %}{% if request.user.profile_completion_percentage > 50 %} completed{% endif %}{% if request.user.is_authenticated %} logged{% endif %}">Apply Now</a>
-                      {% endif %}
-                    {% else %}
-                    {% if request.user.is_authenticated %}
-                      {% if request.user.id|is_applied_for_job:job.pk %}
-                      <a href="{{ job_url }}" class="apply">Applied</a>
-                      {% else%}
-                        <a href="#" class="apply job_apply  applicant_apply" id="{{ job.pk }}" data-href="{{ job_url }}?job_apply=applied">Apply Now</a>
-                      {% endif %}
-                    {% else %}
-                      <a href="#" class='apply job_apply job_apply_login' id="{{ job.pk }}" data-href="{{ job_url }}?job_apply=applied">Apply Now</a>
-                    {% endif %}
-                  {% endif %}
-                    </p>
-                  </div>
-                </div>
-               {% endwith %}
-              {% endfor %}
-              <a class="pull-right view-more" href="/jobs/">View More</a>
-            </div>
-          </div>
-          <!-- latest_jobs ends here -->
+          
         </div>
         <div class="col-md-3 right_container">
         <div class="strip_box">

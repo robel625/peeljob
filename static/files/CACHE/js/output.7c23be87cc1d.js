@@ -1,3 +1,0 @@
-$('input').keydown(function(){$("p.hint").remove()});$("form#ChangePasswordForm").submit(function(e){e.preventDefault();$.post(".",$("form#ChangePasswordForm").serialize(),function(data){if(data.error==true){$('p.hint').remove();if(data.response){for(var key in data.response){$('#change_'+key).after('<p class="hint">'+data.response[key]+'</p>');};}
-else if(data.response_message){$('#response_change').html('<p class="hint">'+data.response_message+'</p>');}}
-else{open_dialog_with_url("Your Password has been updated successfully, Login with your New Password",'Success!',data.url)}},'json');});;

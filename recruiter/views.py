@@ -2574,7 +2574,7 @@ def resume_upload(request):
                 ftype = fo.content_type
                 size = fo.size/1024
                 if str(ftype) in sup_formates:
-                    if size < 300 and size > 0:
+                    if size < 500 and size > 0:
                         conn = tinys3.Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
                         random_string = ''.join(random.choice('0123456789ABCDEF') for i in range(3))
                         user_id = str(request.user.id) + str(random_string)
@@ -2603,7 +2603,7 @@ def resume_upload(request):
                         data = {'error': False, 'data': 'Resume Uploaded Successfully'}
                         return HttpResponse(json.dumps(data))
                     else:
-                        data = {'error': True, 'data': 'File Size must be less than 300 kb'}
+                        data = {'error': True, 'data': 'File Size must be less than 500 kb'}
                         return HttpResponse(json.dumps(data))
                 else:
                     data = {'error': True, 'data': 'Upload Valid Files Ex: docx, pdf, doc, rtf'}
@@ -2626,7 +2626,7 @@ def multiple_resume_upload(request):
                         "application/x-rtf", "text/richtext", "application/msword"]
         size = resume.size/1024
         if str(resume.content_type) in sup_formates:
-            if size < 300 and size > 0:
+            if size < 500 and size > 0:
                 handle_uploaded_file(resume, resume.name)
                 email, mobile, text = get_resume_data(resume)
                 if not email:
@@ -2669,7 +2669,7 @@ def multiple_resume_upload(request):
                                                ip_address=request.META['REMOTE_ADDR'], user_agent=request.META['HTTP_USER_AGENT'])
                 data = {'error': False, 'data': 'Resume Uploaded Successfully'}
             else:
-                data = {'error': True, 'data': 'File Size must be less than 300 kb'}
+                data = {'error': True, 'data': 'File Size must be less than 500 kb'}
         else:
             data = {'error': True, 'data': 'Upload Valid Files Ex: docx, pdf, doc, rtf'}
         return HttpResponse(json.dumps(data))
@@ -2806,7 +2806,7 @@ def resume_edit(request, resume_id):
                 ftype = fo.content_type
                 size = fo.size/1024
                 if str(ftype) in sup_formates:
-                    if size < 300 and size > 0:
+                    if size < 500 and size > 0:
                         conn = tinys3.Connection(
                             settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
                         random_string = ''.join(
@@ -2819,7 +2819,7 @@ def resume_edit(request, resume_id):
                         agency_resume.resume = path
                     else:
                         data = {
-                            'error': True, 'data': 'File Size must be less than 300 kb'}
+                            'error': True, 'data': 'File Size must be less than 500 kb'}
                         return HttpResponse(json.dumps(data))
                 else:
                     data = {
@@ -2871,10 +2871,10 @@ def download_applicants(request, jobpost_id, status):
     all_applicants = AppliedJobs.objects.filter(
         job_post=jobpost_id).prefetch_related('user', 'resume_applicant').distinct()
     pending_applicants = all_applicants.filter(status=status.capitalize())
-    if search_skills or search_locations:
-        pending_applicants = pending_applicants.filter(
-            Q(user__current_city__id__in=search_locations) |
-            Q(user__skills__skill__id__in=search_skills))
+    # if search_skills or search_locations:
+    #     pending_applicants = pending_applicants.filter(
+    #         Q(user__current_city__id__in=search_locations) |
+    #         Q(user__skills__skill__id__in=search_skills))
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=' + status + '_applicants.csv'
     headers = OrderedDict()
@@ -2888,10 +2888,11 @@ def download_applicants(request, jobpost_id, status):
     headers['status'] = "Status"
     writer = csv.DictWriter(response, fieldnames=headers)
     writer.writerow(headers)
-    s3 = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, is_secure=False)
+    # s3 = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, is_secure=False)
     for user in pending_applicants:
         if user.user.resume:
-            stored_url = s3.generate_url(600, 'GET', bucket=settings.AWS_STORAGE_BUCKET_NAME, key=user.user.resume, force_http=True)
+            # stored_url = s3.generate_url(600, 'GET', bucket=settings.AWS_STORAGE_BUCKET_NAME, key=user.user.resume, force_http=True)
+            stored_url = user.user.resume
         else:
             stored_url = ""
         writer.writerow({'email': user.user.email, 'first_name': user.user.first_name,

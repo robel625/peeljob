@@ -1,3 +1,0 @@
-$(".delete-event").click(function(e){e.preventDefault();id=$(this).attr('id')
-$.post('.',{'event_id':$(this).attr('id')},function(data){if(data.error){if(data.response_message){open_dialog(data.response_message,'Error!')}
-$('p.hint').remove();for(var key in data.response){$('#'+key).after('<p class="hint">'+data.response[key]+'</p>');}}else{open_dialog_with_url('Event Deleted Successfully','Success!',"/calendar/event/list/")}},'json');});;

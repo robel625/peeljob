@@ -126,7 +126,7 @@
                       <form name="resumeform" id="resumeform" method="POST" class="profileform" data-href="{% url "my:upload_resume" %}" enctype="multipart/form-data">
                       <div class="form-group update_location">
                         <input type="file" name="resume" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/rtf, application/x-rtf, text/richtext, application/msword, application/vnd.oasis.opendocument.text, application/x-vnd.oasis.opendocument.text, .docx, .odt">
-                        <p class="help_text">doc, docx, pdf, odt - 300kb max</p>
+                        <p class="help_text">doc, docx, pdf, odt - 500kb max</p>
                       </div>
                       <button class="verify_btn" type="submit">Save</button>
                       <br clear="all">
@@ -488,7 +488,7 @@
                           <form name="resumeupload" id="resumeupload" method="post" action="{% url 'my:upload_resume' %}">
                             <input type="file" name="resume" id="resume" onchange="javascript:submitform()" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/rtf, application/x-rtf, text/richtext, application/msword, application/vnd.oasis.opendocument.text, application/x-vnd.oasis.opendocument.text, .docx, .odt">
                         </span>
-                        <p class="help_text">doc, docx, pdf, odt - 300kb max</p>
+                        <p class="help_text">doc, docx, pdf, odt - 500kb max</p>
                         <button type="submit" name="submit" class="submit" style="
                           display:none;"><span>Submit</span></button>
                         </form>

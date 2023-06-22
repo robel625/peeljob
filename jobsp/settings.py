@@ -97,6 +97,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "jobsp.urls"
 
+AUTHENTICATION_BACKENDS = [
+    'social.auth_backend.PasswordlessAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -234,13 +239,21 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
+INACTIVE_MAIL_SENDER = 'robelgulima1@gmail.com'
 
-DEFAULT_FROM_EMAIL = 'robelgulima@gmail.com'
-INACTIVE_MAIL_SENDER = 'robelgulima@gmail.com'
-MAIL_SENDER = 'robelgulima@gmail.com'
+DEFAULT_FROM_EMAIL = 'robelgulima1@gmail.com'
+INACTIVE_MAIL_SENDER = 'robelgulima1@gmail.com'
+MAIL_SENDER = 'robelgulima1@gmail.com'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'robelgulima1@gmail.com'
+# EMAIL_HOST_PASSWORD = ''
+# EMAIL_PORT =  '587'
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False    
 
 # EMAIL_HOST = 'smtp.mailosaur.net'
 # EMAIL_HOST_USER = 'gqynzoli@mailosaur.net'

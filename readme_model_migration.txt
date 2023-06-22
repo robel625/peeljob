@@ -1,4 +1,4 @@
-py -m venv venv
+# py -m venv venv
 . venv\Scripts\activate
 From within VS Code, you can create local environments, using virtual environments or Anaconda, by opening the Command Palette (Ctrl+Shift+P)
 pip install -r requirements.txt
@@ -21,10 +21,14 @@ py manage.py migrate
 
 python manage.py migrate django_celery_beat
 
+py manage.py collectstatic
+
 py manage.py createsuperuser
 py manage.py load_initial_data
 python manage.py compress
 py manage.py runserver  
+
+docker-compose up  --build -d
 
 
 if admin login can't open, change in user class is_active to default=True, is_active = models.BooleanField(default=True)

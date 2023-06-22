@@ -63,8 +63,8 @@ db = mongoconnection()
 
 
 def index(request):
-    # if request.user.is_authenticated:
-        if True:
+    if request.user.is_authenticated:
+        if not request.user.is_jobseeker and not request.user.is_recruiter and not request.user.is_agency_recruiter:
             if request.POST.get('timestamp', ""):
                 date = request.POST.get('timestamp').split(' - ')
                 start_date = datetime.strptime(date[0], "%b %d, %Y %H:%M")
@@ -480,7 +480,7 @@ def index(request):
                     all_walkin.append(walkin_jobs.count())
 
                     all_govt.append(govt_jobs.count())
-                     
+
                     collection = db['users']
                     all_bounce.append(collection.count_documents({'is_bounce': True, 'date': next_day}))
 
@@ -696,30 +696,30 @@ def index(request):
                                                             })
         else:
             return HttpResponseRedirect('/')
-    # else:
-    #     # if request.method == 'POST':
-    #     #     email = request.POST.get('email')
-    #     #     password = request.POST.get('password')
-    #     #     admin = authenticate(username=email, password=password)
-    #     #     if admin is not None:
-    #     #         if not admin.user_type == 'JS' or not admin.user_type == 'RR':
-    #     #             if admin.is_active:
-    #     #                 login(request, admin)
-    #     #                 data = {'error': False, 'message': "successful"}
-    #     #                 return HttpResponse(json.dumps(data))
-    #     #             else:
-    #     #                 data = {
-    #     #                     'error': True, 'message': "Please activate your account"}
-    #     #                 return HttpResponse(json.dumps(data))
-    #     #         else:
-    #     #             return HttpResponseRedirect('/')
-    #     #     else:
-    #     #         data = {'error': True, 'message': "Invaild credentials"}
-    #     #         return HttpResponse(json.dumps(data))
+    else:
+        # if request.method == 'POST':
+        #     email = request.POST.get('email')
+        #     password = request.POST.get('password')
+        #     admin = authenticate(username=email, password=password)
+        #     if admin is not None:
+        #         if not admin.user_type == 'JS' or not admin.user_type == 'RR':
+        #             if admin.is_active:
+        #                 login(request, admin)
+        #                 data = {'error': False, 'message': "successful"}
+        #                 return HttpResponse(json.dumps(data))
+        #             else:
+        #                 data = {
+        #                     'error': True, 'message': "Please activate your account"}
+        #                 return HttpResponse(json.dumps(data))
+        #         else:
+        #             return HttpResponseRedirect('/')
+        #     else:
+        #         data = {'error': True, 'message': "Invaild credentials"}
+        #         return HttpResponse(json.dumps(data))
         return render(request, 'dashboard/login.html')
+   
 
-
-# @login_required
+@login_required
 def change_password(request):
     if request.method == 'POST':
         validate_changepassword = True
@@ -741,14 +741,14 @@ def change_password(request):
     return render(request, 'dashboard/change_password.html')
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def admin_user_list(request):
     users_list = User.objects.filter(is_staff=True)
 
     return render(request, 'dashboard/users/list.html', {'users_list': users_list})
 
 
-# @permission_required('')
+@permission_required('')
 def new_admin_user(request):
     if request.method == 'POST':
         validate_user = UserForm(request.POST, request.FILES)
@@ -787,13 +787,13 @@ def new_admin_user(request):
     return render(request, 'dashboard/users/new_user.html', {'permissions': permissions})
 
 
-# @permission_required('')
+@permission_required('')
 def view_user(request, user_id):
     user = User.objects.filter(id=user_id)
     return render(request, 'dashboard/users/view.html', {"user": user[0]})
 
 
-# @permission_required('')
+@permission_required('')
 def edit_user(request, user_id):
     user = User.objects.filter(id=user_id).exclude(id=request.user.id)
     if not user:
@@ -826,7 +826,7 @@ def edit_user(request, user_id):
     return render(request, 'dashboard/users/edit_user.html', {'permissions': permissions, 'user': user})
 
 
-# @permission_required('')
+@permission_required('')
 def delete_user(request, user_id):
     user = User.objects.filter(id=user_id).exclude(id=request.user.id)
     if user.exists():
@@ -1197,7 +1197,7 @@ def edit_tech_skills(skill, request):
     skill.save()
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def tech_skills(request):
     if request.method == 'GET':
         skills = Skill.objects.all().order_by("name")
@@ -1290,7 +1290,7 @@ def tech_skills(request):
             return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_skill(request, skill_id):
     skill = Skill.objects.filter(id=skill_id)
     if skill:
@@ -1308,7 +1308,7 @@ def delete_skill(request, skill_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def languages(request):
     if request.method == "GET":
         languages = Language.objects.all().order_by("name")
@@ -1372,17 +1372,15 @@ def languages(request):
         return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_language(request, language_id):
     Language.objects.get(id=language_id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def qualifications(request):
-    print("gggggggggggggg")
     if request.method == "GET":
-        print("cccccccccccccc")
         qualifications = Qualification.objects.all().order_by("name")
         if request.GET.get("search"):
             qualifications = qualifications.filter(
@@ -1456,13 +1454,13 @@ def qualifications(request):
         return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_qualification(request, qualification_id):
     Qualification.objects.get(id=qualification_id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def industries(request):
     if request.method == "GET":
         industries = Industry.objects.all().order_by("name")
@@ -1544,7 +1542,7 @@ def delete_industry(request, industry_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def functional_area(request):
     if request.method == "GET":
         functional_areas = FunctionalArea.objects.all().order_by("name")
@@ -1617,13 +1615,13 @@ def functional_area(request):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_functional_area(request, functional_area_id):
     FunctionalArea.objects.get(id=functional_area_id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def recruiters_list(request, status):
     if str(status) == 'inactive':
         recruiters = User.objects.filter(
@@ -1663,7 +1661,7 @@ def recruiters_list(request, status):
                                                               'status': status})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_recruiter(request, user_id):
     recruiter = User.objects.filter(id=user_id).first()
     agency_recruiters = []
@@ -1705,7 +1703,7 @@ def view_recruiter(request, user_id):
                                                               'last_page': no_pages})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def post_list(request, job_type):
     posts = JobPost.objects.filter(job_type=job_type)
 
@@ -1747,7 +1745,7 @@ def post_list(request, job_type):
                                                                 'page': page})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def post_detail(request, post_id):
     post = get_object_or_404(JobPost, id=post_id)
     applicants = AppliedJobs.objects.filter(
@@ -1928,7 +1926,7 @@ def enable_job(request, job_post_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def applicants(request, status='all'):
     applicant = User.objects.filter(user_type="JS")
     if status == 'social':
@@ -2027,7 +2025,7 @@ def applicant_actions(request, user_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def skill_status(request, skill_id):
     skill = Skill.objects.filter(id=skill_id).first()
     if skill:
@@ -2039,7 +2037,7 @@ def skill_status(request, skill_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def functional_area_status(request, functional_area_id):
     functional_area = FunctionalArea.objects.filter(id=functional_area_id)
     if functional_area:
@@ -2091,7 +2089,7 @@ POST = (
 )
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def new_template(request):
     if request.method == "POST":
         validate_mailtemplate = MailTemplateForm(request.POST)
@@ -2145,13 +2143,13 @@ def edit_template(request, template_id):
                                                   'reason': reason}, status=404)
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def emailtemplates(request):
     mailtemplates = MailTemplate.objects.filter()
     return render(request, 'dashboard/mail/list.html', {"mailtemplates": mailtemplates})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_template(request, template_id):
     mailtemplate = MailTemplate.objects.filter(id=template_id).first()
     if mailtemplate:
@@ -2159,7 +2157,7 @@ def view_template(request, template_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_template(request, template_id):
     mailtemplates = MailTemplate.objects.filter(id=template_id)
     if mailtemplates:
@@ -2169,7 +2167,7 @@ def delete_template(request, template_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def send_mail(request, template_id):
     mailtemplate = MailTemplate.objects.filter(id=template_id).first()
     if mailtemplate:
@@ -2202,13 +2200,13 @@ def send_mail(request, template_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def sent_mails(request):
     sent_mails = SentMail.objects.filter()
     return render(request, 'dashboard/mail/sent_mail_list.html', {"sent_mails": sent_mails})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_sent_mail(request, sent_mail_id):
     sent_mails = SentMail.objects.filter(id=sent_mail_id)
     if sent_mails:
@@ -2217,7 +2215,7 @@ def view_sent_mail(request, sent_mail_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_sent_mail(request, sent_mail_id):
     sent_mails = SentMail.objects.filter(id=sent_mail_id)
     if sent_mails:
@@ -2228,7 +2226,7 @@ def delete_sent_mail(request, sent_mail_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def search_log(request):
     search_logs = SearchResult.objects.all().order_by('-search_on')
     items_per_page = 500
@@ -2255,7 +2253,7 @@ def search_log(request):
                                                           'last_page': no_pages})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_search_log(request, search_log_id):
     search_logs = SearchResult.objects.filter(id=search_log_id)
     if search_logs:
@@ -2264,7 +2262,7 @@ def view_search_log(request, search_log_id):
     return render(request, 'dashboard/404.html', status=404)
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def subscribers(request):
     subscribers = Subscriber.objects.values_list(
         'skill_id', flat=True).distinct()
@@ -2275,13 +2273,13 @@ def subscribers(request):
     return render(request, 'dashboard/subscribers/list.html', {"skills": skills})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_subscribers(request, skill_id):
     subscribers = Subscriber.objects.filter(skill_id=skill_id)
     return render(request, 'dashboard/subscribers/view.html', {"subscribers": subscribers})
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def new_govt_job(request, job_type):
     if request.method == 'GET':
         countries = Country.objects.all().order_by('name')
@@ -2772,7 +2770,7 @@ def preview_job(request, post_id):
     return render(request, 'dashboard/404.html', {'message': message}, status=404)
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def companies(request, company_type):
     status = ''
     if company_type == 'company':
@@ -2839,7 +2837,7 @@ def companies(request, company_type):
                                                            })
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def enable_company(request, company_id):
     page_value = request.POST.get('page')
     search_value = request.POST.get('search')
@@ -2874,7 +2872,7 @@ def enable_company(request, company_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def delete_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     company_users = User.objects.filter(company=company)
@@ -2908,7 +2906,7 @@ def delete_company(request, company_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def enable_paid_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     company_admin = get_object_or_404(User, company=company, is_admin=True)
@@ -2920,13 +2918,13 @@ def enable_paid_company(request, company_id):
     return HttpResponseRedirect(reverse('dashboard:companies', kwargs={'company_type': company.company_type}))
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def view_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     return render(request, 'dashboard/company/view.html', {"company": company})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def company_recruiters(request, company_id, status):
     company = get_object_or_404(Company, id=company_id)
     recruiters = company.get_company_recruiters()
@@ -2958,7 +2956,7 @@ def company_recruiters(request, company_id, status):
                                                                  'company': company})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def company_jobposts(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     job_posts = company.get_jobposts()
@@ -2986,7 +2984,7 @@ def company_jobposts(request, company_id):
                                                                 'job_posts': job_posts})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def company_tickets(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     items_per_page = 100
@@ -3014,7 +3012,7 @@ def company_tickets(request, company_id):
                                                               'company': company})
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def menu_status(request, menu_id, company_id):
     company = get_object_or_404(Company, id=company_id)
     menu = Menu.objects.filter(id=menu_id, company=company)
@@ -3041,7 +3039,7 @@ def delete_menu(request, menu_id, company_id):
     return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def edit_menu(request, menu_id, company_id):
     company = get_object_or_404(Company, id=company_id)
     menu = get_object_or_404(Menu, id=menu_id, company=company)
@@ -3058,7 +3056,7 @@ def edit_menu(request, menu_id, company_id):
         return HttpResponse(json.dumps(data))
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def menu_order(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     menu = get_object_or_404(
@@ -3082,7 +3080,7 @@ def menu_order(request, company_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def search_summary(request, search_type):
     values = []
     count = []
@@ -3142,7 +3140,7 @@ def search_summary(request, search_type):
                                                              'search_type': search_type})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def new_company(request):
     if request.method == 'POST':
         validate_company = CompanyForm(request.POST, request.FILES)
@@ -3177,7 +3175,7 @@ def new_company(request):
     return render(request, 'dashboard/company/new_company.html')
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def edit_company(request, company_id):
     company = get_object_or_404(Company, id=company_id)
     if request.method == 'POST':
@@ -3231,7 +3229,7 @@ def edit_company(request, company_id):
     return render(request, 'dashboard/company/new_company.html', {'company': company})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def applicants_mail(request):
     current_date = datetime.strptime(
         str(datetime.now().date()), "%Y-%m-%d").strftime("%Y-%m-%d")
@@ -3353,7 +3351,7 @@ def edit_job_title(request, post_id):
                                                                      'functional_areas': functional_areas})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def locations(request, status):
     if status == 'active':
         locations = City.objects.filter(status='Enabled').annotate(
@@ -3422,7 +3420,7 @@ def locations(request, status):
                                                         'status': status})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def mobile_campaign(request):
     locations = (
         ('Hyderabad', 'Hyderabad'),
@@ -3446,7 +3444,7 @@ def mobile_campaign(request):
     return render(request, 'dashboard/mobile_campaign.html', {"locations": locations})
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def csv_download(request):
     records = db.users.find({'$and': [{'mobile': {'$ne': ''}},
                                       {'location': request.GET['location']},
@@ -3468,7 +3466,7 @@ def csv_download(request):
     return response
 
 
-# @permission_required("activity_edit", "activity_view")
+@permission_required("activity_edit", "activity_view")
 def reports(request):
     cities = City.objects.filter()
     skills = ['java', 'html', 'php', 'android', '.net', 'bpo', 'testing', 'javascript', 'c#',
@@ -3631,7 +3629,7 @@ def recruiter_delete(request, user_id):
     return HttpResponseRedirect(url)
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def enable_agency(request, agency_id):
     agency = get_object_or_404(User, id=agency_id)
     if agency.is_active:
@@ -3656,7 +3654,7 @@ def enable_agency(request, agency_id):
     return HttpResponseRedirect(url)
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def removing_duplicate_companies(request):
     all_duplicate_companies = Company.objects.filter()
     if request.method == 'POST':
@@ -3798,7 +3796,7 @@ def removing_duplicate_companies(request):
 #         return HttpResponseRedirect(rty)
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def assessment_skills(request):
     skills = Skill.objects.filter(status='Active').order_by('name')
     if request.GET.get('search'):
@@ -3806,7 +3804,7 @@ def assessment_skills(request):
     return render(request, 'dashboard/assessments/skills_lists.html', {'skills': skills})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def new_question(request):
     questionFormSet = modelformset_factory(Question, form=QuestionForm, can_delete=True)
     data = {
@@ -3840,7 +3838,7 @@ def new_question(request):
     return render(request, 'dashboard/assessments/new_question.html', {'skills': skills, 'question_form_set': question_form_set})
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def skill_questions(request, skill_id):
     skill = Skill.objects.filter(id=skill_id).first()
     skill_questions = skill.skill_questions.all().prefetch_related('created_by') if skill else ''
@@ -3907,7 +3905,7 @@ def skill_questions(request, skill_id):
                                                                           })
 
 
-# @permission_required("activity_view", "activity_edit")
+@permission_required("activity_view", "activity_edit")
 def view_question(request, question_id):
     question = Question.objects.filter(id=question_id).first()
     if request.method == 'POST':
@@ -3991,7 +3989,7 @@ def updating_meta_data():
         skill.save()
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def save_meta_data(request):
     if request.POST:
         if request.POST.get('mode') == 'add_data':
@@ -4021,7 +4019,7 @@ def save_meta_data(request):
     return render(request, 'dashboard/base_data/save_meta_data.html', {'meta_data': data})
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def moving_duplicates(request, value):
     if value == 'skills':
         values = Skill.objects.annotate(num_posts=Count('jobpost'))
@@ -4126,13 +4124,13 @@ def moving_duplicates(request, value):
     return render(request, 'dashboard/duplicates.html', {'values': values, 'status': value})
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def clear_cache(request):
     cache._cache.flush_all()
     return HttpResponseRedirect('/dashboard/')
 
 
-# @permission_required("activity_edit")
+@permission_required("activity_edit")
 def redirect_data(request):
     if request.POST:
         if request.POST.get('mode') == 'add_data':
@@ -4156,3 +4154,4 @@ def redirect_data(request):
             return HttpResponse(json.dumps({'error': False, 'response': 'Removed Successfully!'}))
     data = list(db.redirect_data.find())
     return render(request, 'dashboard/base_data/redirect_data.html', {'redirect_data': data})
+

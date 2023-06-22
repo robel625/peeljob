@@ -1194,7 +1194,7 @@ def sending_mobile_campaign():
         str(datetime.now().date()), "%Y-%m-%d").strftime("%Y-%m-%d")
 
     for user in users:
-        if count == 3001:
+        if count == 4001:
             break
         mobile = user['mobile']
         message = '''Top companies are looking for Java Developers!
@@ -1796,7 +1796,11 @@ def check_meta_data():
         # url = each['url']
         page_meta_data = db.meta_data.find_one({'name': each['name']})
         test_data.update(each)
-        meta_title = Template(page_meta_data.get('meta_title')).render(Context(test_data))
+        if page_meta_data is not None: # check if page_meta_data is not None
+          meta_title = Template(page_meta_data.get('meta_title')).render(Context(test_data))
+        else:
+          meta_title = ""
+        # meta_title = Template(page_meta_data.get('meta_title')).render(Context(test_data))
         meta_description = Template(page_meta_data.get('meta_description')).render(Context(test_data))
         h1_tag = Template(page_meta_data.get('h1_tag')).render(Context(test_data))
         soup = BeautifulSoup(requests.get(each['url']).text)

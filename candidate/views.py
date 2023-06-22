@@ -147,7 +147,7 @@ def upload_resume(request):
         ftype = fo.content_type
         size = fo.size / 1024
         if str(ftype) in sup_formates:
-            if size < 300 and size > 0:
+            if size < 500 and size > 0:
                 conn = tinys3.Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
                 random_string = ''.join(random.choice('0123456789ABCDEF') for i in range(3))
                 user_id = str(request.user.id) + str(random_string)
@@ -167,7 +167,7 @@ def upload_resume(request):
                         'resume_name': request.FILES['resume'].name,
                         'resume_path': 'https://' + settings.CLOUDFRONT_DOMAIN + '/' + path}
             else:
-                data = {'error': True, 'data': 'File Size must be less than 300 kb'}
+                data = {'error': True, 'data': 'File Size must be less than 500 kb'}
         else:
             data = {'error': True, 'data': 'Please upload valid files For Ex: Doc, Docx, PDF, odt format'}
         return HttpResponse(json.dumps(data))

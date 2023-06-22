@@ -1,2 +1,0 @@
-$(".cancelbutton").click(function(e){window.location="/";});$("form#jobalertform").submit(function(e){e.preventDefault();$('#is_delete').val('True');$.post(".",$("form#jobalertform").serialize(),function(data){if(data.error){if(data.response_message){open_dialog(data.response_message,'Error!')}
-$('p.hint').remove();for(var key in data.message){$('#'+key).after('<p class="hint">'+data.message[key]+'</p>');}}else{window.location='/';}},'json');});;

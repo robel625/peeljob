@@ -783,7 +783,7 @@
                 <div class="col-md-6 details_right">
                    <div class='row mt'>
                     <label>Salary</label>
-                    <span class='content'>{% if alert.min_salary|stringformat:"i" == '' and alert.max_salary|stringformat:"i" == '' %}Not Specified{% else %}<i class="fa fa-inr" aria-hidden="true"></i> {{ alert.min_salary|get_formatted_salary }} - {{ alert.max_salary|get_formatted_salary }}{% endif %}</span>
+                    <span class='content'>{% if alert.min_salary|stringformat:"i" == '' and alert.max_salary|stringformat:"i" == '' %}Not Specified{% else %}<i class="fa fa-inr" aria-hidden="true"></i> {{ alert.min_salary }} - {{ alert.max_salary }}{% endif %}</span>
                     </div>
                     <div class='row mt'>
                     <label>Role</label>

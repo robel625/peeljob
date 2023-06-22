@@ -1931,15 +1931,22 @@ def add_other_location_to_user(user, request):
 
 
 def register_using_email(request):
+    print("11111111111111")
     if request.method == 'POST':
+        print("2222222222222")
         if request.FILES.get('get_resume'):
+            print("33333333333")
             handle_uploaded_file(request.FILES['get_resume'], request.FILES['get_resume'].name)
             email, mobile, text = get_resume_data(request.FILES['get_resume'])
             data = {'error': False, 'resume_email': email, 'resume_mobile': mobile, 'text': text}
+            print("44444444444")
             return HttpResponse(json.dumps(data))
         validate_user = UserEmailRegisterForm(request.POST, request.FILES)
+        print("555555555555")
         if validate_user.is_valid():
+            print("6666666666")
             if not (User.objects.filter(email__iexact=request.POST.get('email')) or User.objects.filter(username__iexact=request.POST.get('email'))):
+                print("777777777777")
                 email = request.POST.get('email')
                 password = request.POST.get('password')
                 registered_from = request.POST.get('register_from', 'Email')
@@ -1966,7 +1973,7 @@ def register_using_email(request):
                     # user.resume = path
                     resume_file = request.FILES['resume']
                     filename = resume_file.name.replace(" ", "-").encode('ascii', 'ignore').decode('ascii')
-                    resume_dir = os.path.join( 'media/', 'resume/')
+                    resume_dir = os.path.join( 'media/', 'resume/',email)
                     os.makedirs(resume_dir, exist_ok=True)
                     file_path = os.path.join(resume_dir, filename)
                     with open(file_path, 'wb+') as f:
@@ -1978,8 +1985,11 @@ def register_using_email(request):
                     user.profile_updated = datetime.now(
                         timezone.utc)
                     user.save()
-                registered_user = authenticate(username=user.username)
+                # registered_user = authenticate(username=user.username)
+                print("888888888888")
+                registered_user = authenticate(username=user.username, password=password)
                 if registered_user:
+                    print("9999999999999")
                     login(request, registered_user)
                 UserEmail.objects.create(user=user, email=email, is_primary=True)
                 redirect_url = reverse('user_reg_success')
@@ -2039,8 +2049,10 @@ def login_user_email(request):
                         data['redirect_url'] = url
                 elif request.user.is_recruiter or request.user.is_agency_recruiter:
                     data['redirect_url'] = '/recruiter/'
+                # elif request.user.is_admin:
+                #     data['redirect_url'] = '/dashboard/'
                 else:
-                    data['redirect_url'] = '/dashboard/'
+                    data['redirect_url'] = '/'
                 if request.POST.get('next'):
                     data['redirect_url'] = request.POST.get('next')
                 if request.POST.get('detail_page'):

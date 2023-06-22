@@ -18,6 +18,8 @@ COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
+# COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
+# ENTRYPOINT ["sh", "/entrypoint.sh"]
 
 # WORKDIR /usr/src/app
 # RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
