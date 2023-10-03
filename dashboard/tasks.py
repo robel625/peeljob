@@ -46,7 +46,7 @@ def updating_jobposts():
     for job in jobposts:
         job_url = get_absolute_url(job)
         job.slug = get_absolute_url(job)
-        #job.minified_url = google_mini('https://peeljobs.com' + job_url, settings.wMINIFIED_URL)
+        #job.minified_url = google_mini('https://eeujobs.com' + job_url, settings.wMINIFIED_URL)
         job.save()
 
 
@@ -69,7 +69,7 @@ def job_alerts_to_users():
                 user_posts = user_posts.order_by(job_order)
             c = {'jobposts': user_posts.distinct()[:10], 'user': user}
             t = loader.get_template('email/job_alert.html')
-            subject = "Top Matching Jobs for your Profile - PeelJobs"
+            subject = "Top Matching Jobs for your Profile - EEUJobs"
             rendered = t.render(c)
             mto = [user.email]
             mfrom = settings.DEFAULT_FROM_EMAIL
@@ -94,7 +94,7 @@ def job_alerts_to_subscribers():
                 ).order_by(job_order)
             c = {'subscriber': sub, 'jobposts': sub_jobs.distinct()[:10], 'sub_skills': skills}
             t = loader.get_template('email/job_alert.html')
-            subject = "Top Matching jobs for your subscription - PeelJobs"
+            subject = "Top Matching jobs for your subscription - EEUJobs"
             rendered = t.render(c)
             mto = [sub.email]
             mfrom = settings.DEFAULT_FROM_EMAIL
@@ -145,7 +145,7 @@ def jobpost_published():
         job.published_on = datetime.now()
         job_url = get_absolute_url(job)
         job.slug = job_url
-        #job.minified_url = google_mini('https://peeljobs.com' + job_url, settings.MINIFIED_URL)
+        #job.minified_url = google_mini('https://eeujobs.com' + job_url, settings.MINIFIED_URL)
         job.save()
         posts = FacebookPost.objects.filter(job_post=job)
         for each in posts:
@@ -164,7 +164,7 @@ def jobpost_published():
                 fb_group = FacebookGroup.objects.get(
                     user=job.user, group_id=group)
                 postongroup(job.id, fb_group.id)
-                # need to get accetoken for peeljobs twitter
+                # need to get accetoken for EEUJobs twitter
                 # page
         posts = TwitterPost.objects.filter(job_post=job)
         for each in posts:
@@ -177,7 +177,7 @@ def jobpost_published():
 
         c = {'job_post': job, 'user': job.user}
         t = loader.get_template('email/jobpost.html')
-        subject = "PeelJobs JobPost Status"
+        subject = "EEUJobs JobPost Status"
         mto = [settings.DEFAULT_FROM_EMAIL, job.user.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         Memail(mto, mfrom, subject, t.render(c), True if job.user.is_active else False)
@@ -218,9 +218,9 @@ def fbpost(user, job_post):
             params['access_token'] = access_token
             skill_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.skills.values_list('name', flat=True)])
             loc_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.location.values_list('name', flat=True)])
-            params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #Peeljobs"
+            params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #EEUJobs"
             params['picture'] = settings.LOGO
-            params['link'] = 'http://peeljobs.com' + str(job_post.get_absolute_url())
+            params['link'] = 'http://eeujobs.com' + str(job_post.get_absolute_url())
 
             params['name'] = job_post.title
             params['description'] = job_post.company_name
@@ -231,7 +231,7 @@ def fbpost(user, job_post):
             # response = json.loads(response)
 
             # params = urllib.parse.urlencode(params)
-            # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_PEELJOBS_PAGEID + "/feed", params).read()
+            # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_EEUJobs_PAGEID + "/feed", params).read()
             u = requests.post(
                 "https://graph.facebook.com/" + facebook_id + "/feed", params=params)
             response = u.json()
@@ -256,7 +256,7 @@ def postonpeel_fb(job_post):
         params = {}
         skill_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.skills.values_list('name', flat=True)])
         loc_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.location.values_list('name', flat=True)])
-        params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #Peeljobs"
+        params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #EEUJobs"
         if job_post.company.profile_pic and job_post.company.is_active:
             params['picture'] = job_post.company.profile_pic if 'https' in str(job_post.company.profile_pic) else 'https://cdn.peeljobs.com/' + \
                 str(job_post.company.profile_pic)
@@ -266,22 +266,22 @@ def postonpeel_fb(job_post):
             params['picture'] = job_post.skills.all()[0].icon
         else:
             params['picture'] = 'https://cdn.peeljobs.com/jobopenings1.png'
-        params['link'] = 'http://peeljobs.com' + str(job_post.get_absolute_url())
+        params['link'] = 'http://eeujobs.com' + str(job_post.get_absolute_url())
         job_name = job_post.title
 
         params['description'] = job_post.company.name if job_post.company else job_post.company_name
         params['access_token'] = settings.FB_PAGE_ACCESS_TOKEN
         params['actions'] = [
-            {'name': 'get peeljobs', 'link': settings.PEEL_URL}]
+            {'name': 'get EEUJobs', 'link': settings.PEEL_URL}]
 
         params['name'] = job_name
-        params['caption'] = "http://peeljobs.com"
+        params['caption'] = "http://eeujobs.com"
         params['actions'] = [
-            {'name': 'get peeljobs', 'link': "http://peeljobs.com/"}]
+            {'name': 'get EEUJobs', 'link': "http://eeujobs.com/"}]
 
         params = urllib.parse.urlencode(params)
-        # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_PEELJOBS_PAGEID + "/feed", params).read()
-        u = requests.post("https://graph.facebook.com/" + settings.FB_PEELJOBS_PAGEID + "/feed", params=params)
+        # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_EEUJobs_PAGEID + "/feed", params).read()
+        u = requests.post("https://graph.facebook.com/" + settings.FB_EEUJobs_PAGEID + "/feed", params=params)
         response = u.json()
         print (params)
         print (response, "response")
@@ -291,7 +291,7 @@ def postonpeel_fb(job_post):
             pass
         if 'id' in response.keys():
             FacebookPost.objects.create(job_post=job_post, page_or_group='peel_jobs',
-                                        page_or_group_id=settings.FB_PEELJOBS_PAGEID, post_id=response['id'], post_status='Posted')
+                                        page_or_group_id=settings.FB_EEUJobs_PAGEID, post_id=response['id'], post_status='Posted')
             # db.Jobpost.update({'id':jid},{'$set':{'peelfbpost':response['id']}})
             return 'posted successfully'
         return 'job not posted on page'
@@ -309,13 +309,13 @@ def postonpage(user, job_post):
             params = {}
             skill_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.skills.values_list('name', flat=True)])
             loc_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.location.values_list('name', flat=True)])
-            params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #Peeljobs"
+            params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #EEUJobs"
             params['picture'] = settings.LOGO
             params['link'] = settings.PEEL_URL + str(job_post.slug)
             params['name'] = job_post.title
             params['description'] = job_post.company_name
             params['actions'] = [
-                {'name': 'get peeljobs', 'link': settings.PEEL_URL}]
+                {'name': 'get EEUJobs', 'link': settings.PEEL_URL}]
             params['access_token'] = pages[0].accesstoken
             # params = urllib.urlencode(params)
             params = urllib.parse.urlencode(params)
@@ -351,12 +351,12 @@ def postongroup(job_post, group_id):
         params = {}
         skill_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.skills.values_list('name', flat=True)])
         loc_hash = ''.join([' #' + name.replace(' ', '').lower() for name in job_post.location.values_list('name', flat=True)])
-        params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #Peeljobs"
+        params['message'] = (job_post.published_message or job_post.title) + skill_hash + loc_hash + " #Jobs #EEUJobs"
 
         skills = job_post.get_skills()
         params['picture'] = skills[0].icon if skills and skills[0].icon else settings.LOGO
 
-        PEEL_URL = 'https://peeljobs.com'
+        PEEL_URL = 'https://eeujobs.com'
         params['link'] = PEEL_URL + str(job_post.get_absolute_url())
 
         params['name'] = job_post.title
@@ -366,7 +366,7 @@ def postongroup(job_post, group_id):
         params[
             'access_token'] = settings.FB_GROUP_ACCESS_TOKEN
         params['actions'] = [
-            {'name': 'get peeljobs', 'link': settings.PEEL_URL}]
+            {'name': 'get EEUJobs', 'link': settings.PEEL_URL}]
         params = urllib.parse.urlencode(params)
         # response = urllib.urlopen("https://graph.facebook.com/" + str(group.group_id) + "/feed", params).read()
         # response = json.loads(response)
@@ -396,12 +396,12 @@ def poston_allfb_groups(job_post):
                 str(job_post.min_year) + ' - ' + str(job_post.min_year)
             skill_hash = " #" + ' #'.join(job_post.skills.values_list('name', flat=True))
             loc_hash = " #" + ' #'.join(job_post.location.values_list('name', flat=True))
-            params['message'] = job_post.published_message or job_post.title + skill_hash + loc_hash + " #jobs #peeljobs"
+            params['message'] = job_post.published_message or job_post.title + skill_hash + loc_hash + " #jobs #EEUJobs"
             skills = job_post.get_skills()
 
             params['picture'] = skills[0].icon if skills and skills[0].icon else settings.LOGO
 
-            PEEL_URL = 'https://peeljobs.com'
+            PEEL_URL = 'https://eeujobs.com'
             params['link'] = PEEL_URL + str(job_post.get_absolute_url())
 
             params['name'] = job_name
@@ -411,7 +411,7 @@ def poston_allfb_groups(job_post):
             params[
                 'access_token'] = settings.FB_ALL_GROUPS_TOKEN
             params['actions'] = [
-                {'name': 'get peeljobs', 'link': settings.PEEL_URL}]
+                {'name': 'get EEUJobs', 'link': settings.PEEL_URL}]
             params = urllib.parse.urlencode(params)
             # response = urllib.urlopen("https://graph.facebook.com/" + str(group.group_id) + "/feed", params).read()
             # response = json.loads(response)
@@ -481,7 +481,7 @@ def postonlinkedin(user, job_post):
             'comment': job_post.published_message,
             'content': {
                 'title': job_name,
-                'submitted-url': 'http://peeljobs.com' + str(job_post.get_absolute_url()),
+                'submitted-url': 'http://eeujobs.com' + str(job_post.get_absolute_url()),
                 'submitted-image-url': settings.LOGO,
                 'description': job_name
             }
@@ -528,8 +528,8 @@ def postontwitter(user, job_post, page_or_profile):
         job_name = job_post.title
         skill_hash = ''.join([' @' + name.replace(' ', '').lower() for name in job_post.skills.values_list('name', flat=True)])
         loc_hash = ''.join([' @' + name.replace(' ', '').lower() for name in job_post.location.values_list('name', flat=True)])
-        job_name = job_name + skill_hash + loc_hash + " #Jobs #PeelJobs"
-        twitter_status = job_name + '  http://peeljobs.com' + str(job_post.get_absolute_url())
+        job_name = job_name + skill_hash + loc_hash + " #Jobs #EEUJobs"
+        twitter_status = job_name + '  http://eeujobs.com' + str(job_post.get_absolute_url())
         try:
             response = twitter.update_status(status=twitter_status)
         except:
@@ -617,7 +617,7 @@ def applicants_notifications():
         # sending an email
         c = {'job_posts': jobposts, 'user': user}
         t = loader.get_template('email/applicant.html')
-        subject = "Update Your Profile To Get Top Matching Jobs - PeelJobs"
+        subject = "Update Your Profile To Get Top Matching Jobs - EEUJobs"
         rendered = t.render(c)
         mto = [user.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
@@ -693,21 +693,21 @@ def send_dailyapplicantnotifications():
                     c = {'name': '', 'email': each_email, 'message_id': user['hash_code']}
                     t = loader.get_template(
                         'email/applicant_mail_connect.html')
-                    subject = "Peeljobs  - The Best Job Portal"
+                    subject = "EEUJobs  - The Best Job Portal"
                     rendered = t.render(c)
                     # Create the message
                     msg = MIMEMultipart('alternative')
                     msg['To'] = email.utils.formataddr(
                         (each_email, each_email))
                     msg['From'] = email.utils.formataddr(
-                        ('Peeljobs Support', 'info@peelster.in'))
+                        ('EEUJobs Support', 'info@eeujobs.in'))
                     msg['Subject'] = subject
                     msg['Return-Path'] = email.utils.formataddr(
-                        ('Peeljobs Support', 'bounce@bounce.peeljobs.com'))
+                        ('EEUJobs Support', 'bounce@bounce.eeujobs.com'))
                     msg['Errors-To'] = email.utils.formataddr(
-                        ('Peeljobs Support', 'bounce@bounce.peeljobs.com'))
+                        ('EEUJobs Support', 'bounce@bounce.eeujobs.com'))
                     msg['reply-to'] = email.utils.formataddr(
-                        ('Peeljobs Support', 'support@peeljobs.com'))
+                        ('EEUJobs Support', 'support@eeujobs.com'))
                     import arrow
                     import time
                     today = arrow.utcnow().to(
@@ -715,26 +715,26 @@ def send_dailyapplicantnotifications():
                     pattern = '%d.%m.%Y %H:%M:%S'
                     epoch = int(time.mktime(time.strptime(today, pattern)))
                     message_id = '<' + \
-                        str(user['hash_code']) + str(epoch) + '@peeljobs.com>'
+                        str(user['hash_code']) + str(epoch) + '@eeujobs.com>'
                     msg['Message-ID'] = message_id
                     msg['Date'] = email.utils.formatdate(localtime=True)
                     msg.add_header(
-                        'List-Unsubscribe', '<mailto:support@peeljobs.com>, <https://peeljobs.com/unsubscribe/nikhila@micropyramid.com/>')
+                        'List-Unsubscribe', '<mailto:support@eeujobs.com>, <https://eeujobs.com/unsubscribe/nikhila@micropyramid.com/>')
                     text = '''IF THE FIRST STEP OF YOUR CAREER GOES RIGHT,
                             THEN REST OF YOUR CAREER WILL BE BRIGHT
                             CONNECT WITH ANY OF YOUR SOCIAL NETWORKING SITES TO GET HIRED
-                            Peeljobs-twitter
+                            EEUJobs-twitter
                             CONNECT HERE
                             Dear Member,
-                            Greetings from Peeljobs!
-                            Peeljobs is one of the best job portal website. Where you can search jobs by skill, location, industry, functional area etc.
+                            Greetings from EEUJobs!
+                            EEUJobs is one of the best job portal website. Where you can search jobs by skill, location, industry, functional area etc.
                             You no need to register into our website.
                             You can log in with your existing social networking sites like Facebook, Google+, Linkedin, Github with one click.
                             Here are few techniques to get into a challenging career.
                             Get job alerts
                             Create job alerts to get opportunities that interest you.
                             So, that you are always first to hear about the jobs that you really care/want about.
-                            If you have any further queries, please mail to support@peeljobs.com
+                            If you have any further queries, please mail to support@eeujobs.com
                             We are happy to help you.
                             Login/Connect Internship jobs View All Jobs Job Alert FAQs
                             Developed by Micropyramid.comUnsubscribe'''
@@ -743,7 +743,7 @@ def send_dailyapplicantnotifications():
                     msg.attach(part1)
                     msg.attach(part2)
                     server.sendmail(
-                        'bounce@bounce.peeljobs.com', [each_email], msg.as_string())
+                        'bounce@bounce.eeujobs.com', [each_email], msg.as_string())
                     db.users.update({'email': each_email},
                                     {'$set': {
                                         'mail_sent': True, 'date': current_date}},
@@ -958,7 +958,7 @@ def daily_report():
 
     for each in users:
         temp = loader.get_template('email/daily_report.html')
-        subject = "Peeljobs Daily Report For " + formatted_date
+        subject = "EEUJobs Daily Report For " + formatted_date
         mto = [each]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render(data)
@@ -972,7 +972,7 @@ def applicants_profile_update_notifications_two_hours():
     for user in today_applicants:
         if (user.date_joined and user.date_joined > datetime.today() - timedelta(hours=2)):
             temp = loader.get_template('email/user_profile_alert.html')
-            subject = "Update Your Profile To Get Top Matching Jobs - Peeljobs"
+            subject = "Update Your Profile To Get Top Matching Jobs - EEUJobs"
             mto = [user.email]
             mfrom = settings.DEFAULT_FROM_EMAIL
             rendered = temp.render({'user': user})
@@ -994,11 +994,11 @@ def applicants_profile_update_notifications():
                 job_posts = JobPost.objects.filter(status='Live')[:15]
             temp = loader.get_template('email/user_profile_alert.html')
             if days == 4:
-                subject = "Recruiters are unable to contact you - Peeljobs"
+                subject = "Recruiters are unable to contact you - EEUJobs"
             if days == 6:
-                subject = "Your Peeljobs account is missing Critical Information - Peeljobs"
+                subject = "Your EEUJobs account is missing Critical Information - EEUJobs"
             else:
-                subject = "Update Your Profile To Get Top Matching Jobs - Peeljobs"
+                subject = "Update Your Profile To Get Top Matching Jobs - EEUJobs"
             mfrom = settings.DEFAULT_FROM_EMAIL
             rendered = temp.render({'user': each, 'job_posts': job_posts})
             user_active = True if each.is_active else False
@@ -1009,7 +1009,7 @@ def applicants_profile_update_notifications():
         days = ((datetime.today() - user.date_joined).days)
         if days == 2 or days % 10 == 0:
             temp = loader.get_template('email/account_inactive.html')
-            subject = "Update Your Profile - Peeljobs"
+            subject = "Update Your Profile - EEUJobs"
             mfrom = settings.DEFAULT_FROM_EMAIL
             rendered = temp.render({'user': user})
             Memail([user.email], mfrom, subject, rendered, False)
@@ -1019,7 +1019,7 @@ def applicants_profile_update_notifications():
         days = ((datetime.today() - user.date_joined).days)
         if days % 7 == 0:
             temp = loader.get_template('email/account_inactive.html')
-            subject = "Verify your Email Address - Peeljobs"
+            subject = "Verify your Email Address - EEUJobs"
             mfrom = settings.DEFAULT_FROM_EMAIL
             rendered = temp.render({'user': user})
             Memail([user.email], mfrom, subject, rendered, False)
@@ -1028,7 +1028,7 @@ def applicants_profile_update_notifications():
                                 is_unsubscribe=False, is_bounce=False)
     for user in users:
         temp = loader.get_template('email/user_profile_alert.html')
-        subject = "Upload your Resume/cv - Peeljobs"
+        subject = "Upload your Resume/cv - EEUJobs"
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': user, 'resume_update': True})
         user_active = True if user.is_active else False
@@ -1043,7 +1043,7 @@ def applicants_walkin_job_notifications():
     for each in today_applicants:
         job_posts = each.related_walkin_jobs()
         temp = loader.get_template('email/applicant.html')
-        subject = "Latest Walkin Jobs - Peeljobs"
+        subject = "Latest Walkin Jobs - EEUJobs"
         mto = [each.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         c = {'job_posts': job_posts[:10], 'user': each, 'walk_in': True}
@@ -1058,7 +1058,7 @@ def recruiter_profile_update_notifications():
         email_notifications=True, is_unsubscribe=False, is_bounce=False, profile_completeness__lt=50))
     for recruiter in recruiters:
         temp = loader.get_template('email/user_profile_alert.html')
-        subject = "Update Your Profile To Get More Applicants - Peeljobs"
+        subject = "Update Your Profile To Get More Applicants - EEUJobs"
         mto = [recruiter.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': recruiter, 'recruiter': True})
@@ -1075,7 +1075,7 @@ def applicants_all_job_notifications():
     for each in today_applicants:
         job_posts = each.related_jobs()
         temp = loader.get_template('email/applicant.html')
-        subject = "Top matching jobs for you - Peeljobs"
+        subject = "Top matching jobs for you - EEUJobs"
         mto = [each.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'job_posts': job_posts[:10], 'user': each})
@@ -1103,7 +1103,7 @@ def applicants_job_notifications():
             job_posts = list(
                 job_posts) + list(JobPost.objects.filter(status='Live'))
         temp = loader.get_template('email/applicant.html')
-        subject = "Top matching jobs for you - Peeljobs"
+        subject = "Top matching jobs for you - EEUJobs"
         mto = [user.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'jobposts': job_posts[:10], 'user': user})
@@ -1113,7 +1113,7 @@ def applicants_job_notifications():
     users = users.filter(Q(facebook_user__isnull=True) | Q(google_user__isnull=True) | Q(linkedin__isnull=True) | Q(twitter__isnull=True))
     for user in users:
         temp = loader.get_template('email/social_connect.html')
-        subject = "Social Connect - Peeljobs"
+        subject = "Social Connect - EEUJobs"
         mto = [user.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': user})
@@ -1128,7 +1128,7 @@ def alerting_applicants():
                                 is_bounce=False, last_login__icontains=date)
     for user in users:
         temp = loader.get_template('email/user_profile_alert.html')
-        subject = "Update Your Profile To Get Top Matching Jobs - PeelJobs"
+        subject = "Update Your Profile To Get Top Matching Jobs - EEUJobs"
         mto = [user.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': user, 'inactive_user': True})
@@ -1138,7 +1138,7 @@ def alerting_applicants():
         email_notifications=True, is_unsubscribe=False, is_bounce=False, last_login__icontains=date))
     for recruiter in recruiters:
         temp = loader.get_template('email/user_profile_alert.html')
-        subject = "Update Your Profile To Post Unlimited Jobs - PeelJobs"
+        subject = "Update Your Profile To Post Unlimited Jobs - EEUJobs"
         mto = [recruiter.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': recruiter, 'recruiter': True, 'inactive_user': True})
@@ -1149,7 +1149,7 @@ def alerting_applicants():
     users = User.objects.filter(dob__icontains=current_date)
     for user in users:
         temp = loader.get_template('email/birthdays.html')
-        subject = "=?UTF-8?Q?=F0=9F=8E=82?="+" Birthday Wishes - Peeljobs "+"=?UTF-8?Q?=F0=9F=8E=82?="
+        subject = "=?UTF-8?Q?=F0=9F=8E=82?="+" Birthday Wishes - EEUJobs "+"=?UTF-8?Q?=F0=9F=8E=82?="
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': user})
         user_active = True if user.is_active else False
@@ -1164,7 +1164,7 @@ def send_weekly_login_notifications():
         job_posts = each.related_jobs()
 
         temp = loader.get_template('email/applicant.html')
-        subject = "Latest Walkin Jobs - Peeljobs"
+        subject = "Latest Walkin Jobs - EEUJobs"
         mto = [each.email]
         mfrom = settings.DEFAULT_FROM_EMAIL
         rendered = temp.render({'user': each, 'job_posts': job_posts[:10]})
@@ -1198,7 +1198,7 @@ def sending_mobile_campaign():
             break
         mobile = user['mobile']
         message = '''Top companies are looking for Java Developers!
-                     Connect with us, to get placed https://peeljobs.com/java-fresher-jobs/
+                     Connect with us, to get placed https://eeujobs.com/java-fresher-jobs/
                      or https://goo.gl/SX4qbB'''
         SMS_AUTH_KEY = '4a905d1566e5e93bfff35aa56a38660'
         BULK_SMS_FROM = 'PEELJB'
@@ -1217,7 +1217,7 @@ def sitemap_generation():
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'''
 
     xml_cont = xml_cont + \
-        '<url><loc>https://peeljobs.com/</loc>' + \
+        '<url><loc>https://eeujobs.com/</loc>' + \
         '<changefreq>always</changefreq><priority>1.0</priority></url>'
 
     end_url = '</loc><changefreq>daily</changefreq><priority>0.5</priority></url>'
@@ -1226,7 +1226,7 @@ def sitemap_generation():
     jobs_xml_cont = xml_cont
     jobs = JobPost.objects.filter(status='Live')
     for job in jobs:
-        jobs_xml_cont = jobs_xml_cont + '<url><loc>https://peeljobs.com' + job.slug + end_url
+        jobs_xml_cont = jobs_xml_cont + '<url><loc>https://eeujobs.com' + job.slug + end_url
 
     jobs_xml_cont = jobs_xml_cont + '</urlset>'
 
@@ -1241,10 +1241,10 @@ def sitemap_generation():
     for skill in skills:
         jobs = JobPost.objects.filter(status='Live', skills=skill).count()
         if jobs > 0:
-            skills_xml_cont = skills_xml_cont + '<url><loc>https://peeljobs.com' + \
+            skills_xml_cont = skills_xml_cont + '<url><loc>https://eeujobs.com' + \
                 skill.get_job_url() + end_url
         else:
-            no_job_skills_xml_cont = no_job_skills_xml_cont + '<url><loc>https://peeljobs.com' + \
+            no_job_skills_xml_cont = no_job_skills_xml_cont + '<url><loc>https://eeujobs.com' + \
                 skill.get_job_url() + end_url
     skills_xml_cont = skills_xml_cont + '</urlset>'
 
@@ -1263,9 +1263,9 @@ def sitemap_generation():
     for location in locations:
         jobs = JobPost.objects.filter(status='Live', location=location).count()
         if jobs > 0:
-            locations_xml_cont = locations_xml_cont + '<url><loc>https://peeljobs.com' + location.get_job_url() + end_url
+            locations_xml_cont = locations_xml_cont + '<url><loc>https://eeujobs.com' + location.get_job_url() + end_url
         else:
-            no_job_locations_xml_cont = no_job_locations_xml_cont + '<url><loc>https://peeljobs.com' + location.get_job_url() + end_url
+            no_job_locations_xml_cont = no_job_locations_xml_cont + '<url><loc>https://eeujobs.com' + location.get_job_url() + end_url
     locations_xml_cont = locations_xml_cont + '</urlset>'
 
     locations_xml_file = open('../sitemap/sitemap-locations.xml', 'w')
@@ -1280,7 +1280,7 @@ def sitemap_generation():
     industries_xml_cont = xml_cont
 
     for industry in industries:
-        industries_xml_cont = industries_xml_cont + '<url><loc>https://peeljobs.com' + industry.get_job_url() + end_url
+        industries_xml_cont = industries_xml_cont + '<url><loc>https://eeujobs.com' + industry.get_job_url() + end_url
     industries_xml_cont = industries_xml_cont + '</urlset>'
 
     indsutries_xml_file = open('../sitemap/sitemap-industries.xml', 'w')
@@ -1294,7 +1294,7 @@ def sitemap_generation():
     internships = City.objects.filter(id__in=all_jobs, status='Enabled')
 
     for internship in internships:
-        internship_xml_cont = internship_xml_cont + '<url><loc>https://peeljobs.com/internship-jobs-in-' + \
+        internship_xml_cont = internship_xml_cont + '<url><loc>https://eeujobs.com/internship-jobs-in-' + \
             internship.slug + '/' + end_url
     internship_xml_cont = internship_xml_cont + '</urlset>'
 
@@ -1308,10 +1308,10 @@ def sitemap_generation():
     for skill in skills:
         jobs = JobPost.objects.filter(status='Live', skills=skill, job_type='walk-in').count()
         if jobs > 0:
-            skills_walkin_xml_cont = skills_walkin_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            skills_walkin_xml_cont = skills_walkin_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 str(skill.slug) + '-walkins/' + end_url
         else:
-            no_job_skills_walkin_xml_cont = no_job_skills_walkin_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            no_job_skills_walkin_xml_cont = no_job_skills_walkin_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 str(skill.slug) + '-walkins/' + end_url
     skills_walkin_xml_cont = skills_walkin_xml_cont + '</urlset>'
     no_job_skills_walkin_xml_cont = no_job_skills_walkin_xml_cont + '</urlset>'
@@ -1335,19 +1335,19 @@ def sitemap_generation():
                 walkins = JobPost.objects.filter(status='Live', skills=skill, job_type='walk-in', location=location).count()
                 if jobs > 0:
                     skills_locations_xml_cont = skills_locations_xml_cont +\
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-jobs-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-jobs-in-' + \
                         str(location.slug) + '/' + end_url
                 else:
                     no_job_skills_locations_xml_cont = no_job_skills_locations_xml_cont +\
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-jobs-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-jobs-in-' + \
                         str(location.slug) + '/' + end_url
                 if walkins > 0:
                     skills_locations_walkins_xml_cont = skills_locations_walkins_xml_cont +\
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-walkins-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-walkins-in-' + \
                         str(location.slug) + '/' + end_url
                 else:
                     no_job_skills_locations_walkins_xml_cont = no_job_skills_locations_walkins_xml_cont +\
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-walkins-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-walkins-in-' + \
                         str(location.slug) + '/' + end_url
         skills_locations_xml_cont = skills_locations_xml_cont + '</urlset>'
         no_job_skills_locations_xml_cont = no_job_skills_locations_xml_cont + '</urlset>'
@@ -1373,11 +1373,11 @@ def sitemap_generation():
                 jobs = JobPost.objects.filter(status='Live', skills=skill, location=location, min_year=0).count()
                 if jobs > 0:
                     skills_location_fresher_xml_cont = skills_location_fresher_xml_cont + \
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-fresher-jobs-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-fresher-jobs-in-' + \
                         str(location.slug) + '/' + end_url
                 else:
                     no_job_skills_location_fresher_xml_cont = no_job_skills_location_fresher_xml_cont + \
-                        '<url><loc>https://peeljobs.com/' + str(skill.slug) + '-fresher-jobs-in-' + \
+                        '<url><loc>https://eeujobs.com/' + str(skill.slug) + '-fresher-jobs-in-' + \
                         str(location.slug) + '/' + end_url
         skills_location_fresher_xml_cont = skills_location_fresher_xml_cont + '</urlset>'
         no_job_skills_location_fresher_xml_cont = no_job_skills_location_fresher_xml_cont + '</urlset>'
@@ -1397,16 +1397,16 @@ def sitemap_generation():
         walkins = JobPost.objects.filter(status='Live', location=each, job_type='walk-in').count()
         fresher_jobs = JobPost.objects.filter(status='Live', location=each, min_year=0).count()
         if walkins > 0:
-            locations_walkin_xml_cont = locations_walkin_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            locations_walkin_xml_cont = locations_walkin_xml_cont + '<url><loc>https://eeujobs.com/' + \
                                                                     'walkins-in-' + str(each.slug) + '/' + end_url
         else:
-            no_job_locations_walkin_xml_cont = no_job_locations_walkin_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            no_job_locations_walkin_xml_cont = no_job_locations_walkin_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 'walkins-in-' + str(each.slug) + '/' + end_url
         if fresher_jobs > 0:
-            locations_fresher_jobs_xml_cont = locations_fresher_jobs_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            locations_fresher_jobs_xml_cont = locations_fresher_jobs_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 'fresher-jobs-in-' + str(each.slug) + '/' + end_url
         else:
-            no_job_locations_fresher_jobs_xml_cont = no_job_locations_fresher_jobs_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            no_job_locations_fresher_jobs_xml_cont = no_job_locations_fresher_jobs_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 'fresher-jobs-in-' + str(each.slug) + '/' + end_url
     locations_walkin_xml_cont = locations_walkin_xml_cont + '</urlset>'
     locations_walkin_xml_file = open('../sitemap/sitemap-location-walkins.xml', 'w')
@@ -1428,11 +1428,11 @@ def sitemap_generation():
     states_walkins_xml_count = xml_cont
     states_fresher_jobs_xml_count = xml_cont
     for state in states:
-        states_jobs_xml_count = states_jobs_xml_count + '<url><loc>https://peeljobs.com/' + \
+        states_jobs_xml_count = states_jobs_xml_count + '<url><loc>https://eeujobs.com/' + \
             'jobs-in-' + str(state.slug) + '/' + end_url
-        states_walkins_xml_count = states_walkins_xml_count + '<url><loc>https://peeljobs.com/' + \
+        states_walkins_xml_count = states_walkins_xml_count + '<url><loc>https://eeujobs.com/' + \
             'walkins-in-' + str(state.slug) + '/' + end_url
-        states_fresher_jobs_xml_count = states_fresher_jobs_xml_count + '<url><loc>https://peeljobs.com/' + \
+        states_fresher_jobs_xml_count = states_fresher_jobs_xml_count + '<url><loc>https://eeujobs.com/' + \
             'fresher-jobs-in-' + str(state.slug) + '/' + end_url
     states_jobs_xml_count = states_jobs_xml_count + '</urlset>'
     states_jobs_xml_file = open('../sitemap/sitemap-state-jobs.xml', 'w')
@@ -1451,10 +1451,10 @@ def sitemap_generation():
     for skill in skills:
         jobs = JobPost.objects.filter(status='Live', skills=skill, min_year=0).count()
         if jobs > 0:
-            skills_fresher_xml_cont = skills_fresher_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            skills_fresher_xml_cont = skills_fresher_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 str(skill.slug) + '-fresher-jobs/' + end_url
         else:
-            no_job_skills_fresher_xml_cont = no_job_skills_fresher_xml_cont + '<url><loc>https://peeljobs.com/' + \
+            no_job_skills_fresher_xml_cont = no_job_skills_fresher_xml_cont + '<url><loc>https://eeujobs.com/' + \
                 str(skill.slug) + '-fresher-jobs/' + end_url
     skills_fresher_xml_cont = skills_fresher_xml_cont + '</urlset>'
     no_job_skills_fresher_xml_cont = no_job_skills_fresher_xml_cont + '</urlset>'
@@ -1469,7 +1469,7 @@ def sitemap_generation():
     educations_xml_cont = xml_cont
 
     for edu in educations:
-        educations_xml_cont = educations_xml_cont + '<url><loc>https://peeljobs.com/' + str(edu.slug) + '-jobs/' + end_url
+        educations_xml_cont = educations_xml_cont + '<url><loc>https://eeujobs.com/' + str(edu.slug) + '-jobs/' + end_url
     educations_xml_cont = educations_xml_cont + '</urlset>'
 
     educations_xml_file = open('../sitemap/sitemap-education-jobs.xml', 'w')
@@ -1481,7 +1481,7 @@ def sitemap_generation():
     recruiters = User.objects.filter(Q(user_type='RR') | Q(user_type='AR') | Q(user_type='AA') & Q(
                                      is_active=True))
     for recruiter in recruiters:
-        recruiters_xml_cont = recruiters_xml_cont + '<url><loc>https://peeljobs.com/recruiters/' + \
+        recruiters_xml_cont = recruiters_xml_cont + '<url><loc>https://eeujobs.com/recruiters/' + \
             str(recruiter.username) + '/' + end_url
 
     recruiters_xml_cont = recruiters_xml_cont + '</urlset>'
@@ -1494,7 +1494,7 @@ def sitemap_generation():
 
     companies = Company.objects.filter(is_active=True)
     for company in companies:
-        companies_xml_cont = companies_xml_cont + '<url><loc>https://peeljobs.com/' + \
+        companies_xml_cont = companies_xml_cont + '<url><loc>https://eeujobs.com/' + \
             str(company.slug) + \
             '-job-openings/' + end_url
     companies_xml_cont = companies_xml_cont + '</urlset>'
@@ -1516,62 +1516,62 @@ def sitemap_generation():
     no_pages = int(math.ceil(float(len(jobposts)) / items_per_page))
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/sitemap/' + end_url
+        '<url><loc>https://eeujobs.com/sitemap/' + end_url
 
     for each in range(1, no_pages):
-        pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/sitemap/' + \
+        pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/sitemap/' + \
             str(each) + '/' + end_url
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/post-job/' + end_url
+        '<url><loc>https://eeujobs.com/post-job/' + end_url
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/internship-jobs/' + end_url
+        '<url><loc>https://eeujobs.com/internship-jobs/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/government-jobs/' + end_url
+        '<url><loc>https://eeujobs.com/government-jobs/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/full-time-jobs/' + end_url
+        '<url><loc>https://eeujobs.com/full-time-jobs/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/walkin-jobs/' + end_url
+        '<url><loc>https://eeujobs.com/walkin-jobs/' + end_url
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/alert/list/' + end_url
+        '<url><loc>https://eeujobs.com/alert/list/' + end_url
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/jobs-by-location/' + end_url
+        '<url><loc>https://eeujobs.com/jobs-by-location/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/jobs-by-skill/' + end_url
+        '<url><loc>https://eeujobs.com/jobs-by-skill/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/jobs-by-industry/' + end_url
+        '<url><loc>https://eeujobs.com/jobs-by-industry/' + end_url
 
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/calendar/' + \
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/calendar/' + \
         str(datetime.now().year) + \
         '/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/calendar/' + str(datetime.now().year) + '/month/' + str(
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/calendar/' + str(datetime.now().year) + '/month/' + str(
         datetime.now().month) + '/' + end_url
 
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/about-us/' + end_url
+        '<url><loc>https://eeujobs.com/page/about-us/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/terms-conditions/' + end_url
+        '<url><loc>https://eeujobs.com/page/terms-conditions/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/privacy-policy/' + end_url
+        '<url><loc>https://eeujobs.com/page/privacy-policy/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/contact-us/' + end_url
+        '<url><loc>https://eeujobs.com/page/contact-us/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/faq/' + end_url
+        '<url><loc>https://eeujobs.com/page/faq/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/page/recruiter-faq/' + end_url
+        '<url><loc>https://eeujobs.com/page/recruiter-faq/' + end_url
     pages_xml_cont = pages_xml_cont + \
-        '<url><loc>https://peeljobs.com/recruiters/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/companies/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/blog/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/jobs/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/fresher-jobs-by-skills/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/walkin-jobs-by-skills/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/walkins-by-location/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/jobs-by-degree/' + end_url
-    pages_xml_cont = pages_xml_cont + '<url><loc>https://peeljobs.com/fresher-jobs-by-location/' + end_url
+        '<url><loc>https://eeujobs.com/recruiters/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/companies/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/blog/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/jobs/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/fresher-jobs-by-skills/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/walkin-jobs-by-skills/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/walkins-by-location/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/jobs-by-degree/' + end_url
+    pages_xml_cont = pages_xml_cont + '<url><loc>https://eeujobs.com/fresher-jobs-by-location/' + end_url
 
     pages_xml_cont = pages_xml_cont + '</urlset>'
 
@@ -1584,14 +1584,14 @@ def sitemap_generation():
     # categories = Category.objects.filter(is_active=True)
     # for category in categories:
     #     # if Post.objects.filter(status='Published'):
-    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/category/' + \
+    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://eeujobs.com/blog/category/' + \
     #             category.slug + '/'
     #         blog_categories_xml_cont = blog_categories_xml_cont + end_url
 
     # tags = Tags.objects.filter()
     # for tag in tags:
         # if Post.objects.filter(tags__in=[tag], status='Published'):
-    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/tags/' + \
+    #         blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://eeujobs.com/blog/tags/' + \
     #             tag.slug + '/'
     #         blog_categories_xml_cont = blog_categories_xml_cont + end_url
 
@@ -1602,7 +1602,7 @@ def sitemap_generation():
     dates = list(set(dates))
 
     for each in dates:
-        blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://peeljobs.com/blog/' + \
+        blog_categories_xml_cont = blog_categories_xml_cont + '<url><loc>https://eeujobs.com/blog/' + \
             str(each[0]) + '/' + str(each[1]) + '/'
         blog_categories_xml_cont = blog_categories_xml_cont + end_url
 
@@ -1616,7 +1616,7 @@ def sitemap_generation():
 
     # posts = Post.objects.filter(status="Published").order_by('-created_on')
     # for post in posts:
-    #     blog_posts_xml_cont = blog_posts_xml_cont + '<url><loc>https://peeljobs.com/blog/' + post.slug + '/' + end_url
+    #     blog_posts_xml_cont = blog_posts_xml_cont + '<url><loc>https://eeujobs.com/blog/' + post.slug + '/' + end_url
 
     blog_posts_xml_cont = blog_posts_xml_cont + '</urlset>'
 
@@ -1631,12 +1631,12 @@ def sitemap_generation():
     end_url = '</loc><changefreq>daily</changefreq><priority>0.5</priority></url>'
 
     xml_cont = xml_cont + \
-        '<url><loc>https://peeljobs.com/</loc>' + \
+        '<url><loc>https://eeujobs.com/</loc>' + \
         '<changefreq>always</changefreq><priority>1.0</priority></url>'
     for d in os.listdir(directory):
         if d.endswith('.xml') and not d.endswith('sitemap.xml'):
             xml_cont = xml_cont + \
-                '<url><loc>https://peeljobs.com/sitemap/' + str(d) + end_url
+                '<url><loc>https://eeujobs.com/sitemap/' + str(d) + end_url
 
     xml_cont = xml_cont + '</urlset>'
     sitemap_xml_file = open('../sitemap/sitemap.xml', 'w')
@@ -1727,7 +1727,7 @@ def sending_mails_to_applicants_sendgrid():
                 if not pj_user:
                     i = i + 1
                     temp = loader.get_template('email/register_invite.html')
-                    subject = "Register With Us - Peeljobs"
+                    subject = "Register With Us - EEUJobs"
                     mfrom = settings.DEFAULT_FROM_EMAIL
                     rendered = temp.render({'user': user})
                     Memail(user['email'], mfrom, subject, rendered, False)
@@ -1735,7 +1735,7 @@ def sending_mails_to_applicants_sendgrid():
 
 @shared_task()
 def check_meta_data():
-    host_name = 'https://peeljobs.com'
+    host_name = 'https://eeujobs.com'
 
     urls = [{'url': host_name + '/', 'name': 'home_page'},
             {'url': host_name + '/java-jobs/', 'name': 'skill_jobs'},

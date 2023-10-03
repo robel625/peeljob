@@ -4,7 +4,7 @@
 {% load searchtags %}
 {% load static %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 {% block block_title %}
  {% include "meta_data/detail.html" %}
@@ -19,8 +19,8 @@
   <ul class="social-share ">
     <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ job_url }}&t={{ job.title }}" target="_blank" class="facebook social"><i class="fa fa-facebook"></i></a></li>
     <li><a href="https://www.linkedin.com/cws/share?url={{ job_url }}&token=&isFramed=true" target="_blank" class="linkedin social"><i class="fa fa-linkedin"></i></a></li>
-    <li><a href="https://plus.google.com/share?hl=en-US&url={{ job_url }}" class="google social" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-    <li><a href="https://twitter.com/intent/tweet?text={{ job.title }}&url={{ job_url }}&via=PeelJobs" target="_blank" class="twitter social"><i class="fa fa-twitter"></i></a></li>
+    <li><a href="https://plus.google.com/share?hl=en-US&url={{ job_url }}" class="google social" target="_blank"><i class="fa fa-google"></i></a></li>
+    <li><a href="https://twitter.com/intent/tweet?text={{ job.title }}&url={{ job_url }}&via=EEUJobs" target="_blank" class="twitter social"><i class="fa fa-twitter"></i></a></li>
     <li><a href="mailto:?subject=Peeljobs%20Job%20post%20sharing&body={{ job_url }}" target="_blank" class="envelope social"><i class="fa fa-envelope"></i></a></li>
   </ul>
   {% endwith %}
@@ -220,14 +220,14 @@
                                 {% elif job.company_name %}
                                   <p>{{job.company_name|capfirst|truncatewords:4}}</p>
                                 {% endif %}
-                              {% if job.min_salary == 0 %}{% else %}<p><i class="fa fa-inr" aria-hidden="true"></i> <span>{{ job.get_job_salary.0 }} P.A</span></p>{% endif %}
+                              {% if job.min_salary == 0 %}{% else %}<p>Birr <span>{{ job.get_job_salary.0 }} per month</span></p>{% endif %}
                               <p class="location"><i class="fa fa-map-marker"></i> {%for location in job.location.all|slice:'4' %}
                               {% if location.status == 'Enabled' %}
                               <a href="{{location.get_job_url}}" target="_blank">{{ location.name }}</a>
                               {% else %}
                               <a style="cursor:default">{{ location.name }}</a>
                               {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                              <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                              <!--<p><a href="https://eeujobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
                               <p><a href="{{ job.get_absolute_url }}" target="_blank" class="apply">Apply Job</a></p>
                               </div>
                             </div>
@@ -252,13 +252,13 @@
                                 {% elif job.company_name %}
                                   <p>{{job.company_name|capfirst|truncatewords:4}}</p>
                                 {% endif %}
-                              {% if job.min_salary == 0 %}{% else %}<p><i class="fa fa-inr" aria-hidden="true"></i> <span >{{ job.get_job_salary.0 }} P.A</span></p>{% endif %}
+                              {% if job.min_salary == 0 %}{% else %}<p>Birr <span >{{ job.get_job_salary.0 }} per month</span></p>{% endif %}
                               <p class="location" ><i class="fa fa-map-marker"></i> {%for location in job.location.all|slice:'4' %}{% if location.status == 'Enabled' %}
                                 <a href="{{location.get_job_url}}" target="_blank">{{ location.name }}</a>
                                 {% else %}
                                 <a style="cursor:default">{{ location.name }}</a>
                                 {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                              <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                              <!--<p><a href="https://eeujobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
                               <p><a href="{{ job.get_absolute_url }}" target="_blank" class="apply">Apply Job</a></p>
                               </div>
                             </div>
@@ -282,13 +282,13 @@
                                 {% elif job.company_name %}
                                   <p>{{job.company_name|capfirst|truncatewords:4}}</p>
                                 {% endif %}
-                              {% if job.min_salary == 0 %}{% else %}<p><i class="fa fa-inr" aria-hidden="true"></i> <span >{{ job.get_job_salary.0 }} P.A</span></p>{% endif %}
+                              {% if job.min_salary == 0 %}{% else %}<p>Birr <span >{{ job.get_job_salary.0 }} per month</span></p>{% endif %}
                               <p class="location" ><i class="fa fa-map-marker"></i> {%for location in job.location.all|slice:'4' %}{% if location.status == 'Enabled' %}
                                 <a href="{{location.get_job_url}}" target="_blank">{{ location.name }}</a>
                                 {% else %}
                                 <a style="cursor:default">{{ location.name }}</a>
                                 {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                              <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                              <!--<p><a href="https://eeujobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
                               <p><a href="{{ job.get_absolute_url }}" target="_blank" class="apply">Apply Job</a></p>
                               </div>
                             </div>
@@ -349,7 +349,7 @@
 <div class="col-md-3 right_container">
   <!-- upload_btn_block starts here -->
   <div class="similar_job_posts" style="margin-bottom:10px;">
-    <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fpeeljobs%2F&width=300&height=150&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=892560280818752" width="300" height="150" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    <!-- <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fpeeljobs%2F&width=300&height=150&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=892560280818752" width="300" height="150" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe> -->
   </div>
   {% if request.user.is_authenticated %}
  {% if request.user.is_jobseeker and not request.user.resume %}
@@ -419,10 +419,10 @@
   </div>
   {% endif %}
   <!--register_login form ends here -->
-  <div class="strip_box">
+  <!-- <div class="strip_box">
                   <div class="strip">Show Your CODING Skills at <span style="color: #202b2e;">Runcode.io</span> (Launching soon)
                   </div>
-              </div>
+              </div> -->
 {% if job.get_similar_jobposts %}
   <div class="walkin_jobs">
     <div class="heading text-uppercase">Similar Jobs</div>
@@ -445,7 +445,7 @@
   {% endif %}
   <!-- walkin_jobs ends here -->
   {% get_companies as latest_companies %}
-  {% if latest_companies %}
+  <!-- {% if latest_companies %}
   <div class="top_recruiters">
     <div class="heading text-uppercase">Top Companies</div>
     <ul class="recruiter_blocks">
@@ -514,7 +514,7 @@
       </li>
       <li class="recruiter_block" id="/ravsoft-solutions-india-pvt-ltd-job-openings/">
         <div class="img_part">
-          <img src="{% thumbnail 'https://cdn.peeljobs.com/companies1/rav.png' "70x70" %}" alt="RAVSoft Solutions India Pvt Ltd"/>
+          <img src="{% thumbnail 'https://cdn.peeljobs.com/companies1/rav.png' "70x70" %}" alt="RAVSoft Solutions Ethiopia Pvt Ltd"/>
         </div>
         <div class="content">
           <strong class="title"><a>RAVSoft Solutions India Pvt Ltd</a></strong>
@@ -533,7 +533,7 @@
       <a href="{% url 'companies' %}" target="_blank"><span class="view_all">See More</span></a>
     </ul>
   </div>
-  {% endif %}
+  {% endif %} -->
 
 </div>
       <!-- Left menu ends here-->

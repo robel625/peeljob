@@ -398,8 +398,10 @@ class JobPostForm(ModelForm):
 
     def clean_title(self):
         title = self.cleaned_data['title']
-        if bool(re.search(r"[~\.,!@#\$%\^&\*\(\)_\+{}\":;'\[\]\<\>\|\/]", title)) or bool(re.search(r"[0-9]", title)):
-            raise forms.ValidationError("Title Should not contain special charecters and numbers")
+        # if bool(re.search(r"[~\.,!@#\$%\^&\*\(\)_\+{}\":;'\[\]\<\>\|\/]", title)) or bool(re.search(r"[0-9]", title)):
+        #     raise forms.ValidationError("Title Should not contain special charecters and numbers")
+        if bool(re.search(r"[~\.,!@#\$%\^&\*\(\)_\+{}\":;'\[\]\<\>\|\/]", title)):
+            raise forms.ValidationError("Title Should not contain special charecters")
         if JobPost.objects.filter(title=title).exclude(id=self.instance.id):
             raise forms.ValidationError("Job Post with this title already exists")
         return title.replace('/', '-')

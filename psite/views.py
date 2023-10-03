@@ -102,7 +102,7 @@ def contact(request):
                      'mobile': request.POST.get('phone'),
                      'enquiry_type': request.POST.get('enquery_type'),
                      'comment': request.POST.get('comment')}
-                subject = "Thanks for contacting us | PeelJobs"
+                subject = "Thanks for contacting us | EEUJobs"
                 rendered = t.render(c)
                 mfrom = settings.DEFAULT_FROM_EMAIL
                 t = loader.get_template('email/user_contactus.html')

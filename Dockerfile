@@ -1,4 +1,7 @@
 FROM python:latest
+WORKDIR /usr/src/app
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # Install dependencies
 RUN apt-get update 
@@ -12,14 +15,15 @@ RUN apt-get install -y curl
 # Install Less and Sass
 RUN npm install -g less sass
 
-WORKDIR /usr/src/app
+
 
 COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip3 install -r requirements.txt
 
 # COPY ./entrypoint.sh /usr/src/app/entrypoint.sh
-# ENTRYPOINT ["sh", "/entrypoint.sh"]
+# RUN chmod +x entrypoint.sh
+# ENTRYPOINT ["sh", "/usr/src/app/entrypoint.sh"]
 
 # WORKDIR /usr/src/app
 # RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y
@@ -75,4 +79,4 @@ RUN pip3 install -r requirements.txt
 
 
 
-# # pip3 install -r /home/peeljobs/requirements.txt
+# # pip3 install -r /home/EEUJobs/requirements.txt

@@ -4,7 +4,7 @@
 <html ⚡>
 <head>
   <meta charset="utf-8">
-  <title>Peeljobs Job Detail</title>
+  <title>EEUJobs Job Detail</title>
   <link rel="canonical" href="https://medium.com/p/cb7f223fad86" />
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
@@ -575,7 +575,7 @@ amp-sidebar.blog_options_sidebar{
           {% if request.user.user_type == 'JS' %}
           <li><a href="{% url 'jobs:jobs_applied' %}"><i class="fa fa-check-square-o" aria-hidden="true"></i>Applied Jobs</a></li>
           {% endif %}
-          <li><a href="{% url 'pages' 'about-us' %}"><i class="fa fa-info-circle" aria-hidden="true"></i>About Peeljobs</a></li>
+          <li><a href="{% url 'pages' 'about-us' %}"><i class="fa fa-info-circle" aria-hidden="true"></i>About EEUJobs</a></li>
           <li><a href="{% url 'contact' %}"><i class="fa fa-envelope" aria-hidden="true"></i>Contact Us</a></li>
           {% if request.user.is_authenticated %}
            <li><a href="{% url 'my:user_password_change' %}"><i class="fa fa-refresh" aria-hidden="true"></i>Change Password</a></li>
@@ -628,7 +628,7 @@ amp-sidebar.blog_options_sidebar{
       ☰
     </button>
     <span class="brand-logo">
-      <a href="/" class="name">Peeljobs</a>
+      <a href="/" class="name">EEUJobs</a>
     </span>
     <div class="other-options">
       <!-- <ul>
@@ -687,7 +687,7 @@ amp-sidebar.blog_options_sidebar{
         <div class="container">
           <div class="banner_content">
             <strong>Blog For Careers and Talent</strong>
-            <p>We are here to help you! Here we will provide Career Articles, Interview Tips, List of top rated technologies & companies and all the features of peeljobs.com to manage your profile and to get hired in MNC companies.</p>
+            <p>We are here to help you! Here we will provide Career Articles, Interview Tips, List of top rated technologies & companies and all the features of eeujobs.com to manage your profile and to get hired in MNC companies.</p>
           </div>
         </div>
       </div> 
@@ -734,7 +734,7 @@ amp-sidebar.blog_options_sidebar{
           {% for blog in blog_posts %}
             <div class="blog_item_block text-center" itemscope itemType="http://schema.org/BlogPosting">
               <div class="blog_date">{{ blog.created_on|date:"F d, Y" }}</div>
-              <div class="blog_title"><a href="https://peeljobs.com/blog/{{ blog.slug }}/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog }}</a></div>
+              <div class="blog_title"><a href="https://eeujobs.com/blog/{{ blog.slug }}/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog }}</a></div>
               <div class="blog_description" itemprop="description">{{ blog.content|safe|truncatewords_html:50 }}</div>
               <div class="other_options">
                 <span class="category"><a href="{% url 'selected_category' category_slug=blog.category.slug %}" target="_blank" class="category"><span itemprop="name">{{ blog.category }}</span></a></span>

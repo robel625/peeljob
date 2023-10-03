@@ -193,7 +193,7 @@
                       <select class="input experience" name="max_month" id="max_month">
                         <option value="" default>Months</option>
                         {% for month in months%}
-                          {% if job_post.min_year|slugify  job_post.max_year|slugify %}
+                          {% if job_post.min_year|slugify == job_post.max_year|slugify %}
                             <option id="{{ forloop.counter }}" value="{{ month.0 }}" {% if job_post.max_month|slugify == month.0 %} selected {% endif %}>{{ month.1 }}</option>
                           {% else %}
                             <option id="{{ forloop.counter }}" value="{{ month.0 }}" {% if job_post.max_month|slugify == month.0 %} selected {% endif %} {% if job_post.min_year >= job_post.max_year %} class="max_experience" {% endif %}>{{ month.1 }}</option>
@@ -228,7 +228,7 @@
                 <select class="select2 input" name="visa_country" id="visa_country">
                   <option value="">Visa Country</option>
                   {% for country in countries %}
-                  <option value="{{country.id}}" {% if country.id job_post.visa_country.id %} selected {% endif %}>{{country.name}}</option>
+                  <option value="{{country.id}}" {% if country.id == job_post.visa_country.id %} selected {% endif %}>{{country.name}}</option>
                   {% endfor %}
                 </select>
               </div>

@@ -5,12 +5,12 @@
 {% load static %}
 {% load tz %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 {% block block_title %}
-<title>Profile - Apply Jobs - Free Job Posting - Job Vacancies - Job search in India - PeelJobs</title>
-<meta name="description" content="Profile - Apply Jobs - PeelJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs. Fill Your Profile to receive email notifications. "/>
-<meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, peeljobs.com" />
+<title>Profile - Apply Jobs - Free Job Posting - Job Vacancies - Job search in Ethiopia - EEUJobs</title>
+<meta name="description" content="Profile - Apply Jobs - EEUJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs. Fill Your Profile to receive email notifications. "/>
+<meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, eeujobs.com" />
 {% endblock %}
 {% block page_search_block %}
 {% show_search_filter %}
@@ -547,7 +547,7 @@
               <div class="item_block ">
                 <span class="title">Expected Salary</span>
                 <span class="ans"><span class="expected_salary"> {% if request.user.expected_salary %}
-                <i class="fa fa-inr" aria-hidden="true"></i> {{ request.user.expected_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
+                Birr {{ request.user.expected_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
               </div>
               <div class="item_block no_border">
                 <span class="title">Job Role</span>
@@ -562,7 +562,7 @@
               <div class="item_block ">
                 <span class="title">Current Salary</span>
                 <span class="ans"><span class="current_salary">{% if request.user.current_salary %}
-                <i class="fa fa-inr" aria-hidden="true"></i> {{ request.user.current_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
+                Birr {{ request.user.current_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
               </div>
               <div class="item_block no_border">
                 <span class="title">Notice Period</span>
@@ -677,7 +677,7 @@
                     <td>{{ history.company }}</td>
                     <td>{{ history.designation }}</td>
                     <td>{{ history.from_date }}/{% if history.to_date == None %}Till Now{% else %}{{ history.to_date }}{%endif%}</td>
-                    <td>{% if history.salary %}{{ history.salary|get_formatted_salary }}{% else %}Not Specified{% endif %}</td>
+                    <td>{% if history.salary %}{{ history.salary }}{% else %}Not Specified{% endif %}</td>
                     <td class="actions">
                       <a href="{% url 'my:edit_experience' history.id %}" class="tech_edit" id="{{ history.id }}"><span><i class='fa fa-pencil edit_icon'></i></span></a>
                       <a href="{% url 'my:delete_experience' history.id %}" class='employment-delete'><span id="{{ history.id }}"><i class='fa fa-trash del_icon'></i></span></a>

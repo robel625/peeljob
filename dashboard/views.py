@@ -1790,7 +1790,7 @@ def status_change(request, post_id):
         post.save()
     c = {'job_post': post, 'user': post.user}
     t = loader.get_template('email/jobpost.html')
-    subject = "PeelJobs JobPost Status"
+    subject = "EEUJobs JobPost Status"
     rendered = t.render(c)
     mto = post.user.email
     mfrom = settings.DEFAULT_FROM_EMAIL
@@ -1879,7 +1879,7 @@ def publish_job(request, job_post_id):
         #     fb_group = FacebookGroup.objects.get(user=job_post.user, group_id=group)
         #     is_active = True
         #     postongroup.delay(job_post.user, job_post, fb_group, is_active)
-        #     # need to get accetoken for peeljobs twitter page
+        #     # need to get accetoken for EEUJobs twitter page
         # if job_post.post_on_tw:
         #     postontwitter.delay(job_post.user, job_post, 'Profile')
         #     # postontwitter(request.user, post, 'Page')
@@ -1917,7 +1917,7 @@ def enable_job(request, job_post_id):
         fb_group = FacebookGroup.objects.get(
             user=job_post.user, group_id=group.page_or_group_id)
         postongroup.delay(job_post.id, fb_group.id)
-        # need to get accetoken for peeljobs twitter page
+        # need to get accetoken for EEUJobs twitter page
     if job_post.post_on_tw:
         postontwitter.delay(job_post.user.id, job_post_id, 'Profile')
         # postontwitter(request.user, post, 'Page')
@@ -2000,6 +2000,15 @@ def applicants(request, status='all'):
 @permission_required("activity_view", "activity_edit")
 def view_applicant(request, user_id):
     applicants = User.objects.filter(id=user_id)
+    if applicants:
+        return render(request, 'dashboard/jobseeker/view.html', {"applicant": applicants[0]})
+    message = 'Sorry, the page you requested can not be found'
+    reason = "The URL may be misspelled or the page you're looking for is no longer available."
+    return render(request, 'dashboard/404.html', {'message_type': '404', 'message': message, 'reason': reason}, status=404)
+
+def view_applicant_email(request, user_email):
+    print("ddddddddddd",user_email )
+    applicants = User.objects.filter(email=user_email)
     if applicants:
         return render(request, 'dashboard/jobseeker/view.html', {"applicant": applicants[0]})
     message = 'Sorry, the page you requested can not be found'
@@ -2672,7 +2681,7 @@ def edit_govt_job(request, post_id):
 
             t = loader.get_template('email/jobpost.html')
             c = {'job_post': post, 'user': post.user}
-            subject = "PeelJobs New JobPost"
+            subject = "EEUJobs New JobPost"
             rendered = t.render(c)
             mto = [settings.DEFAULT_FROM_EMAIL]
             mfrom = settings.DEFAULT_FROM_EMAIL
@@ -2702,7 +2711,7 @@ def edit_govt_job(request, post_id):
 
         if 'other_location' in request.POST.keys():
             temp = loader.get_template('recruiter/email/add_other_fields.html')
-            subject = "PeelJobs New JobPost"
+            subject = "EEUJobs New JobPost"
             mto = [settings.DEFAULT_FROM_EMAIL]
             mfrom = settings.DEFAULT_FROM_EMAIL
 
@@ -3317,7 +3326,7 @@ def edit_job_title(request, post_id):
                     job_post.major_skill = skill[0]
             job_url = get_absolute_url(job_post)
             job_post.slug = job_url
-            #job_post.minified_url = google_mini('https://peeljobs.com' + job_url, settings.MINIFIED_URL)
+            #job_post.minified_url = google_mini('https://eeujobs.com' + job_url, settings.MINIFIED_URL)
             job_post.save()
             if job_post.major_skill and job_post.major_skill not in job_post.skills.all():
                 job_post.skills.add(job_post.major_skill)
@@ -3329,7 +3338,7 @@ def edit_job_title(request, post_id):
             if job_post.status == 'Live' and send_mail:
                 t = loader.get_template('email/jobpost.html')
                 c = {'job_post': job_post, 'user': job_post.user}
-                subject = "PeelJobs JobPost Status"
+                subject = "EEUJobs JobPost Status"
                 rendered = t.render(c)
                 mto = [job_post.user.email]
                 mfrom = settings.DEFAULT_FROM_EMAIL
@@ -3693,15 +3702,15 @@ def removing_duplicate_companies(request):
 #         params['description'] = blog_post.category.name
 #         params['access_token'] = settings.FB_PAGE_ACCESS_TOKEN
 #         params['actions'] = [
-#             {'name': 'get peeljobs', 'link': settings.PEEL_URL}]
+#             {'name': 'get EEUJobs', 'link': settings.PEEL_URL}]
 
 #         params['name'] = job_name
-#         params['caption'] = "http://peeljobs.com/blog/"
+#         params['caption'] = "http://eeujobs.com/blog/"
 #         params['actions'] = [
-#             {'name': 'get peeljobs', 'link': "http://peeljobs.com/"}]
+#             {'name': 'get EEUJobs', 'link': "http://eeujobs.com/"}]
 #         params = urllib.parse.urlencode(params)
 #         u = requests.post("https://graph.facebook.com/" +
-#                           settings.FB_PEELJOBS_PAGEID + "/feed", params=params)
+#                           settings.FB_EEUJobs_PAGEID + "/feed", params=params)
 #         response = u.json()
 #         if 'error' in response.keys():
 #             pass
@@ -4155,3 +4164,25 @@ def redirect_data(request):
     data = list(db.redirect_data.find())
     return render(request, 'dashboard/base_data/redirect_data.html', {'redirect_data': data})
 
+
+from django.shortcuts import render
+from django.conf import settings
+import os
+ 
+def file_display_view(request, file_path):
+    file_extension = os.path.splitext(file_path)[1]
+    file_name = os.path.basename(file_path)
+    file_full_path = os.path.join(settings.MEDIA_ROOT, file_path)
+    if file_extension == '.pdf':
+        content_type = 'application/pdf'
+    elif file_extension == '.docx':
+        content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    else:
+        # handle other file types if needed
+        return HttpResponse('File format not supported.')
+
+    with open(file_full_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type=content_type)
+        response['Content-Disposition'] = 'inline; filename=' + file_name
+        return response
+   

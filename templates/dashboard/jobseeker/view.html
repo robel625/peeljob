@@ -13,7 +13,8 @@
           <!--<span class='other_details'>Web Designer</span>-->
           <span class='other_details'>{{ applicant.email }}</span>
         </span>
-        <img src="{% if applicant.photo %}{{ applicant.photo }}{% else %}{% static 'dummy.jpg' %}{% endif %}">
+        <!-- <img src="{% if applicant.photo %}{{ applicant.photo }}{% else %}{% static 'dummy.jpg' %}{% endif %}"> -->
+        <img src="{% if applicant.profile_pic %}{{ applicant.profile_pic.url }}{% else %}{% static 'dummy.jpg' %}{% endif %}">
       </div>
       <div class="clearfix"></div>
     </div>
@@ -90,9 +91,9 @@
                 </li>
                 <li>
                   {% if applicant.is_gp_connected %}
-                  <a href="{{applicant.get_google_object.google_url}}" target="_blank"><i class="fa fa-google-plus plus"></i></a>
+                  <a href="{{applicant.get_google_object.google_url}}" target="_blank"><i class="fa fa-google plus"></i></a>
                   {% else %}
-                  <i class="fa fa-google-plus"></i>
+                  <i class="fa fa-google"></i>
                   {% endif %}
                 </li>
                 <li>
@@ -540,13 +541,13 @@
                   </div>
                   <div class="detail_each_wrap">
                     <label>Current Salary</label><span class='value'><span>{% if applicant.current_salary %}
-                    <i class="fa fa-inr" aria-hidden="true"></i> {{ applicant.current_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
+                    Birr {{ applicant.current_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
                   </div>
                 </div>
                 <div class="right_div">
                   <div class="detail_each_wrap">
                     <label>Expected Salary</label><span class='value'><span>{% if applicant.expected_salary %}
-                    <i class="fa fa-inr" aria-hidden="true"></i> {{ applicant.expected_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
+                    Birr {{ applicant.expected_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
                   </div>
                   <div class="detail_each_wrap">
                     <label>Job Role</label><span class='value'><span>{% if applicant.job_role %}{{ applicant.job_role }}{% else %}<span class="error">Not Specified</span>{% endif %}</span></span>
@@ -587,7 +588,7 @@
                         <td>{{ history.designation }}</td>
                         <td>{{ history.from_date }}</td>
                         <td>{% if history.to_date == None %}Till Now{% else %}{{ history.to_date }}{%endif%}</td>
-                        <td>{% if history.salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ history.salary|get_formatted_salary }}{% else %}Not Specified{% endif %}</td>
+                        <td>{% if history.salary %}Birr {{ history.salary }}{% else %}Not Specified{% endif %}</td>
                       </tr>
                     {% endfor %}
                       </tbody>
@@ -783,7 +784,7 @@
                 <div class="col-md-6 details_right">
                    <div class='row mt'>
                     <label>Salary</label>
-                    <span class='content'>{% if alert.min_salary|stringformat:"i" == '' and alert.max_salary|stringformat:"i" == '' %}Not Specified{% else %}<i class="fa fa-inr" aria-hidden="true"></i> {{ alert.min_salary }} - {{ alert.max_salary }}{% endif %}</span>
+                    <span class='content'>{% if alert.min_salary|stringformat:"i" == '' and alert.max_salary|stringformat:"i" == '' %}Not Specified{% else %}Birr {{ alert.min_salary }} - {{ alert.max_salary }}{% endif %}</span>
                     </div>
                     <div class='row mt'>
                     <label>Role</label>
@@ -818,7 +819,7 @@
 {% endblock %}
 {% block script %}
 <script type="text/javascript">
-$("span.download").click(function(e) {
+$(".download").click(function(e) {
     window.location = $(this).attr('id');
   });
 $(document).ready(function() {

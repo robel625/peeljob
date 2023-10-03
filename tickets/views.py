@@ -55,7 +55,7 @@ def index(request):
                 attached_file=value, uploaded_by=request.user)
             ticket.attachments.add(attachment)
         temp = loader.get_template('email/new_ticket.html')
-        subject = "Service Request | Peeljobs"
+        subject = "Service Request | EEUJobs"
         rendered = temp.render({'ticket': ticket})
         mfrom = settings.DEFAULT_FROM_EMAIL
         user_active = True if ticket.user.is_active else False
@@ -97,7 +97,7 @@ def new_ticket(request):
                 attached_file=value, uploaded_by=request.user)
             ticket.attachments.add(attachment)
         temp = loader.get_template('email/new_ticket.html')
-        subject = "Service Request | Peeljobs"
+        subject = "Service Request | EEUJobs"
         rendered = temp.render({'ticket': ticket})
         mfrom = settings.DEFAULT_FROM_EMAIL
         user_active = True if ticket.user.is_active else False
@@ -285,7 +285,7 @@ def ticket_status(request, ticket_id):
                 ticket.status = request.POST.get('ticket_status')
                 ticket.save()
                 temp = loader.get_template('email/new_ticket.html')
-                subject = "Your Ticket Status | Peeljobs"
+                subject = "Your Ticket Status | EEUJobs"
                 rendered = temp.render({'ticket': ticket, 'status': True})
                 mfrom = settings.DEFAULT_FROM_EMAIL
                 user_active = True if ticket.user.is_active else False
@@ -326,7 +326,7 @@ def ticket_comment(request, ticket_id):
                         comment.attachments.add(attachment)
                 if request.user.is_superuser:
                     temp = loader.get_template('email/new_ticket.html')
-                    subject = "Acknowledgement For Your Request | Peeljobs"
+                    subject = "Acknowledgement For Your Request | EEUJobs"
                     rendered = temp.render({'ticket': ticket, 'comment': comment})
                     mfrom = settings.DEFAULT_FROM_EMAIL
                     user_active = True if ticket.user.is_active else False

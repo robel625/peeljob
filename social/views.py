@@ -57,7 +57,7 @@ def login_and_apply(request):
                 context = {'user': request.user, 'recruiter': job_post.user, 'job_post': job_post}
                 rendered = template_loader.render(context)
                 msg = MIMEMultipart()
-                msg['Subject'] = "Peeljobs - The best Job Portal"
+                msg['Subject'] = "EEUJobs - The best Job Portal"
                 msg['From'] = settings.DEFAULT_FROM_EMAIL
                 msg['To'] = job_post.user.email
                 part = MIMEText(rendered, 'html')

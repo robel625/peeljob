@@ -1944,7 +1944,7 @@ class Migration(migrations.Migration):
                         choices=[
                             ("Page", "Page"),
                             ("Group", "Group"),
-                            ("PeelJobs", "PeelJobs"),
+                            ("EEUJobs", "EEUJobs"),
                         ],
                         max_length=50,
                     ),

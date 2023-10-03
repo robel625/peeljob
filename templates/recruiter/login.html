@@ -16,7 +16,7 @@
 </script>
     <title>{{ meta_title|safe }}</title>
     <meta name="description" content="{{ meta_description|safe }}"/>
-    <meta property="og:url" content="https://peeljobs.com{{ request.path }}" />
+    <meta property="og:url" content="https://eeujobs.com{{ request.path }}" />
    <meta property="og:title"  content="{{ meta_title|safe }}"/>
   <meta property="og:description"  content="{{ meta_description|safe }}"/>
   <meta property="og:image"  content="{{jobopenings}}"/>
@@ -100,7 +100,7 @@
                           <span class="icon-bar"></span>
                           <span class="icon-bar"></span>
                           </button>
-                          <a class="navbar-brand" href="/">Peeljobs</a>
+                          <a class="navbar-brand" href="/">EEUJobs</a>
                         </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -164,7 +164,7 @@
                 <div class="col-md-8 banner-left">
                   <h3 class="text">Recruit the best candidates </h3>
                   <ul class="list-inline">
-                    <li>Post unlimited free jobs on peeljobs in distinct sectors to hire the best candidate</li>
+                    <li>Post unlimited free jobs on EEUJobs in distinct sectors to hire the best candidate</li>
                     <li>Manage jobs in your social connections with one click</li>
                     <li>Hire qualified candidates for your organization</li>
                     <li>Monitor entire recruitment process</li>
@@ -192,7 +192,7 @@
                 <br clear="all">
               </div>
             </div>
-            <div class="panel panel-default latest_updates">
+            <!-- <div class="panel panel-default latest_updates">
               <div class="panel-content">
                 <ul class="text-center">
                   <li>More than 2 million qualified candidates</li>
@@ -201,11 +201,11 @@
                   <li>24/7 customer support to get in touch with you</li>
                 </ul>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- banner ends here -->
           <!-- companies starts here -->
-          <div class="companies_block row mt">
+          <!-- <div class="companies_block row mt">
             <div class="panel panel-default">
               <div class="panel-content">
                 <h4 class="sub_heading">Companies Hiring Through us</h4>
@@ -221,11 +221,11 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- companies ends here -->
           <!-- features starts here -->
           <div class="features_block row">
-            <h3 style="margin-left: 13px;margin-top: 0px;margin-bottom: 14px;color: #444;font-size: 18px;">How PeelJobs helps you in Recruitment</h3>
+            <h3 style="margin-left: 13px;margin-top: 0px;margin-bottom: 14px;color: #444;font-size: 18px;">How EEUJobs helps you in Recruitment</h3>
             <div class="col-md-4 feature_item text-center">
               <div class="panel panel-default">
                 <div class="panel-content">
@@ -314,10 +314,10 @@
             </div>
             <div class="blog-social">
               <ul>
-                <li><a href="https://facebook.com/peeljobs/" target="_blank" class="fa fa-facebook facebook" ></a></li>
-                <li><a href="https://www.linkedin.com/company/peeljobs?trk=top_nav_home" class="fa fa-linkedin linkedin" target="_blank"></a></li>
-                <li><a href="https://plus.google.com/b/105171863747311260917/105171863747311260917" target="_blank" class="fa fa-google-plus google-plus" ></a></li>
-                <li><a href="https://twitter.com/PeelJobs" target="_blank" class="fa fa-twitter twitter" ></a></li>
+                <li><a href="https://facebook.com/EEUJobs/" target="_blank" class="fa fa-facebook facebook" ></a></li>
+                <li><a href="https://www.linkedin.com/company/EEUJobs?trk=top_nav_home" class="fa fa-linkedin linkedin" target="_blank"></a></li>
+                <li><a href="https://plus.google.com/b/105171863747311260917/105171863747311260917" target="_blank" class="fa fa-google google-plus" ></a></li>
+                <li><a href="https://twitter.com/EEUJobs" target="_blank" class="fa fa-twitter twitter" ></a></li>
               </ul>
             </div>-->
           </div>
@@ -352,7 +352,7 @@
                   <select class="form-control select2" name="current_city" id="user_register_current_city">
                     <option value="">Choose required location</option>
                     {% for city in cities%}
-                      {% if not 'India' in city.name %}
+                      {% if not 'Ethiopia' in city.name %}
                         <option value="{{ city.id }}">{{ city.name }}</option>
                       {% endif %}
                     {% endfor %}
@@ -407,7 +407,7 @@
                   <input type="file" name="resume" id="user_register_resume" accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, application/rtf, application/x-rtf, text/richtext, application/msword, application/vnd.oasis.opendocument.text, application/x-vnd.oasis.opendocument.text, .docx, .odt">
                   <p class="help_text">doc, docx, pdf - 400kb max</p>
                   <div>
-                    <input type="checkbox" name="email_notifications"> <span>I agree to receive notifications from PeelJobs</span>
+                    <input type="checkbox" name="email_notifications"> <span>I agree to receive notifications from EEUJobs</span>
                   </div>
                 </div>
               </div>
@@ -433,7 +433,7 @@
                   <li><a href="{}" class="facebook"><i class="fa fa-facebook"></i></a></li>
                   <li><a href="{}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                   <li><a href="{}" class="github"><i class="fa fa-github"></i></a></li>
-                  <li><a href="{}" class="gplus"><i class="fa fa-google-plus"></i></a></li>
+                  <li><a href="{}" class="gplus"><i class="fa fa-google"></i></a></li>
                 </ul>
               </div>
 
@@ -452,11 +452,11 @@
       <div class="container">
         <div class="col-md-2 contact text-left">
           <ul>
-            <li><a class="btn btn-primary fb_footer social" target="_blank" href="https://facebook.com/peeljobs/"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="https://www.linkedin.com/company/peeljobs?trk=top_nav_home" class="btn btn-primary fb_footer social" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="btn btn-primary fb_footer social" target="_blank" href="https://facebook.com/EEUJobs/"><i class="fa fa-facebook"></i></a></li>
+            <li><a href="https://www.linkedin.com/company/EEUJobs?trk=top_nav_home" class="btn btn-primary fb_footer social" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 
-            <li><a class="btn btn-danger gplus_footer social" target="_blank" href="https://plus.google.com/b/105171863747311260917/105171863747311260917"><i class="fa fa-google-plus"></i></a></li>
-            <li><a class="btn btn-info twit_footer social" target="_blank" href="https://twitter.com/PeelJobs"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="btn btn-danger gplus_footer social" target="_blank" href="https://plus.google.com/b/105171863747311260917/105171863747311260917"><i class="fa fa-google"></i></a></li>
+            <li><a class="btn btn-info twit_footer social" target="_blank" href="https://twitter.com/EEUJobs"><i class="fa fa-twitter"></i></a></li>
           </ul>
         </div>
         <div class="footer_links col-md-10">

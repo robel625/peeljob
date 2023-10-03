@@ -745,36 +745,38 @@ def job_apply(request, job_id):
                     t = loader.get_template('email/applicant_apply_job.html')
                     c = {'user': request.user, 'recruiter': job_post.user, 'job_post': job_post}
                     rendered = t.render(c)
-                    if request.user.resume:
-                        import urllib.request
-                        urllib.request.urlretrieve(
-                            'http://s3.amazonaws.com/peeljobs/' + str(
-                                request.user.resume.encode('ascii', 'ignore').decode('ascii')
-                            ), str(request.user.email) + '.docx')
-                    msg = MIMEMultipart()
-                    msg['Subject'] = "Resume Alert - " + job_post.title
-                    msg['From'] = settings.DEFAULT_FROM_EMAIL
-                    msg['To'] = job_post.user.email
-                    part = MIMEText(rendered, 'html')
-                    msg.attach(part)
-                    if request.user.resume and os.path.exists(str(request.user.email) + '.docx'):
-                        part = MIMEApplication(
-                            open(str(request.user.email) + '.docx', 'rb').read())
-                        part.add_header(
-                            'Content-Disposition', 'attachment', filename=str(request.user.email) + '.docx')
-                        msg.attach(part)
-                        os.remove(str(request.user.email) + '.docx')
-                    boto.connect_ses(
-                        aws_access_key_id=settings.AM_ACCESS_KEY, aws_secret_access_key=settings.AM_PASS_KEY)
-                    conn = boto.ses.connect_to_region(
-                        'eu-west-1',
-                        aws_access_key_id=settings.AM_ACCESS_KEY,
-                        aws_secret_access_key=settings.AM_PASS_KEY
-                    )
-                    # and send the message
-                    conn.send_raw_email(msg.as_string(), source=msg['From'], destinations=[msg['To']])
                     data = {'error': False, 'response': message, 'url': job_post.get_absolute_url()}
                     return HttpResponse(json.dumps(data))
+                    # if request.user.resume:
+                    #     import urllib.request
+                    #     urllib.request.urlretrieve(
+                    #         'http://s3.amazonaws.com/EEUJobs/' + str(
+                    #             request.user.resume.encode('ascii', 'ignore').decode('ascii')
+                    #         ), str(request.user.email) + '.docx')
+                    # msg = MIMEMultipart()
+                    # msg['Subject'] = "Resume Alert - " + job_post.title
+                    # msg['From'] = settings.DEFAULT_FROM_EMAIL
+                    # msg['To'] = job_post.user.email
+                    # part = MIMEText(rendered, 'html')
+                    # msg.attach(part)
+                    # if request.user.resume and os.path.exists(str(request.user.email) + '.docx'):
+                    #     part = MIMEApplication(
+                    #         open(str(request.user.email) + '.docx', 'rb').read())
+                    #     part.add_header(
+                    #         'Content-Disposition', 'attachment', filename=str(request.user.email) + '.docx')
+                    #     msg.attach(part)
+                    #     os.remove(str(request.user.email) + '.docx')
+                    # boto.connect_ses(
+                    #     aws_access_key_id=settings.AM_ACCESS_KEY, aws_secret_access_key=settings.AM_PASS_KEY)
+                    # conn = boto.ses.connect_to_region(
+                    #     'eu-west-1',
+                    #     aws_access_key_id=settings.AM_ACCESS_KEY,
+                    #     aws_secret_access_key=settings.AM_PASS_KEY
+                    # )
+                    # # and send the message
+                    # conn.send_raw_email(msg.as_string(), source=msg['From'], destinations=[msg['To']])
+                    # data = {'error': False, 'response': message, 'url': job_post.get_absolute_url()}
+                    # return HttpResponse(json.dumps(data))
                     # else:
                     #     data = {'error': True, 'response': 'Jobpost is already expired'}
                     #     return HttpResponse(json.dumps(data))
@@ -1444,8 +1446,8 @@ def each_company_jobs(request, company_name, **kwargs):
     if not company:
         data = {'message': 'Sorry, no jobs available for ' + company_name + ' jobs',
                 'reason': "Unfortunately, we are unable to locate the job you are looking for",
-                'meta_title': '404 - Page Not Found - ' + company_name + ' - Peeljobs',
-                'meta_description': '404 No Jobs available for ' + company_name + ' - Peeljobs',
+                'meta_title': '404 - Page Not Found - ' + company_name + ' - EEUJobs',
+                'meta_description': '404 No Jobs available for ' + company_name + ' - EEUJobs',
                 'data_empty': True
                 }
         if request.user.is_authenticated:
@@ -1931,22 +1933,15 @@ def add_other_location_to_user(user, request):
 
 
 def register_using_email(request):
-    print("11111111111111")
     if request.method == 'POST':
-        print("2222222222222")
         if request.FILES.get('get_resume'):
-            print("33333333333")
             handle_uploaded_file(request.FILES['get_resume'], request.FILES['get_resume'].name)
             email, mobile, text = get_resume_data(request.FILES['get_resume'])
             data = {'error': False, 'resume_email': email, 'resume_mobile': mobile, 'text': text}
-            print("44444444444")
             return HttpResponse(json.dumps(data))
         validate_user = UserEmailRegisterForm(request.POST, request.FILES)
-        print("555555555555")
         if validate_user.is_valid():
-            print("6666666666")
             if not (User.objects.filter(email__iexact=request.POST.get('email')) or User.objects.filter(username__iexact=request.POST.get('email'))):
-                print("777777777777")
                 email = request.POST.get('email')
                 password = request.POST.get('password')
                 registered_from = request.POST.get('register_from', 'Email')
@@ -2106,7 +2101,7 @@ def forgot_password(request):
             user.set_password(new_pass)
             user.save()
             temp = loader.get_template('email/subscription_success.html')
-            subject = "Password Reset - PeelJobs"
+            subject = "Password Reset - EEUJobs"
             mto = request.POST.get('email')
             mfrom = settings.DEFAULT_FROM_EMAIL
             url = request.scheme + '://' + request.META['HTTP_HOST'] + "/user/set_password/" + str(user.id) + '/' + str(new_pass) + '/'
@@ -2211,7 +2206,7 @@ def user_subscribe(request):
                 skills = Skill.objects.filter(id__in=request.POST.getlist('skill'))
                 url = request.scheme + '://' + request.META['HTTP_HOST'] + "/subscriber/verification/" + str(sub_code) + "/"
                 c = {'user_email': email, 'skills': skills, 'redirect_url': url}
-                subject = "PeelJobs New Subscription"
+                subject = "EEUJobs New Subscription"
                 rendered = t.render(c)
                 mfrom = settings.DEFAULT_FROM_EMAIL
                 Memail([email], mfrom, subject, rendered, False)

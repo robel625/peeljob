@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import tinys3
 import random
 import math
@@ -39,7 +40,8 @@ db = mongoconnection()
 
 
 def index(request):
-    latest_jobs_list = cache.get('latest_1hr_jobs_list')
+    # latest_jobs_list = cache.get('latest_1hr_jobs_list')
+    latest_jobs_list = ""
     if not latest_jobs_list:
         latest_jobs_list = JobPost.objects.filter(status='Live').exclude(
             job_type='walk-in').select_related('company', 'user').prefetch_related('location', 'skills')[:9]
@@ -148,24 +150,41 @@ def upload_resume(request):
         size = fo.size / 1024
         if str(ftype) in sup_formates:
             if size < 500 and size > 0:
-                conn = tinys3.Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-                random_string = ''.join(random.choice('0123456789ABCDEF') for i in range(3))
-                user_id = str(request.user.id) + str(random_string)
-                path = 'resume/' + user_id + '/' + request.FILES['resume'].name.replace(" ", "-").encode('ascii', 'ignore').decode('ascii')
-                conn.upload(path, request.FILES['resume'], settings.AWS_STORAGE_BUCKET_NAME, public=True, expires='max')
-                request.user.resume = path
-                request.user.profile_updated = datetime.datetime.now(timezone.utc)
-                handle_uploaded_file(request.FILES['resume'], request.FILES['resume'].name)
+                # conn = tinys3.Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                # random_string = ''.join(random.choice('0123456789ABCDEF') for i in range(3))
+                # user_id = str(request.user.id) + str(random_string)
+                # path = 'resume/' + user_id + '/' + request.FILES['resume'].name.replace(" ", "-").encode('ascii', 'ignore').decode('ascii')
+                # conn.upload(path, request.FILES['resume'], settings.AWS_STORAGE_BUCKET_NAME, public=True, expires='max')
+                # request.user.resume = path
+                # request.user.profile_updated = datetime.datetime.now(timezone.utc)
+                # handle_uploaded_file(request.FILES['resume'], request.FILES['resume'].name)
+                resume_file = request.FILES['resume']
+                filename = resume_file.name.replace(" ", "-").encode('ascii', 'ignore').decode('ascii')
+                resume_dir = os.path.join( 'media/', 'resume/',request.user.email)
+                os.makedirs(resume_dir, exist_ok=True)
+                file_path = os.path.join(resume_dir, filename)
+                with open(file_path, 'wb+') as f:
+                    for chunk in resume_file.chunks():
+                        f.write(chunk)
                 email, mobile, text = get_resume_data(request.FILES['resume'])
                 request.user.resume_text = text
+                request.user.resume = request.scheme + '://' + request.META['HTTP_HOST']+ "/"+file_path
+                request.user.profile_updated = datetime.datetime.now(
+                        timezone.utc)
+                request.user.save()
                 if not request.user.mobile:
                     request.user.mobile = mobile
                 request.user.save()
+                # data = {"error": False, 'data': 'Resume Uploaded Successfully',
+                #         'profile_percantage': request.user.profile_completion_percentage,
+                #         'upload_resume': True, 'email': email,
+                #         'resume_name': request.FILES['resume'].name,
+                #         'resume_path': 'https://' + settings.CLOUDFRONT_DOMAIN + '/' + path}
                 data = {"error": False, 'data': 'Resume Uploaded Successfully',
                         'profile_percantage': request.user.profile_completion_percentage,
                         'upload_resume': True, 'email': email,
                         'resume_name': request.FILES['resume'].name,
-                        'resume_path': 'https://' + settings.CLOUDFRONT_DOMAIN + '/' + path}
+                        'resume_path': request.user.resume}
             else:
                 data = {'error': True, 'data': 'File Size must be less than 500 kb'}
         else:
@@ -183,9 +202,7 @@ def upload_resume(request):
 @login_required
 def upload_profilepic(request):
     ''' validate file size <250kb and type doc,docx,pdf,rtf,odt '''
-    print("1111111rrrrrrrrggggggggggggprofile_Pic")
     if 'profile_pic' in request.FILES:
-        print("rrrrrrrrggggggggggggprofile_Pic")
         pic = request.FILES['profile_pic']
         sup_formates = ["image/jpeg", 'image/png']
         ftype = pic.content_type
@@ -204,19 +221,25 @@ def upload_profilepic(request):
 @jobseeker_login_required
 def profile(request):
     ''' need to check user login or not'''
+    print("aaaaaaaaaaaaa")
     if request.user.is_authenticated:
         messages = db.messages.count_documents({'message_to': request.user.id, 'is_read': False})
         user = request.user
         user.profile_completeness = user.profile_completion_percentage
         user.save()
+        print("bbbbbbbbbbbb")
         if not request.is_mobile:
+            print("cccccccccccgggggc")
             nationality = ''
             functional_areas = FunctionalArea.objects.filter(status="Active").order_by('name')
-            cities = City.objects.filter(status="Enabled").exclude(slug__icontains='india').order_by('name')
+            print("cccccccccccgggggc1")
+            cities = City.objects.filter(status="Enabled").exclude(slug__icontains='ethiopia').order_by('name')
             skills = Skill.objects.filter(status='Active').order_by('name')
+            print("cccccccccccgggggc2")
             industries = Industry.objects.filter(status='Active').order_by('name').exclude(id=36)
-            if request.user.nationality:
-                nationality = Country.objects.get(id=request.user.nationality)
+            # if request.user.nationality:
+            #     nationality = Country.objects.get(id=request.user.nationality)
+            print("dddddddddddddd")
             return render(request, 'candidate/view_userinfo.html', {'nationality': nationality,
                                                                     'cities': cities,
                                                                     'skills': skills,
@@ -261,7 +284,7 @@ def edit_personalinfo(request):
                 user.current_city = City.objects.get(id=int(request.POST.get('current_city')))
             # random_code = rand_string(size=6)
             # message = 'Hello ' + request.user.username + ', An OTP ' + random_code + \
-            #     ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+            #     ' for your EEUJobs recruiter account, Please Confirm and Proceed'
             # data = {"username": settings.BULK_SMS_USERNAME, "password": settings.BULK_SMS_PASSWORD,
             #         "from": settings.BULK_SMS_FROM, "to": request.POST.get('mobile'), "message": message}
             # requests.get(
@@ -342,7 +365,7 @@ def edit_personalinfo(request):
 #         user = request.user
 #         random_code = rand_string(size=6)
 #         message = 'Hello ' + request.user.username + ', An OTP ' + random_code + \
-#             ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+#             ' for your EEUJobs recruiter account, Please Confirm and Proceed'
 #         data = {"username": settings.BULK_SMS_USERNAME, "password": settings.BULK_SMS_PASSWORD,
 #                 "from": settings.BULK_SMS_FROM, "to": user.mobile, "message": message}
 #         requests.get(

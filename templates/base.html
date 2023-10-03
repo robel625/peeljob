@@ -1,6 +1,6 @@
 {% load thumbnail %}{% load compress %}{% load searchtags %}{% load page_tags %}{% load static %}{% load cache %}<!DOCTYPE html>
 <html>
-  <head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# peeljobs: https://ogp.me/ns/fb/peeljobs#">
+  <head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# EEUJobs: https://ogp.me/ns/fb/EEUJobs#">
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-11720509-7"></script>
 <script>
@@ -10,9 +10,9 @@
 
   gtag('config', 'UA-11720509-7');
 </script>
-    <link rel="icon" type="image/x-icon" href="{{logo}}" />
+    <!-- <link rel="icon" type="image/x-icon" href="{{logo}}" /> -->
     <meta property="fb:app_id" content="469881999753251" />
-    <meta property="og:type"   content="peeljobs:job" />
+    <meta property="og:type"   content="EEUJobs:job" />
     <meta charset="utf-8">
     {% block block_title %}
       {% include 'meta_data/home.html' %}
@@ -20,7 +20,7 @@
     {% block robot_tag %}
     <meta name="ROBOTS" content="index, follow, ALL"/>
     {% endblock %}
-    <meta name="copyright" content="Copyright (c) PeelJobs, All rights reserved"/>
+    <meta name="copyright" content="Copyright (c) EEUJobs, All rights reserved"/>
     {% block meta_tags %}
     {% endblock %}
     {% block block_canonical_tag %}
@@ -66,7 +66,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">Peeljobs</a>
+                        <a class="navbar-brand" href="/">EEUjobs</a>
                       </div>
                       <!-- Collect the nav links, forms, and other content for toggling -->
                       <div class="collapse navbar-collapse">
@@ -79,7 +79,7 @@
                           {% get_government_jobs as all_government_jobs %}
                           {% get_internships as all_internship_jobs %}
 
-                          <li class="dropdown megamenu-fw">
+                          <!-- <li class="dropdown megamenu-fw">
                             <a href="{% url 'jobs:index' %}" class="dropdown-toggle latest-jobs" data-toggle="dropdown" role="button" aria-expanded="false">Latest Jobs<span class="caret"></span></a>
 
                             <ul class="dropdown-menu megamenu-content" role="menu">
@@ -101,7 +101,7 @@
                                   {% for location in total_locations|slice:"17" %}
                                     <li><a href="{{ location.get_job_url }}">Jobs in {{ location.name }}</a></li>
                                   {% endfor %}
-                              </ul>
+                              </ul> -->
                               <!--
                               <div class="col-md-2 information government_parts">
                                 <ul>
@@ -112,7 +112,7 @@
                                 </ul>
                               </div>
                               <div class="col-md-3 information internship_parts" style="width:20.99% !important">-->
-                              <ul class="col-md-3 information internship_parts" style="width: 19.99% !important;">
+                              <!-- <ul class="col-md-3 information internship_parts" style="width: 19.99% !important;">
                                 <li><a href="{% url 'internship_jobs' %}">Internship</a></li>
                                 {% for city in all_internship_jobs %}
                                 <li><a href="{% url 'city_internship_jobs' city.slug %}">Internship Jobs in {{ city.name }}</a></li>
@@ -126,10 +126,12 @@
                               </ul>
                               </li>
                             </ul>
-                          </li>
+                          </li> -->
                           {% endcache %}
-                          <li {% if request.path == '/fresher-jobs-by-skills/' %}class="active"{% endif %}><a href="{% url 'fresher_jobs_by_skills' 'fresher' %}">Fresher Jobs <span class="sr-only">(current)</span></a></li>
-                           <li {% if request.path == '/walkin-jobs-by-skills/' %}class="active"{% endif %}><a href="{% url 'fresher_jobs_by_skills' 'walkin' %}">Walkin Jobs <span class="sr-only">(current)</span></a></li>
+                          <li {% if request.path == '/jobs/' %}class="active"{% endif %}><a href="{% url 'job_list'  %}">Latest Jobs <span class="sr-only">(current)</span></a></li>
+                          <!-- <li {% if request.path == '/walkin-jobs-by-skills/' %}class="active"{% endif %}><a href="{% url 'fresher_jobs_by_skills' 'walkin' %}">Walkin Jobs <span class="sr-only">(current)</span></a></li> -->
+                          <!-- <li {% if request.path == '/jobs-by-skills/' %}class="active"{% endif %}><a href="{% url 'fresher_jobs_by_skills' 'fresher' %}">Fresher Jobs <span class="sr-only">(current)</span></a></li>
+                           <li {% if request.path == '/walkin-jobs-by-skills/' %}class="active"{% endif %}><a href="{% url 'fresher_jobs_by_skills' 'walkin' %}">Walkin Jobs <span class="sr-only">(current)</span></a></li> -->
                           {% if request.user.user_type == 'JS' %}
                           <li><a href="{% url 'jobs:jobs_applied' %}">Applied Jobs</a></li>
                           {% endif %}
@@ -279,14 +281,14 @@
             <div class="row mar_lr_0">
               {% block pj_info %}
                 <div class="col-md-4 col-sm-12 col-xs-12 about">
-                  <strong class="logo">Peeljobs</strong>
-                  <p>Peeljobs is a platform to connect recruiters and job seekers from all over India. The features which make us stand out amongst the many available job portals is our uniqueness and the ease of use of our platform. We have many free of cost services in the platter, to offer to Job-seekers as well as to the recruiters.</p>
+                  <strong class="logo">EEUJobs</strong>
+                  <p>EEUJobs is a platform to connect recruiters and job seekers from all over Ethiopia. The features which make us stand out amongst the many available job portals is our uniqueness and the ease of use of our platform. We have many free of cost services in the platter, to offer to Job-seekers as well as to the recruiters.</p>
                 </div>
               {% endblock %}
               <div class="col-md-5 col-sm-12 col-xs-12 links">
                 <ul class="footer_links">
                   <li class="text-uppercase">About Us</li>
-                  <li><a href="{% url 'pages' 'about-us' %}" target="_blank">About Peeljobs</a></li>
+                  <li><a href="{% url 'pages' 'about-us' %}" target="_blank">About EEUJobs</a></li>
                   <li><a href="/blog/" target="_blank">Blog</a></li>
                   <li><a href="{% url "sitemap" %}" target="_blank">Sitemap</a></li>
                   <li><a href="{% url 'pages' 'terms-conditions' %}" target="_blank">Terms &amp; Conditions</a></li>
@@ -326,13 +328,13 @@
                 {% cache 604800 social_footer_links %}
                 <div class="social_links text-center">
                   <ul>
-                    <li><a target="_blank" href="https://facebook.com/peeljobs/"><i class="fa fa-facebook"></i></a></li>
-                    <li><a target="_blank" href="https://www.linkedin.com/company/peeljobs?trk=top_nav_home"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a target="_blank" href="https://plus.google.com/b/105171863747311260917/105171863747311260917"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a target="_blank" href="https://twitter.com/PeelJobs"><i class="fa fa-twitter"></i></a></li>
+                    <li><a target="_blank" href="https://facebook.com/EEUJobs/"><i class="fa fa-facebook"></i></a></li>
+                    <li><a target="_blank" href="https://www.linkedin.com/company/EEUJobs?trk=top_nav_home"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a target="_blank" href="https://plus.google.com/b/105171863747311260917/105171863747311260917"><i class="fa fa-google"></i></a></li>
+                    <li><a target="_blank" href="https://twitter.com/EEUJobs"><i class="fa fa-twitter"></i></a></li>
                   </ul>
                 </div>
-                <div class="copy_right text-center">Copyright &copy; {% now "Y" %} Peeljobs.com<br><a href="https://micropyramid.com" title="MicroPyramid Informatics Private Ltd" target="_blank">Development + SEO by MicroPyramid</a>
+                <div class="copy_right text-center">Copyright &copy; {% now "Y" %} eeujobs.com<br><a href="https://micropyramid.com" title="MicroPyramid Informatics Private Ltd" target="_blank">Development by Robel Gulima</a>
                 </div>
                 {% endcache %}
               </div>
@@ -423,7 +425,7 @@
                         <option value="">Choose required location</option>
                         {% get_all_cities as all_cities %}
                         {% for city in all_cities %}
-                          {% if not 'India' in city.name %}
+                          {% if not 'Ethiopia' in city.name %}
                             <option value="{{ city.id }}">{{ city.name }}</option>
                           {% endif %}
                         {% endfor %}
@@ -454,7 +456,7 @@
                       </span>
                       <p class="help_text">doc, docx, pdf, odt - 500kb max</p>
                       <div>
-                        <input type="checkbox" name="email_notifications"> <span>I agree to receive notifications from PeelJobs</span>
+                        <input type="checkbox" name="email_notifications"> <span>I agree to receive notifications from EEUJobs</span>
                       </div>
                     </div>
                   </div>
@@ -482,7 +484,7 @@
                       <li><a href="{}" class="facebook"><i class="fa fa-facebook"></i></a></li>
                       <li><a href="{}" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                       <li><a href="{}" class="github"><i class="fa fa-github"></i></a></li>
-                      <li><a href="{}" class="gplus"><i class="fa fa-google-plus"></i></a></li>
+                      <li><a href="{}" class="gplus"><i class="fa fa-google"></i></a></li>
                     </ul>
                   </div>
                 </div>

@@ -49,8 +49,10 @@
       <span class="content" itemprop="salaryCurrency"> 
       {% if job.min_salary == 0 and job.max_salary == 0 %}
       Not Specified
+      {% elif job.min_salary == job.max_salary   %}
+      Birr {{ job.get_job_salary.0 }} per month
       {% else %}
-      <i class="fa fa-inr" aria-hidden="true"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} P.A
+      Birr {{ job.get_job_salary.0 }}  per month
       {% endif %}</span>
     </div>
     <div class="description row">
@@ -311,7 +313,11 @@
       <div class="description row">
         <span class="head">Salary :</span>
         <span class="content" itemprop="salaryCurrency">
-          <i class="fa fa-inr" aria-hidden="true"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} P.A
+          {% if job.min_salary != job.max_salary %}
+            Birr {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} per month
+          {% else %}
+             Birr {{ job.get_job_salary.0 }} per month
+          {% endif %}
         </span>
       </div>
     {% endif %}
@@ -501,7 +507,7 @@
             <i class="fa fa-twitter fa-lg tw"></i>
             </a>
             <a class="btn btn-default btn-xs" target="_blank" title="On Google Plus" href="https://plusone.google.com/_/+1/confirm?hl=en&amp;url=http%3A%2F%2Fostr.io/code/html-social-like-share-buttons-no-javascript.html">
-            <i class="fa fa-google-plus fa-lg google"></i>
+            <i class="fa fa-google fa-lg google"></i>
             </a>
             <a class="btn btn-default btn-xs" target="_blank" title="On LinkedIn" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http%3A%2F%2Fostr.io/code/html-social-like-share-buttons-no-javascript.html">
             <i class="fa fa-linkedin fa-lg linkin"></i>

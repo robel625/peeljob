@@ -2,14 +2,14 @@
 {% load thumbnail %}
 {% load page_tags %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 
 {% block block_title %}
-  <title>Free Job Posting - Job Vacancies - Job search in India - PeelJobs</title>
-  <meta name="description" content="PeelJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
-  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, peeljobs.com" />
-  <meta property="og:url" content="https://peeljobs.com{{ request.path }}" />
+  <title>Free Job Posting - Job Vacancies - Job search in Ethiopia - EEUJobs</title>
+  <meta name="description" content="EEUJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
+  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, eeujobs.com" />
+  <meta property="og:url" content="https://eeujobs.com{{ request.path }}" />
 {% endblock %}
 
 {% block stage %}
@@ -36,11 +36,11 @@
         <div class='job_detail'>
           <span class='heading'>Salary</span>
           <span>
-             {% if job_alert.min_salary and job_alert.max_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary|get_formatted_salary }} - {{ job_alert.max_salary|get_formatted_salary }}
+             {% if job_alert.min_salary and job_alert.max_salary %}Birr {{ job_alert.min_salary }} - {{ job_alert.max_salary }}
       {% elif job_alert.min_salary %}
-      <i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary|get_formatted_salary }} 
+      Birr {{ job_alert.min_salary }} 
        {% elif job_alert.max_salary %}
-      <i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.max_salary|get_formatted_salary }}
+      Birr {{ job_alert.max_salary }}
       {% else %}
       Not Specified
      {% endif %}

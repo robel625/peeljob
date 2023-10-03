@@ -54,7 +54,7 @@
                         <ul>
                           <li><strong>Skills : </strong> {% for skill in post.get_skills %}{{ skill.name }}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</li>
                           <li><strong>Functional Area : </strong> {%for location in post.functional_area.all %}{{ location.name }}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</li>
-                          <li><strong>Salary : </strong> {% if post.min_salary == 0 and post.max_salary == 0 %}Not Specified{% else %}<i class="fa fa-inr" aria-hidden="true"></i> {{ post.get_job_salary.0 }} - {{ post.get_job_salary.1 }}  {% endif %} </li>
+                          <li><strong>Salary : </strong> {% if post.min_salary == 0 and post.max_salary == 0 %}Not Specified{% else %}Birr {{ post.get_job_salary.0 }} - {{ post.get_job_salary.1 }}  {% endif %} </li>
                           <li><strong>Job Role : </strong> {{ post.job_role }} </li>
                         </ul>
                       </div>

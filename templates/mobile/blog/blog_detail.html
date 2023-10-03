@@ -13,7 +13,7 @@
         <!-- blog_item starts here -->
         <div class="blog_item blog_detail_item">
           <div class="blog_date text-uppercase" itemprop="datePublished">{{ blog_name.created_on|date:"F d, Y" }}</div>
-          <h1 class="blog_title" itemprop="headline"><a href="https://peeljobs.com/blog/time-to-move-to-new-job-top-companies-are-hiring-candidates/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog_name.title }}</a></h1>
+          <h1 class="blog_title" itemprop="headline"><a href="https://eeujobs.com/blog/time-to-move-to-new-job-top-companies-are-hiring-candidates/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog_name.title }}</a></h1>
           <span class="category"><strong>Category :</strong> <a href="{% url 'selected_category' category_slug=blog_name.category.slug %}">{{ blog_name.category }}</a></span>
           <div class="desc">
            {{ blog_name.content|safe }}
@@ -36,7 +36,7 @@
         <a target="_blank" href="https://plus.google.com/share?hl=en-US&url={{short_url}}" class="google social"><span class="social_each gplus"><span class="pj-googleplus i"></span></span></a>
         <a target="_blank" href="https://twitter.com/intent/tweet?text={{blog_name.title}}&url={{short_url}}&via={{blog_title}}"><span class="social_each twit"><span class="pj-twitter i"></span></span></a>
         <a href="whatsapp://send?text={{short_url}}" data-action="share/whatsapp/share"><span class="social_each whatsapp"><i class="fa fa-whatsapp i" style="top:0px;"></i></span></a>
-        <a href="mailto:?subject=Peeljobs%20Job%20post%20sharing&body=https://peeljobs.com/blog/{{ blog.slug }}/" target="_blank" ><span class="social_each mail"><span class="pj-mail i"></span></span></a>
+        <a href="mailto:?subject=Peeljobs%20Job%20post%20sharing&body=https://eeujobs.com/blog/{{ blog.slug }}/" target="_blank" ><span class="social_each mail"><span class="pj-mail i"></span></span></a>
       </div>
       {% if related_posts %}
       <div class="related_posts_container">
@@ -44,7 +44,7 @@
         <!-- related_blog_item starts here -->
         {% for post in related_posts %}
           <div class="blog_item">
-            <div class="blog_title" itemprop="headline"><a href="https://peeljobs.com/blog/{{ post.slug }}/" target="_blank" itemprop="name headline mainEntityOfPage">{{ post.title }}</a></div>
+            <div class="blog_title" itemprop="headline"><a href="https://eeujobs.com/blog/{{ post.slug }}/" target="_blank" itemprop="name headline mainEntityOfPage">{{ post.title }}</a></div>
             <span class="category">
               <strong>Category :</strong>
               <a href="{% url 'selected_category' category_slug=post.category.slug %}"  target="_blank" >{{ post.category }}</a>

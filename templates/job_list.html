@@ -44,6 +44,11 @@
             {{job.company_name|capfirst}}
           {% endif %}
         {% endif %}
+        {% if job.job_role %}
+           <div class="description">
+            <span >{{job.job_role}}</span>
+          </div>
+        {% endif %}
         <span class="pull-right"></span></span>
         <div class="ind_type sty">
           <i class="fa fa-briefcase"></i>
@@ -75,6 +80,7 @@
             </div>
           </div>
         {% endif %}
+        
         <div class="description clearfix">
           <span class="head">Description :</span>
           <div class="content">{{ job.description|safe|truncatewords_html:15 }}</div>
@@ -83,7 +89,7 @@
         <div class="job_bottom">
           {% if job.min_salary != 0 and job.max_salary != 0 %}
             <span class="sal">
-              <i class="fa fa-inr"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} P.A
+              <i class="fa fa-inr"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} per month
             </span>
           {% endif %}
             <span class="pull-right sal">

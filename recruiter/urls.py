@@ -7,7 +7,7 @@ from recruiter.views import new_user, user_password_reset, change_password, user
 from recruiter.views import verify_mobile, send_mobile_verification_code, edit_profile, account_activation, twitter_login, resume_edit
 from recruiter.views import view_company, edit_company, upload_profilepic, company_recruiter_list, messages, resume_upload, resume_pool, google_connect
 from recruiter.views import add_menu, edit_menu, delete_menu, menu_status, menu_order, interview_location, enable_email_notifications, google_login
-from recruiter.views import company_recruiter_create, edit_company_recruiter, delete_company_recruiter, activate_company_recruiter, company_recruiter_profile, download_applicants
+from recruiter.views import company_recruiter_create, edit_company_recruiter, delete_company_recruiter, activate_company_recruiter, company_recruiter_profile, download_applicants,view_applicant_email
 
 app_name = "recruiter"
 
@@ -110,5 +110,8 @@ urlpatterns = [
 
     re_path(r'^job/interview-location/(?P<location_count>[a-zA-Z0-9]+)/$',
         interview_location, name="interview_location"),
+
+    re_path(r'^job/view/(?P<job_id>[a-zA-Z0-9_-]+)/(?P<user_email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$',
+        view_applicant_email, name='view_applicant_email'),
 
 ]

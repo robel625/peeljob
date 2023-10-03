@@ -4,18 +4,28 @@ services:
 
   web:
     restart: always
-    container_name: web_peelJobs
+    container_name: web_EEUJobs
     build:
       context: .
-    # command: python3 manage.py runserver 0.0.0.0:8000
-    command: gunicorn jobsp.wsgi:application --bind 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py collectstatic
+             python manage.py compress
+             python3 manage.py runserver 0.0.0.0:8000"
+    # command: >
+    #   sh -c "python manage.py collectstatic
+    #          python manage.py compress
+    #          uwsgi --module=jobsp.wsgi --http=0.0.0.0:8000"
+    # command:  >
+    #   sh -c "python manage.py collectstatic
+    #          python manage.py compress
+    #          gunicorn jobsp.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/usr/src/app
-      - static_files:/usr/src/app/staticfiles/
-    expose:
-     - 8000
-    # ports:
-    #   - "8000:8000"
+      # - static_files:/usr/src/app/staticfiles/
+    # expose:
+    #  - 8000
+    ports:
+      - "8000:8000"
     depends_on:
       - redis
       - pgdb
@@ -31,16 +41,16 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  # pgadmin:
-  #   container_name: pgadmin4
-  #   image: dpage/pgadmin4
-  #   restart: always
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
 
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: a@a.com
-  #     PGADMIN_DEFAULT_PASSWORD: password
-  #   ports:
-  #     - "5050:5050"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@a.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "5050:80"
 
   
   mongodb:
@@ -114,9 +124,9 @@ services:
   #   image: mher/flower
   #   environment:
   #     - CELERY_BROKER_URL=redis://redis:6379/0
-  #     - FLOWER_PORT=8888
+  #     - FLOWER_PORT=2882
   #   ports:
-  #     - 8888:8888
+  #     - 2882:2882
 
   # kibana:
   #   image: docker.elastic.co/kibana/kibana-oss:7.10.2
@@ -128,16 +138,16 @@ services:
   #     - 'ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]'
 
 
-  nginx:
-    build:
-      context: ./nginx/
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-      - static_files:/home/app/staticfiles/
-    depends_on:
-      - web
+  # nginx:
+  #   build:
+  #     context: ./nginx/
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - ./nginx/conf.d/:/etc/nginx/conf.d/
+  #     - static_files:/home/app/staticfiles/
+  #   depends_on:
+  #     - web
 
 
   # dns:
@@ -152,5 +162,5 @@ services:
   #     - ./dns/zone/:/etc/bind/zone/
   #   command: named -c /etc/bind/named.conf -g -u named
     
-volumes:
-  static_files:
+# volumes:
+#   static_files:

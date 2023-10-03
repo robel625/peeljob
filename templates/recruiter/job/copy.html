@@ -91,7 +91,7 @@
                             <select class="input" name='agency_job_type' id="agency_job_type">
                               <option value=''>Select A Job Type</option>
                               {% for agency_job_type in agency_job_types %}
-                              <option value="{{ agency_job_type.0 }}" {% if agency_job_type.0 job_post.agency_job_type %}selected{% endif %}>{{ agency_job_type.1 }}</option>
+                              <option value="{{ agency_job_type.0 }}" {% if agency_job_type.0 == job_post.agency_job_type %}selected{% endif %}>{{ agency_job_type.1 }}</option>
                               {% endfor %}
                             </select>
                           </div>
@@ -104,7 +104,7 @@
                         <select class="input" name="agency_invoice_type" id="agency_invoice_type">
                           <option value=''>Select Invoice Type</option>
                           {% for invoice in agency_invoice_types %}
-                          <option value="{{ invoice.0 }}" {% if invoice.0 job_post.agency_invoice_type %}selected{% endif %}>{{ invoice.1 }}</option>
+                          <option value="{{ invoice.0 }}" {% if invoice.0 == job_post.agency_invoice_type %}selected{% endif %}>{{ invoice.1 }}</option>
                           {% endfor %}
                         </select>
                          <span>If you are a consultancy choose your invoice type to get amount from your client company</span>
@@ -126,7 +126,7 @@
                               {% for recruiter in recruiters %}
                                 {% if recruiter.agency_admin or recruiter|check_recruiter_perm:"jobposts_edit"  %}
 
-                                <option value="{{recruiter.id}}" {% if recruiter in job_post.agency_recruiters.all %}selected{% endif %} {% if request.user.email recruiter.email %} selected{% endif %}>{{ recruiter.email }}</option>
+                                <option value="{{recruiter.id}}" {% if recruiter in job_post.agency_recruiters.all %}selected{% endif %} {% if request.user.email == recruiter.email %} selected{% endif %}>{{ recruiter.email }}</option>
                                 {% endif %}
                               {% endfor %}
                             </select>
@@ -140,7 +140,7 @@
                           <select class="input" name='agency_client' id="agency_client">
                             <option value=''>Select A Client</option>
                             {% for each in clients %}
-                            <option value="{{ each.id }}" {% if job_post.agency_client.id each.id  %}selected{% endif %}>{{ each.name }}</option>
+                            <option value="{{ each.id }}" {% if job_post.agency_client.id == each.id  %}selected{% endif %}>{{ each.name }}</option>
                             {% endfor %}
                           </select>
                            <span class="hint">
@@ -309,7 +309,7 @@
                             <select class="input experience pull-right" name="max_month" id="max_month">
                             <option value="" default>Max Month</option>
                             {% for month in months%}
-                            {% if job_post.min_year|slugify  job_post.max_year|slugify %}
+                            {% if job_post.min_year|slugify ==  job_post.max_year|slugify %}
                               <option id="{{ forloop.counter }}" value="{{ month.0 }}" {% if job_post.max_month|slugify == month.0 %} selected {% endif %}>{{ month.1 }}</option>
                             {% else %}
                               <option id="{{ forloop.counter }}" value="{{ month.0 }}" {% if job_post.max_month|slugify == month.0 %} selected {% endif %} {% if job_post.min_year >= job_post.max_year %} class="max_experience" {% endif %}>{{ month.1 }}</option>
@@ -363,7 +363,7 @@
                           <select class="input select2" name="visa_country" id="visa_country">
                             <option value="">Visa Country</option>
                             {% for country in countries %}
-                            <option value="{{country.id}}" {% if country.id job_post.visa_country.id %} selected {% endif %}>{{country.name}}</option>
+                            <option value="{{country.id}}" {% if country.id == job_post.visa_country.id %} selected {% endif %}>{{country.name}}</option>
                             {% endfor %}
                           </select>
                         </div>
@@ -587,12 +587,13 @@
                         <div class="input_element row marl_15">
                           <label class="col-md-3">Message</label>
                           <div class="col-md-9 pad_lr_0">
-                          <textarea class="input" id='published_message' name="published_message" rows="3" title="The message which you enter will display in peeljobs facebook page">{{ job_post.published_message }}</textarea>
-                           <span class="hint">It will be displayed in all peeljobs social networking sites to reach right candidates. <strong data-toggle="modal" data-target="#myModal" class="mytip"> View sample</strong>
+                          <textarea class="input" id='published_message' name="published_message" rows="3" title="The message which you enter will display in EEUJobs facebook page">{{ job_post.published_message }}</textarea>
+                           <span class="hint">It will be displayed in all EEUJobs social networking sites to reach right candidates. 
+                            <!-- <strong data-toggle="modal" data-target="#myModal" class="mytip"> View sample</strong> -->
 
                           <span style="display:none" class="mylist">
                             <ol type="1" >
-                              <li>The message will be displayed in all peeljobs social networking sites to reach right candidates.</li>
+                              <li>The message will be displayed in all EEUJobs social networking sites to reach right candidates.</li>
                               <li>It should represent and enhance the Job Role</li>
                             <li>View Sample below</li>
                             </ol>

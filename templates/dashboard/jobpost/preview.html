@@ -38,7 +38,7 @@
                 <span class='row mt'>
                 <label>Salary</label>
                 <span class='content'>{% if job.min_salary == 0 and job.max_salary == 0 %}Not Specified{% else %}
-                <i class="fa fa-inr" aria-hidden="true"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} P.A{% endif %}</span>
+                Birr {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} per month{% endif %}</span>
                 </span>
                 <span class='row mt'>
                 <label>Job Type</label>

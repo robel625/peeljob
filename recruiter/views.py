@@ -133,7 +133,7 @@ def inactive_jobs(request):
 
 def add_other_skills(job_post, data, user):
     temp = loader.get_template('recruiter/email/add_other_fields.html')
-    subject = "PeelJobs New JobPost"
+    subject = "EEUJobs New JobPost"
     mto = [settings.DEFAULT_FROM_EMAIL]
     mfrom = settings.DEFAULT_FROM_EMAIL
     for skill in data:
@@ -155,7 +155,7 @@ def add_other_skills(job_post, data, user):
 
 def add_other_qualifications(job_post, data, user):
     temp = loader.get_template('recruiter/email/add_other_fields.html')
-    subject = "PeelJobs New JobPost"
+    subject = "EEUJobs New JobPost"
     mto = [settings.DEFAULT_FROM_EMAIL]
     mfrom = settings.DEFAULT_FROM_EMAIL
     for qualification in data:
@@ -176,7 +176,7 @@ def add_other_qualifications(job_post, data, user):
 
 def add_other_industry(job_post, data, user):
     temp = loader.get_template('recruiter/email/add_other_fields.html')
-    subject = "PeelJobs New JobPost"
+    subject = "EEUJobs New JobPost"
     mto = [settings.DEFAULT_FROM_EMAIL]
     mfrom = settings.DEFAULT_FROM_EMAIL
 
@@ -199,7 +199,7 @@ def add_other_industry(job_post, data, user):
 
 def add_other_functional_area(job_post, data, user):
     temp = loader.get_template('recruiter/email/add_other_fields.html')
-    subject = "PeelJobs New JobPost"
+    subject = "EEUJobs New JobPost"
     mto = [settings.DEFAULT_FROM_EMAIL]
     mfrom = settings.DEFAULT_FROM_EMAIL
 
@@ -304,7 +304,7 @@ def retreving_form_errors(request, post):
 
 def add_other_locations(post, data, user):
     temp = loader.get_template('recruiter/email/add_other_fields.html')
-    subject = "PeelJobs New JobPost"
+    subject = "EEUJobs New JobPost"
     mto = [settings.DEFAULT_FROM_EMAIL]
     mfrom = settings.DEFAULT_FROM_EMAIL
     for location in data.getlist('other_location'):
@@ -461,13 +461,14 @@ def save_job_post(validate_post, request):
     validate_post.company = job_post_company
     validate_post.slug = get_absolute_url(validate_post)
     validate_post.save()
+    print("yeyeye1")
 
     if request.user.is_admin and request.user.is_agency_recruiter:
         for recruiter in request.POST.getlist('agency_recruiters'):
             user = User.objects.get(id=recruiter)
             c = {'job_post': validate_post, 'user': user}
             t = loader.get_template('email/assign_jobpost.html')
-            subject = "PeelJobs New JobPost"
+            subject = "EEUJobs New JobPost"
             rendered = t.render(c)
             mfrom = settings.DEFAULT_FROM_EMAIL
             user_active = True if user.is_active else False
@@ -553,11 +554,11 @@ def new_job(request, status):
         adding_other_fields_data(request.POST, validate_post, request.user)
         c = {'job_post': validate_post, 'user': request.user}
         t = loader.get_template('email/jobpost_notification.html')
-        subject = "PeelJobs New JobPost"
+        subject = "EEUJobs New JobPost"
         rendered = t.render(c)
         mto = ['anusha@micropyramid.com']
         mfrom = settings.DEFAULT_FROM_EMAIL
-        Memail(mto, mfrom, subject, rendered, True)
+        # Memail(mto, mfrom, subject, rendered, True)
         data = {'error': False, 'response': 'New Post created', 'post': validate_post.id}
         return HttpResponse(json.dumps(data))
     data = {'error': True, 'response': errors}
@@ -696,11 +697,11 @@ def copy_job(request, status):
         adding_other_fields_data(request.POST, validate_post, request.user)
         c = {'job_post': validate_post, 'user': request.user}
         t = loader.get_template('email/jobpost_notification.html')
-        subject = "PeelJobs New JobPost"
+        subject = "EEUJobs New JobPost"
         rendered = t.render(c)
         mto = ['anusha@micropyramid.com']
         mfrom = settings.DEFAULT_FROM_EMAIL
-        Memail(mto, mfrom, subject, rendered, True)
+        # Memail(mto, mfrom, subject, rendered, True)
         data = {'error': False, 'response': 'Job Post Created Successfully', 'post': validate_post.id}
         return HttpResponse(json.dumps(data))
     return HttpResponse(json.dumps({'error': True, 'response': errors}))
@@ -898,7 +899,7 @@ def enable_job(request, job_post_id):
     #     fb_group = FacebookGroup.objects.get(user=request.user, group_id=group.page_or_group_id)
     #     is_active = True
     #     postongroup.delay(request.user, job_post, fb_group, is_active)
-    #     # need to get accetoken for peeljobs twitter page
+    #     # need to get accetoken for EEUJobs twitter page
     # if job_post.post_on_tw:
     #     postontwitter.delay(request.user, job_post, 'Profile')
     #     # postontwitter(request.user, post, 'Page')
@@ -931,7 +932,7 @@ def applicants(request, job_post_id):
         next_count = AppliedJobs.objects.filter(job_post_id=job_post_id, status=request.POST.get('status')).count()
         prev_count = AppliedJobs.objects.filter(job_post_id=job_post_id, status=prev_status).count()
         temp = loader.get_template('email/applicant_apply_job.html')
-        subject = "Application Status - PeelJobs"
+        subject = "Application Status - EEUJobs"
         if request.POST.get('type') == 'resume':
             mto = [user.resume_applicant.email]
         else:
@@ -1121,7 +1122,7 @@ def new_user(request):  # pragma: no mccabe
                     user_obj.save()
 
                     temp = loader.get_template('recruiter/email/recruiter_account.html')
-                    subject = "PeelJobs Recruiter Account Activation"
+                    subject = "EEUJobs Recruiter Account Activation"
                     mto = [request.POST.get('email')]
                     mfrom = settings.DEFAULT_FROM_EMAIL
                     if 'client_type' in request.POST and request.POST['client_type'] == "company":
@@ -1134,10 +1135,10 @@ def new_user(request):  # pragma: no mccabe
                                 'HTTP_HOST'] + "/recruiter/activation/" + str(user_obj.activation_code) + "/"
                     c = {'activate_url': url, 'user': user_obj, 'user_password': request.POST['password']}
                     rendered = temp.render(c)
-                    Memail(mto, mfrom, subject, rendered, False)
+                    # Memail(mto, mfrom, subject, rendered, False)
 
-                    UserEmail.objects.create(
-                        user=user_obj, email=request.POST['email'], is_primary=True)
+                    # UserEmail.objects.create(
+                    #     user=user_obj, email=request.POST['email'], is_primary=True)
 #                     user = authenticate(
 #                         username=request.POST['email'], password=request.POST['password'])
 #                     if not request.user.is_authenticated:
@@ -1148,10 +1149,11 @@ def new_user(request):  # pragma: no mccabe
 #                                     break
 #                         if hasattr(user_obj, 'backend'):
 #                             login(request, user_obj)
-                    user = authenticate(username=request.POST['username'])
-                    login(request, user)
-                    data = {'error': False, 'message': 'An email has been sent to your email id, Please activate your account',
-                            'is_company_recruiter': request.user.is_company_recruiter()}
+                    # user = authenticate(username=request.POST['username'])
+                    # login(request, user)
+                    data = {'error': False, 'message': 'registered, Our team will review your registration and activate your account shortly'}
+                    # data = {'error': False, 'message': 'An email has been sent to your email id, Please activate your account',
+                    #         'is_company_recruiter': request.user.is_company_recruiter()}
                     return HttpResponse(json.dumps(data))
             else:
                 data = {'error': True, 'captcha_response': 'Choose Correct Captcha'}
@@ -1208,13 +1210,13 @@ def user_password_reset(request):
                     temp = loader.get_template('email/subscription_success.html')
                 else:
                     temp = loader.get_template('recruiter/email/activate.html')
-                subject = "Password Reset - PeelJobs"
+                subject = "Password Reset - EEUJobs"
                 mto = [request.POST.get('email')]
                 mfrom = settings.DEFAULT_FROM_EMAIL
                 try:
                     url =  request.scheme + '://' + request.META['HTTP_HOST'] + "/user/set_password/" + str(usr.id) + '/' + str(randpwd) + '/'
                 except:
-                    url = 'https://peeljobs.com' + reverse("recruiter:new_user")
+                    url = 'https://eeujobs.com' + reverse("recruiter:new_user")
                 if not usr.is_active:
                     if usr.company:
                         url = request.scheme + '://' + request.META['HTTP_HOST'] + "/agency/activation/" + str(usr.activation_code) + "/"
@@ -1298,7 +1300,7 @@ def send_mobile_verification_code(request):
         user = request.user
         random_code = rand_string(size=6)
         # message = 'Hello ' + request.user.username + ', An OTP ' + random_code + \
-        #     ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+        #     ' for your EEUJobs recruiter account, Please Confirm and Proceed'
         # data = {"username": settings.BULK_SMS_USERNAME, "password": settings.BULK_SMS_PASSWORD,
         #         "from": settings.BULK_SMS_FROM, "to": user.mobile, "message": message}
         # requests.get("https://182.18.160.225/index.php/api/bulk-sms", params=data)
@@ -1359,7 +1361,7 @@ def index(request):
                     if password_reset_diff > 600:
                         random_code = rand_string(size=6)
                         message = 'Hello ' + user.username + ', An OTP ' + random_code + \
-                            ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+                            ' for your EEUJobs recruiter account, Please Confirm and Proceed'
 
                         data = {"username": settings.BULK_SMS_USERNAME, "password": settings.BULK_SMS_PASSWORD,
                                 "from": settings.BULK_SMS_FROM, "to": user.mobile, "message": message}
@@ -1395,7 +1397,7 @@ def index(request):
                             'HTTP_HOST'] + "/recruiter/activation/" + str(user.activation_code) + "/"
                 c = {'activate_url': url, 'user': user}
                 rendered = temp.render(c)
-                Memail([request.POST.get('email')], settings.DEFAULT_FROM_EMAIL, "PeelJobs Recruiter Account Activation", rendered, False)
+                Memail([request.POST.get('email')], settings.DEFAULT_FROM_EMAIL, "EEUJobs Recruiter Account Activation", rendered, False)
                 data = {'error': True, 'is_login': True, 'is_company_recruiter': user.is_company_recruiter(),
                         'message': "Your account is inactive, We Have sent a confirmation mail to your registered Email ID.",
                         }
@@ -1463,7 +1465,7 @@ def edit_profile(request):
             if password_reset_diff > 600:
                 random_code = rand_string(size=6)
                 message = 'Hello ' + request.user.username + ', An OTP ' + random_code + \
-                    ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+                    ' for your EEUJobs recruiter account, Please Confirm and Proceed'
                 data = {"username": settings.BULK_SMS_USERNAME, "password": settings.BULK_SMS_PASSWORD,
                         "from": settings.BULK_SMS_FROM, "to": request.POST.get('mobile'), "message": message}
                 # requests.get("http://182.18.160.225/index.php/api/bulk-sms", params=data)
@@ -2043,7 +2045,7 @@ def interview_location(request, location_count):
 def registration_success(request):
     user = request.user
     random_code = rand_string(size=6)
-    message = 'Hello ' + user.username + ', An OTP ' + random_code + ' for your Peeljobs recruiter account, Please Confirm and Proceed'
+    message = 'Hello ' + user.username + ', An OTP ' + random_code + ' for your EEUJobs recruiter account, Please Confirm and Proceed'
     data = {"username": settings.SMS_AUTH_KEY, "password": settings.BULK_SMS_PASSWORD, "from": settings.BULK_SMS_FROM, "to": user.mobile, "message": message}
     # requests.get("http://182.18.160.225/index.php/api/bulk-sms", params=data)
     url = 'http://sms.9sm.in/rest/services/sendSMS/sendGroupSms?AUTH_KEY='+str(settings.SMS_AUTH_KEY) + '&message=' + str(message)
@@ -2239,12 +2241,12 @@ def company_recruiter_create(request):
                 url = 'https://' + request.META['HTTP_HOST'] + \
                     "/recruiter/activation/" + str(user.activation_code) + "/"
             except:
-                url = 'https://peeljobs.com' + \
+                url = 'https://eeujobs.com' + \
                     "/recruiter/activation/" + str(user.activation_code) + "/"
             c = {'user': user, 'activate_url': url, 'user_password': request.POST['password']}
             rendered = temp.render(c)
             # user_active = True if request.user.is_active else False
-            Memail([user.email], settings.DEFAULT_FROM_EMAIL, "PeelJobs Recruiter Account Activation", rendered, False)
+            Memail([user.email], settings.DEFAULT_FROM_EMAIL, "EEUJobs Recruiter Account Activation", rendered, False)
             data = {
                 'error': False, 'response': 'Recruiter Created Successfully'}
             return HttpResponse(json.dumps(data))
@@ -2900,3 +2902,13 @@ def download_applicants(request, jobpost_id, status):
                          'mobile': user.user.mobile, 'resume': stored_url, 'status': status,
                          'permanent_address': user.user.permanent_address})
     return response
+
+
+
+def view_applicant_email(request,job_id, user_email):
+    applicants = User.objects.filter(email=user_email)
+    if applicants:
+        return render(request, 'dashboard/jobseeker/view.html', {"applicant": applicants[0]})
+    message = 'Sorry, the page you requested can not be found'
+    reason = "The URL may be misspelled or the page you're looking for is no longer available."
+    return render(request, 'dashboard/404.html', {'message_type': '404', 'message': message, 'reason': reason}, status=404)

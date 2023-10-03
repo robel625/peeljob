@@ -16,9 +16,9 @@ def refined_search(data):
 
     location = data.getlist('refine_location') if 'refine_location' in data else []
     searched_locations = City.objects.filter(name__in=location)
-    if 'Across India' in location:
-        india = Country.objects.filter(name='India')
-        sqs = sqs.filter_and(SQ(location__in=india.values_list('state__state__name', flat=True)))
+    if 'Across Ethiopia' in location:
+        ethiopia = Country.objects.filter(name='Ethiopia')
+        sqs = sqs.filter_and(SQ(location__in=ethiopia.values_list('state__state__name', flat=True)))
     elif location:
         other_cities = searched_locations.values_list('parent_city__name', flat=True)
         sqs = sqs.filter_and(SQ(location__in=location) | SQ(location__in=other_cities))

@@ -97,7 +97,7 @@
                 <li ><a href="{% url 'social:facebook_login' %}" target="_blank"><i class='fa fa-facebook fb'></i></a></li>
                 <li ><a href="{}" target="_blank"><i class='fa fa-linkedin in'></i></a></li>
                 <li ><a href="{% url 'social:github_login' %}" target="_blank"><i class='fa fa-github git'></i></a></li>
-                <li ><a href="{}" target="_blank"><i class='fa fa-google-plus gplus'></i></a></li>
+                <li ><a href="{}" target="_blank"><i class='fa fa-google gplus'></i></a></li>
 
               </ul>
             </div>
@@ -116,11 +116,11 @@
       <div class="row mar_lr_0">
         <div class="col-md-9 left_container">
           <!-- register_block starts here -->
-          <div class="row mar_lr_0 register_block">
+          <!-- <div class="row mar_lr_0 register_block">
             <div class="col-md-4 col-sm-4 register_point border new_account">
               <div class="text-center register_col">
                 <a class="new_account" ><strong>Sign Up For Today</strong></a>
-                <p>Get started with Peeljobs and find your dream job today!</p>
+                <p>Get started with EEUJobs and find your dream job today!</p>
               </div>
             </div>
             <div class="col-md-4 col-sm-4 register_point border redirect_link" data-href="{% url 'my:alerts_list'%}">
@@ -135,16 +135,16 @@
                 <p>Want to place in a better position? Learn few tips from our blog..!</p>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- register_block ends here -->
           <!-- skills_companies starts here -->
-          <div class="row mar_lr_0 skills_locations">
-            <!-- Nav tabs -->
+          <!-- <div class="row mar_lr_0 skills_locations">
+            
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Top Skills</a></li>
               <li role="presentation"  ><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Top companies</a></li>
             </ul>
-            <!-- Tab panes -->
+            
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="home">
                 <div class="row image_row">
@@ -198,9 +198,6 @@
                     <div class="col-md-2 col-sm-3 col-xs-3 image_col">
                     <a href="/ravsoft-solutions-india-pvt-ltd-job-openings/" target="_blank" class='company_logo'><img src="https://cdn.peeljobs.com/companies/rav.png" alt="RAVSoft Solutions India Pvt Ltd"/></a>
                     </div>
-                    <!--<div class="col-md-2 col-sm-3 col-xs-3 image_col">
-                    <a href="/zealous-services-chennai-job-openings/" target="_blank" class='company_logo'><img src="{{ STATIC_URL }}dummy.jpg" alt="Zealous Services,Chennai"/></a>
-                    </div>-->
                     <div class="col-md-2 col-sm-3 col-xs-3 image_col">
                     <a href="/3dplm-software-solutions-limited-job-openings/" target="_blank" class='company_logo'><img src="https://cdn.peeljobs.com/companies/3d.png" alt="3DPLM Software Solutions Limited"/></a>
                     </div>
@@ -235,26 +232,8 @@
                 <a class="pull-right view-more" target="_blank" href="/companies/">View More</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- skills_companies ends here -->
-          <!-- top_locations starts here -->
-          <div class="row mar_lr_0 top_locations">
-            <div class="heading text-uppercase">Top Job Locations</div>
-            <div class="locations">
-            {%get_locations as total_locations%}
-              <ul class="location_ul">
-              {% for location in total_locations|slice:"35" %}
-                <li><a href="{{ location.get_job_url }}" target="_blank">{{ location.name }}</a></li>
-                {% if forloop.counter|divisibleby:7 %}
-                  </ul>
-                  <ul class="location_ul">
-                {% endif %}
-              {% endfor %}
-              </ul>
-              <a class="pull-right view-more" target="_blank" href="{% url "jobs_by_location" 'jobs' %}">View More</a>
-            </div>
-          </div>
-          <!-- top_locations edns here -->
           <!-- latest_jobs starts here -->
           <div class="latest_jobs row mar_lr_0">
             <div class="heading text-uppercase">Latest Jobs<!--<a class="pull-right view-more" href="#">View More</a>--></div>
@@ -270,14 +249,14 @@
                   {% elif job.company_name %}
                     <p>{{job.company_name|capfirst}}</p>
                   {% endif %}
-                  <p>{% if job.min_salary == 0 %}{% else %}<i class="fa fa-inr" aria-hidden="true"></i> <span>{{ job.get_job_salary.0 }} P.A</span>{% endif %}</p>
+                  <p>{% if job.min_salary == 0 %}{% else %}Birr <span>{{ job.get_job_salary.0 }} per month</span>{% endif %}</p>
                   <p class="location"><i class="fa fa-map-marker"></i> {%for location in job.location.all %}
                   {% if location.status == 'Enabled' %}
                       <a href="{{location.get_job_url}}" target="_blank">{{ location.name }}</a>
                       {% else %}
                       <a style="cursor:default">{{ location.name }}</a>
                       {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                  <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                  <!--<p><a href="https://eeujobs.com/{{job.get_job_type}}-jobs/" target="_blank" class="apply">{{ job.job_type|get_string }}</a></p>-->
                     <p>
                        {% if job.job_type == 'walk-in' %}
                     {% elif job.user.is_superuser %}
@@ -303,12 +282,31 @@
             </div>
           </div>
           <!-- latest_jobs ends here -->
+          <!-- top_locations starts here -->
+          <div class="row mar_lr_0 top_locations">
+            <div class="heading text-uppercase">Top Job Locations</div>
+            <div class="locations">
+            {%get_locations as total_locations%}
+              <ul class="location_ul">
+              {% for location in total_locations|slice:"35" %}
+                <li><a href="{{ location.get_job_url }}" target="_blank">{{ location.name }}</a></li>
+                {% if forloop.counter|divisibleby:7 %}
+                  </ul>
+                  <ul class="location_ul">
+                {% endif %}
+              {% endfor %}
+              </ul>
+              <a class="pull-right view-more" target="_blank" href="{% url "jobs_by_location" 'jobs' %}">View More</a>
+            </div>
+          </div>
+          <!-- top_locations edns here -->
+          
         </div>
         <div class="col-md-3 right_container">
-        <div class="strip_box">
+        <!-- <div class="strip_box">
             <div class="strip">Show Your CODING Skills at <span style="color: #202b2e;">Runcode.io</span> (Launching soon)
             </div>
-        </div>
+        </div> -->
           <!-- upload_btn_block starts here -->
 
           <!-- <div class="upload_block text-center">

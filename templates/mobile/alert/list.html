@@ -4,12 +4,12 @@
 {% block block_canonical_tag %}
   {% if current_page|slugify == '1'|slugify %}
     {% else %}
-    <link rel="prev" href="https://peeljobs.com{{ current_url }}{% if prev_page != 1 %}{{ prev_page }}/{% endif %}" />
+    <link rel="prev" href="https://eeujobs.com{{ current_url }}{% if prev_page != 1 %}{{ prev_page }}/{% endif %}" />
   {% endif %}
   {% if current_page <= last_page %}
     {% if current_page == last_page %}
     {% else %}
-      <link rel="next" href="https://peeljobs.com{{ current_url }}{{ current_page| add:"1" }}/" />
+      <link rel="next" href="https://eeujobs.com{{ current_url }}{{ current_page| add:"1" }}/" />
     {% endif %}
   {% endif %}
 {% endblock %}
@@ -72,11 +72,11 @@
     <div class='job_detail'>
       <span class='heading'>Salary</span>
       <span>
-       {% if alert.min_salary and alert.max_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ alert.min_salary|get_formatted_salary }} - {{ alert.max_salary|get_formatted_salary }}
+       {% if alert.min_salary and alert.max_salary %}Birr {{ alert.min_salary }} - {{ alert.max_salary }}
       {% elif alert.min_salary %}
-      <i class="fa fa-inr" aria-hidden="true"></i> {{ alert.min_salary|get_formatted_salary }}
+      Birr {{ alert.min_salary }}
       {% elif alert.max_salary %}
-      <i class="fa fa-inr" aria-hidden="true"></i> {{ alert.max_salary|get_formatted_salary }}
+      Birr {{ alert.max_salary }}
       {% else %}
       Not Specified
      {% endif %}

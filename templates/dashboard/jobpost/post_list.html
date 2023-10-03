@@ -97,11 +97,11 @@
                         <a href="{% url 'dashboard:edit_job_title' post.id %}" id="{{ post.id }}" class="edit-job"><i
                                 class="fa fa-edit edit" title="edit Job title"></i></a>
 
-                        <a href="#" data-href="{% url 'dashboard:post_on_all_fb_groups' post.id %}" id="{{ post.id }}"
+                        <a href="#" data-href="{}" id="{{ post.id }}"
                            class="fb_groups_post_job"><i class="fa fa-facebook-official edit" aria-hidden="true"
                                                          title="Post Jobs In All Fb Groups"></i></a>
 
-                        <a href="#" data-href="{% url 'dashboard:adding_existing_candidates_to_jobposts' post.id %}"
+                        <a href="#" data-href="{}"
                            id="{{ post.id }}" class="adding_existing_candidates_to_jobposts"><i class="fa fa-user edit" aria-hidden="true" title="Post Jobs In All Fb Groups"></i></a>
                          {% if post.status == 'Live' %}
                          <a data-href="{{post.slug}}" id="{{ post.id }}" class="front_end_url"><i class="fa fa-eye edit" aria-hidden="true"

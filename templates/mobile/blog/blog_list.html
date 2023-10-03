@@ -5,12 +5,12 @@
 {% block block_canonical_tag %}
   {% if current_page|slugify == '1'|slugify %}
     {% else %}
-    <link rel="prev" href="https://peeljobs.com{{current_url}}{% if prev_page != 1 %}{{ prev_page }}/{% endif %}" />
+    <link rel="prev" href="https://eeujobs.com{{current_url}}{% if prev_page != 1 %}{{ prev_page }}/{% endif %}" />
   {% endif %}
   {% if current_page <= last_page %}
     {% if current_page == last_page %}
     {% else %}
-      <link rel="next" href="https://peeljobs.com{{current_url}}{{ current_page| add:"1" }}/" />
+      <link rel="next" href="https://eeujobs.com{{current_url}}{{ current_page| add:"1" }}/" />
     {% endif %}
   {% endif %}
 {% endblock %}
@@ -24,7 +24,7 @@
         <!-- related_blog_item starts here -->
         {% for blog in blog_posts %}
           <div class="blog_item">
-            <div class="blog_title" itemprop="headline"><a href="https://peeljobs.com/blog/{{ blog.slug }}/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog }}</a> </div>
+            <div class="blog_title" itemprop="headline"><a href="https://eeujobs.com/blog/{{ blog.slug }}/" itemprop="name headline mainEntityOfPage" target="_blank">{{ blog }}</a> </div>
             <div class="category">
               <span><strong>Category :</strong> <a href="{% url 'selected_category' category_slug=blog.category.slug %}">{{ blog.category }}</a> </span>
               <span class="pull-right" style="font-size:12px">{{ blog.created_on|date:"M d, Y" }}</span>
@@ -37,16 +37,16 @@
             </div>
             <div class="btn-group social_share_group pull-right">
               <button class="btn btn-default btn-xs disabled">Share This Blog Post:</button>   
-              <a class="btn btn-default btn-xs" target="_blank" title="On Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://peeljobs.com/blog/{{ blog.slug }}/&t={{ blog }}">
+              <a class="btn btn-default btn-xs" target="_blank" title="On Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://eeujobs.com/blog/{{ blog.slug }}/&t={{ blog }}">
               <span class="pj-facebook i fb"></span>
               </a>
-              <a class="btn btn-default btn-xs" target="_blank" title="On Twitter" href="https://twitter.com/intent/tweet?text={{ blog }}&url=https://peeljobs.com/blog/{{ blog.slug }}/&via=PeelJobs">
+              <a class="btn btn-default btn-xs" target="_blank" title="On Twitter" href="https://twitter.com/intent/tweet?text={{ blog }}&url=https://eeujobs.com/blog/{{ blog.slug }}/&via=EEUJobs">
               <span class="pj-twitter i twit"></span>
               </a>
-              <a class="btn btn-default btn-xs" target="_blank" title="On Google Plus" href="https://plus.google.com/share?hl=en-US&url=https://peeljobs.com/blog/{{ blog.slug }}/">
+              <a class="btn btn-default btn-xs" target="_blank" title="On Google Plus" href="https://plus.google.com/share?hl=en-US&url=https://eeujobs.com/blog/{{ blog.slug }}/">
               <span class="pj-googleplus i gplus"></span>
               </a>
-              <a class="btn btn-default btn-xs" target="_blank" title="On LinkedIn" href="https://www.linkedin.com/cws/share?url=https://peeljobs.com/blog/{{ blog.slug }}/&token=&isFramed=true">
+              <a class="btn btn-default btn-xs" target="_blank" title="On LinkedIn" href="https://www.linkedin.com/cws/share?url=https://eeujobs.com/blog/{{ blog.slug }}/&token=&isFramed=true">
               <span class="pj-linkedin i in"></span>
               </a>
             </div>

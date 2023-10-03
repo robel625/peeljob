@@ -16,7 +16,7 @@
 
 #     def setUp(self):
 #         self.client = Client()
-#         self.country = Country.objects.create(name="India")
+#         self.country = Country.objects.create(name="Ethiopia")
 #         self.state = State.objects.create(
 #             name='Telangana', country_id=self.country.id, slug='telangana')
 #         self.city = City.objects.create(

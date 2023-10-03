@@ -66,9 +66,9 @@
         </li>
         <li>
           {% if request.user.is_gp_connected %}
-            <a href="{{ request.user.get_google_url }}" class="google" target="_blank"><span class='gplus'><i class='fa fa-google-plus'></i> Connected</a>
+            <a href="{{ request.user.get_google_url }}" class="google" target="_blank"><span class='gplus'><i class='fa fa-google'></i> Connected</a>
           {% else %}
-            <a href="{}" class="google"><i class="fa fa-google-plus"></i>Connect With Google Plus</a>
+            <a href="{}" class="google"><i class="fa fa-google"></i>Connect With Google Plus</a>
           {% endif %}
         </li>
         <li>

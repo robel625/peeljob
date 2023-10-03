@@ -1406,7 +1406,7 @@ class JobPost(models.Model):
         return qs
 
     def get_job_minified_url(self):
-        job_url = 'https://peeljobs.com' + self.get_absolute_url()
+        job_url = 'https://eeujobs.com' + self.get_absolute_url()
         return job_url
 
     def get_total_views_count(self):
@@ -1522,9 +1522,9 @@ class JobPost(models.Model):
         return 'active'
 
     def get_job_salary(self):
-        if self.salary_type == 'Month':
-            return self.min_salary * 12, self.max_salary * 12
-        else:
+        # if self.salary_type == 'Month':
+        #     return self.min_salary * 12, self.max_salary * 12
+        # else:
             return self.min_salary, self.max_salary
 
     def get_job_description(self):
@@ -1566,7 +1566,7 @@ class JobPost(models.Model):
 POST = (
     ('Page', 'Page'),
     ('Group', 'Group'),
-    ('PeelJobs', 'PeelJobs'),
+    ('EEUJobs', 'EEUJobs'),
 )
 
 POST_STATUS = (

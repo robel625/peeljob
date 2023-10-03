@@ -21,7 +21,7 @@ py manage.py migrate
 
 python manage.py migrate django_celery_beat
 
-py manage.py collectstatic
+python manage.py collectstatic
 
 py manage.py createsuperuser
 py manage.py load_initial_data
@@ -40,6 +40,8 @@ python3 manage.py rebuild_index
 
 in postgres table  add slug , with thi query  
 UPDATE public.peeldb_skill SET slug = LOWER(REPLACE(name, ' ', '-'));
+
+pip freeze > .\requirements.txt
 
 
 

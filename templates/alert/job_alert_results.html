@@ -2,12 +2,12 @@
 {% load page_tags %}
 {% load searchtags %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 {% block block_title %}
-<title>Free Job Posting - Job Vacancies - Job search in India - PeelJobs</title>
+<title>Free Job Posting - Job Vacancies - Job search in Ethiopia - EEUJobs</title>
 <meta name="description"
-  content="PeelJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
+  content="EEUJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
 {% endblock %}
 {% block page_search_block %}
 {% show_search_filter %}
@@ -86,11 +86,11 @@
                   <div class="detail">
                     <div class="detail_title">Salary <span class="pull-right">:</span></div>
                     <div class="detail_content">
-                      {% if job_alert.min_salary and job_alert.max_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary }} - {{ job_alert.max_salary}}
+                      {% if job_alert.min_salary and job_alert.max_salary %}Birr {{ job_alert.min_salary }} - {{ job_alert.max_salary}}
                       {% elif job_alert.min_salary %}
-                      <i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.min_salary|get_formatted_salary  }} 
+                      Birr {{ job_alert.min_salary  }} 
                       {% elif job_alert.max_salary%}
-                      <i class="fa fa-inr" aria-hidden="true"></i> {{ job_alert.max_salary|get_formatted_salary  }}
+                      Birr {{ job_alert.max_salary  }}
                       {% else %}
                       Not Specified
                      {% endif %}

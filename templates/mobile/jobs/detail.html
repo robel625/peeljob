@@ -89,7 +89,7 @@
     {% if job.min_salary != 0 and job.max_salary != 0 %}
       <div class='job_detail'>
         <span class='heading'>Salary</span>
-        <span><i class="fa fa-inr" aria-hidden="true"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }}</span>
+        <span>Birr {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }}</span>
       </div>
     {% endif %}
     <div class='job_desc job_detail'>
@@ -165,14 +165,14 @@
          <div class="social_wrap">
             <h2>Share Jobpost</h2>
             <ul>
-               <li><a href="https://www.facebook.com/sharer/sharer.php?u=https://peeljobs.com{{ job_url }}&t={{ job.title }}" ><span class='social_each fb'><span class='pj-facebook i'></span></span></a></li>
-              <li><a href="https://www.linkedin.com/cws/share?url=https://peeljobs.com{{ job_url }}&token=&isFramed=true" ><span class='social_each in'><span class='pj-linkedin i'></span></span></a></li>
-              <li><a href="https://plus.google.com/share?hl=en-US&url=https://peeljobs.com{{ job_url }}" target="_blank"><span class='social_each gplus'><span class='pj-googleplus i'></span></span></a></li>
+               <li><a href="https://www.facebook.com/sharer/sharer.php?u=https://eeujobs.com{{ job_url }}&t={{ job.title }}" ><span class='social_each fb'><span class='pj-facebook i'></span></span></a></li>
+              <li><a href="https://www.linkedin.com/cws/share?url=https://eeujobs.com{{ job_url }}&token=&isFramed=true" ><span class='social_each in'><span class='pj-linkedin i'></span></span></a></li>
+              <li><a href="https://plus.google.com/share?hl=en-US&url=https://eeujobs.com{{ job_url }}" target="_blank"><span class='social_each gplus'><span class='pj-googleplus i'></span></span></a></li>
 
-              <li><a href="mailto:?subject=Peeljobs%20Job%20post%20sharing&body=https://peeljobs.com{{ job_url }}" ><span class='social_each mail'><span class='pj-mail i'></span></span></a></li>
+              <li><a href="mailto:?subject=Peeljobs%20Job%20post%20sharing&body=https://eeujobs.com{{ job_url }}" ><span class='social_each mail'><span class='pj-mail i'></span></span></a></li>
 
               <li><span style="font-size:14px; background:#43d854; color: white; display: inline-block;width: 100%;margin-top:1px !important;">
-                <a href="whatsapp://send?text=https://peeljobs.com{{ job_url }}" data-action="share/whatsapp/share">
+                <a href="whatsapp://send?text=https://eeujobs.com{{ job_url }}" data-action="share/whatsapp/share">
                   <span style="color:white;top: 5px;font-size: 29px;" class='social_each twitter'>
                   <i class="fa fa-whatsapp i" style="top:0px;"></i>
                   </span>

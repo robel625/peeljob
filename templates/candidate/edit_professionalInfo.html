@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 {% load searchtags %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 
 {% block block_title %}
-  <title>Edit Professional Info - Free Job Posting - Job Vacancies - Job search in India - PeelJobs</title>
+  <title>Edit Professional Info - Free Job Posting - Job Vacancies - Job search in Ethiopia - EEUJobs</title>
 
-  <meta name="description" content="Edit Professional Info - PeelJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs. Fill Your Profile to receive email notifications. "/>
+  <meta name="description" content="Edit Professional Info - EEUJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs. Fill Your Profile to receive email notifications. "/>
 
-  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, peeljobs.com" />
+  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, eeujobs.com" />
 {% endblock %}
 {% block page_search_block %}
 {% show_search_filter %}
@@ -71,13 +71,13 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-3 control-label">Current Salary(Per Anum)</label>
+                  <label for="inputEmail3" class="col-sm-3 control-label">Current Salary</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" placeholder="Current Salary" id="current_salary" name="current_salary" value="{% if request.user.current_salary %}{{ request.user.current_salary }}{% endif %}">
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-3 control-label">Expected Salary(Per Anum)</label>
+                  <label for="inputEmail3" class="col-sm-3 control-label">Expected Salary</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" placeholder="Expected Salary" id="expected_salary" name="expected_salary" value="{% if request.user.expected_salary %}{{ request.user.expected_salary }}{% endif %}">
                   </div>

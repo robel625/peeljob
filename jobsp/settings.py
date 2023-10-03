@@ -184,7 +184,7 @@ STATIC_URL = "static/"
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-COMPRESS_ROOT = 'static/files/'
+COMPRESS_ROOT = 'static/'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -250,7 +250,7 @@ MAIL_SENDER = 'robelgulima1@gmail.com'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST_USER = 'robelgulima1@gmail.com'
-# EMAIL_HOST_PASSWORD = ''
+# EMAIL_HOST_PASSWORD = 'gltijhfkoxfgzjuf'
 # EMAIL_PORT =  '587'
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False    
@@ -353,7 +353,7 @@ CELERY_BEAT_SCHEDULE = {
 # fb app
 FB_APP_ID = '547723917061958'
 FB_SECRET = 'eefeb3487586bd2d03de3cc893dcc12b'
-# FB_PEELJOBS_PAGEID = os.getenv('FBPEELJOBSPAGEID')
+# FB_EEUJobs_PAGEID = os.getenv('FBEEUJobsPAGEID')
 
 # FB_ACCESS_TOKEN = os.getenv('FBACCESSTOKEN')
 # FB_PAGE_ACCESS_TOKEN = os.getenv('FBPAGEACCESSTOKEN')

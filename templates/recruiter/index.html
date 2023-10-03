@@ -3,7 +3,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# peeljobs: https://ogp.me/ns/fb/peeljobs#">
+<head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# EEUJobs: https://ogp.me/ns/fb/EEUJobs#">
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-11720509-7"></script>
 <script>
@@ -14,11 +14,11 @@
   gtag('config', 'UA-11720509-7');
 </script>
  <meta property="fb:app_id" content="469881999753251" />
-  <meta property="og:type"   content="peeljobs:job" />
+  <meta property="og:type"   content="EEUJobs:job" />
 {% block block_title %}
-    <title>Free Job Posting - Peeljobs</title>
+    <title>Free Job Posting - EEUJobs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:url" content="https://peeljobs.com{{ request.path }}" />
+    <meta property="og:url" content="https://eeujobs.com{{ request.path }}" />
 {% endblock %}
     <!-- FAVICON -->
     <link rel="icon" type="image/x-icon" href="{{favicon}}"/>
@@ -103,7 +103,7 @@
             <!-- logo -->
             <div class="logo">
               <!--<img src="{% static 'logo.png' %}">-->
-              <a href="{% if request.user.is_agency_recruiter %}{% url "agency:dashboard" %}{% else %}{% url "recruiter:dashboard" %}{% endif %}"><span>PeelJobs</span></a>
+              <a href="{% if request.user.is_agency_recruiter %}{% url "agency:dashboard" %}{% else %}{% url "recruiter:dashboard" %}{% endif %}"><span>EEUJobs</span></a>
             </div>
             <!--/ logo -->
             <!-- jobs count -->
@@ -122,7 +122,7 @@
                  {% get_unread_messages request.user '' '' as unread_messages %}
                   <li><a href="{% url 'recruiter:messages' %}"><i class='fa fa-comments'></i>Messages 
                   <span class='count green'>{{ unread_messages }}</span></a></li>
-                 <li {% if request.session.url_id == 'recruiter_tickets' %}class="active"{% endif %}><a href="{% url 'tickets:index' %}"><i class='fa fa-comments'></i>Support</a></li>
+                 <!-- <li {% if request.session.url_id == 'recruiter_tickets' %}class="active"{% endif %}><a href="{% url 'tickets:index' %}"><i class='fa fa-comments'></i>Support</a></li> -->
                  <li><a>{{ request.user.username }}
                     <img src="{% if request.user.profile_pic %}{{ request.user.profile_pic.url }}{% else %}{% static 'dummy.jpg' %}{% endif %}" style="width:50px;height:50px;"></a>
                     <ul class='sub_list'>
@@ -144,7 +144,7 @@
              <ul>
                <li><a href="#" class="facebook"><i class="fa fa-facebook"></i> Connect with facebook </a></li>
                <li><a href="#" class="twitter"><i class="fa fa-twitter"></i> Connect with twitter </a></li>
-               <li><a href="#" class="google"><i class="fa fa-google-plus"></i> Connect with Google </a></li>
+               <li><a href="#" class="google"><i class="fa fa-google"></i> Connect with Google </a></li>
                <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i> Connect with linkedin </a></li>
              </ul>
            </div>
@@ -210,7 +210,7 @@
                           </ul>
                       </li>
                     {% endif %}
-                    <li>
+                    <!-- <li>
                         <a><i class="fa fa-user" aria-hidden="true"></i><span>Resume Pool</span></a>
                         <ul class="sub_list">
                             <li><a href="{% url 'agency:resume_pool' %}" class="menu_item"><i
@@ -218,9 +218,9 @@
                             <li><a href="{% url 'agency:resume_upload' %}" class="menu_item"><i
                                     class='fa fa-caret-right'></i>Resume Upload</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                 {% else %}
-                <li>
+                <!-- <li>
                     <a><i class="fa fa-user" aria-hidden="true"></i><span>Resume Pool</span></a>
                     <ul class="sub_list">
                         <li><a href="{% url 'recruiter:resume_pool' %}" class="menu_item"><i
@@ -228,7 +228,7 @@
                         <li><a href="{% url 'recruiter:resume_upload' %}" class="menu_item"><i
                                 class='fa fa-caret-right'></i>Resume Upload</a></li>
                     </ul>
-                    </li>
+                    </li> -->
                 {% endif %}
             </ul>
         </section>

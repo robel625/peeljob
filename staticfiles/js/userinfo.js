@@ -321,7 +321,7 @@
                         $('.mobile').text(data.mobile)
                         $('.dob').text(data.dob)
                         $('.current_city').text(data.current_city)
-                        $('.nationality').text('India')
+                        $('.nationality').text('Ethiopia')
                         open_dialog('Personal Info Updated Sucessfully', 'Success!');
                       }
                       if(data.professional_info){

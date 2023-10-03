@@ -545,10 +545,10 @@ def get_months():
 
 
 @register.simple_tag
-def get_unread_messages(message_to, message1_from, job_id):
+def get_unread_messages(message_to, message_from, job_id):
     db = mongoconnection()
     messages = db.messages.count_documents({'message_to': message_to.id, 'is_read': False})
-    if message1_from:
+    if message_from:
         messages = db.messages.count_documents({'message_to': message_to.id, 'is_read': False, 'message_from': message_from.id, 'job_id': None})
     if job_id:
         messages = db.messages.count_documents({'message_to': message_to.id, 'is_read': False, 'message_from': message_from.id, 'job_id': job_id})

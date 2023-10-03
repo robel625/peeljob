@@ -20,7 +20,7 @@ from .views import (index, change_password, admin_user_list, new_admin_user, edi
                     recruiter_delete, recruiter_paid_status_change, post_list, post_detail, status_change,
                     deactivate_job, enable_job, delete_job, publish_job, new_govt_job, edit_govt_job,
                     preview_job, edit_job_title,
-                    applicants, view_applicant, applicant_actions, emailtemplates, moving_duplicates,
+                    applicants, view_applicant,view_applicant_email, applicant_actions, emailtemplates, moving_duplicates,
                     new_template, edit_template, view_template, delete_template, send_mail, sent_mails,
                     view_sent_mail, delete_sent_mail, search_log, view_search_log, subscribers, view_subscribers,
                     search_summary, applicants_mail, removing_duplicate_companies, mobile_campaign, csv_download,
@@ -28,7 +28,7 @@ from .views import (index, change_password, admin_user_list, new_admin_user, edi
                     enable_agency, delete_company, enable_paid_company, view_company, company_recruiters,
                     company_jobposts, company_tickets, edit_menu, delete_menu, menu_status, menu_order,
                      assessment_skills, new_question, skill_questions, view_question, save_meta_data,
-                    clear_cache, redirect_data)
+                    clear_cache, redirect_data, file_display_view)
 
 # from .views import (index, change_password, admin_user_list, new_admin_user, edit_user, view_user,
 #                     country, locations, aws_push_to_s3, aws_del_from_s3, tech_skills, delete_skill,
@@ -149,6 +149,8 @@ urlpatterns = [
         applicants, name="applicants"),
     re_path(r'^applicant/view/(?P<user_id>[a-zA-Z0-9_-]+)/$',
         view_applicant, name='view_applicant'),
+    re_path(r'^applicant/view/(?P<user_email>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})/$',
+        view_applicant_email, name='view_applicant_email'),
     re_path(r'^applicant/actions/(?P<user_id>[a-zA-Z0-9_-]+)/$',
         applicant_actions, name='applicant_actions'),
 
@@ -238,4 +240,5 @@ urlpatterns = [
     re_path(r'^moving/duplicate/(?P<value>[-\w]+)/', moving_duplicates, name="move_duplicates"),
     re_path(r'^clear/cache/', clear_cache, name="clear_cache"),
 
+    path('files/<str:file_path>/', file_display_view, name='file_display'),
 ]

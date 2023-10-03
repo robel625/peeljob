@@ -83,7 +83,11 @@
         <div class="job_bottom">
           {% if job.min_salary != 0 and job.max_salary != 0 %}
             <span class="sal">
-              <i class="fa fa-inr"></i> {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} P.A
+              {% if job.min_salary != job.max_salary %}
+                 Birr {{ job.get_job_salary.0 }} - {{ job.get_job_salary.1 }} per month
+              {% else %}
+                 Birr {{ job.get_job_salary.0 }} per month
+              {% endif %}
             </span>
           {% endif %}
             <span class="pull-right sal">

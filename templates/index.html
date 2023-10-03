@@ -6,7 +6,7 @@
 {% load cache %}
 
     {% block block_canonical_tag %}
-      <link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+      <link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
     {% endblock %}
 
 {% block meta_tags %}
@@ -99,7 +99,7 @@
                 <li ><a href="{% url 'social:facebook_login' %}" target="_blank"><i class='fa fa-facebook fb'></i></a></li>
                 <li ><a href="{}"  target="_blank"><i class='fa fa-linkedin in'></i></a></li>
                 <li ><a href="{% url 'social:github_login' %}"  target="_blank"><i class='fa fa-github git'></i></a></li>
-                <li ><a href="{}"  target="_blank"><i class='fa fa-google-plus gplus'></i></a></li>
+                <li ><a href="{}"  target="_blank"><i class='fa fa-google gplus'></i></a></li>
 
               </ul>
             </div>
@@ -118,11 +118,11 @@
       <div class="row mar_lr_0">
         <div class="col-md-9 left_container">
           <!-- register_block starts here -->
-          <div class="row mar_lr_0 register_block">
+          <!-- <div class="row mar_lr_0 register_block">
             <div class="col-md-4 col-sm-4 register_point border {% if not request.user.is_authenticated %}new_account{% endif %}">
               <div class="text-center register_col">
                 <a><strong>Sign Up For Today</strong></a>
-                <p>Get started with Peeljobs and find your dream job today!</p>
+                <p>Get started with EEUJobs and find your dream job today!</p>
               </div>
             </div>
             <div class="col-md-4 col-sm-4 register_point border redirect_link" data-href="{}">
@@ -137,7 +137,7 @@
                 <p>Want to place in a better position? Learn few tips from our blog..!</p>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- register_block ends here -->
           <!-- latest_jobs starts here -->
           <div class="latest_jobs row mar_lr_0">
@@ -155,14 +155,17 @@
                   {% elif job.company_name %}
                     <p>{{job.company_name|capfirst}}</p>
                   {% endif %}
-                  <p>{% if job.min_salary == 0 %}{% else %}<i class="fa fa-inr" aria-hidden="true"></i> <span >{{ job.get_job_salary.0 }} P.A</span>{% endif %}</p>
+                  {% if job.job_role %} 
+                     <p>{{job.job_role}}</p>
+                  {% endif %} 
+                  <p>{% if job.min_salary == 0 %}{% else %}Birr <span >{{ job.get_job_salary.0 }} per month   </span>{% endif %}</p>
                   <p class="location" ><i class="fa fa-map-marker"></i> {%for location in job.location.all %}
                   {% if location.status == 'Enabled' %}
                     <a href="{{location.get_job_url}}">{{ location.name }}</a>
                   {% else %}
                     <a style="cursor:default">{{ location.name }}</a>
                   {% endif %}{% if forloop.last %}{% else %}, {% endif%}{% endfor %}</p>
-                  <!--<p><a href="https://peeljobs.com/{{job.get_job_type}}-jobs/" class="apply">{{ job.job_type|get_string }}</a></p>-->
+                  <!--<p><a href="https://eeujobs.com/{{job.get_job_type}}-jobs/" class="apply">{{ job.job_type|get_string }}</a></p>-->
                     <p>
                       {% if job.job_type == 'walk-in' %}
                     {% elif job.user.is_superuser %}
@@ -190,13 +193,13 @@
           </div>
           <!-- latest_jobs ends here -->
           <!-- skills_companies starts here -->
-          <div class="row mar_lr_0 skills_locations">
-            <!-- Nav tabs -->
+          <!-- <div class="row mar_lr_0 skills_locations">
+            
             <ul class="nav nav-tabs" role="tablist">
               <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Top companies</a></li>
               <li role="presentation" ><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Top Skills</a></li>
             </ul>
-            <!-- Tab panes -->
+            
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="profile">
                 <div class="row image_row">
@@ -204,7 +207,7 @@
                      <a href="/micropyramid-informatics-pvt-ltd-job-openings/" class='company_logo'><img src="https://d28k6hocvoxiuc.cloudfront.net/site/images/new_design/logo.png" alt="Micropyramid Informatics Private Ltd."/></a>
                     </div>
                     <div class="col-md-2 col-sm-3 col-xs-3 image_col">
-                      <a href="/ibm-india-pvt-limited-job-openings/" class='company_logo'>
+                      <a href="/ibm-ethiopia-pvt-limited-job-openings/" class='company_logo'>
                       <img src="https://cdn.peeljobs.com/companies1/ibm.png" alt="ibm-india-pvt-limited" style="max-width:80%;" /></a>
                     </div>
                      <div class="col-md-2 col-sm-3 col-xs-3 image_col">
@@ -266,7 +269,7 @@
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/java-jobs/">
                   <img src="{% static 'static/skills1/java_logo.png' %}" alt="Java Jobs" />
                   </a></div>
-                  <!-- <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/asp-dot-net-jobs/"><img src="{% static 'static/skills1/asp-dot-net.png' %}" alt="ASP.net Jobs" /></a></div>
+                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/asp-dot-net-jobs/"><img src="{% static 'static/skills1/asp-dot-net.png' %}" alt="ASP.net Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bootstrap-jobs/"><img src="{% static 'static/skills1/bootstrap.png' %}" alt="Bootstrap Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/css-jobs/"><img src="{% static 'static/skills/CSS.png' %}" alt="Css Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/adobe-photoshop-jobs/"><img src="{% static 'static/skills1/Adobe_Photoshop.png' %}" alt="Adobe Photoshop Jobs" /></a></div>
@@ -282,14 +285,14 @@
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/c-sharp-jobs/"><img src="{% static 'static/skills1/c-sharp.png' %}" alt="c-sharp Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/xml-jobs/"><img src="{% static 'static/skills1/xml-logo.png' %}" alt="Xml Jobs" /></a></div>
                   <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/hibernate-jobs/"><img src="{% static 'static/skills1/hibernate.png' %}" alt="Hibernate Jobs" /></a></div>
-                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bpo-jobs/"><img src="{% static 'static/skills1/bpo.png' %}" alt="BPO Jobs" /></a></div> -->
+                  <div class="col-md-2 col-sm-3 col-xs-3 image_col skill_image"><a href="/bpo-jobs/"><img src="{% static 'static/skills1/bpo.png' %}" alt="BPO Jobs" /></a></div> 
 
 
                 </div>
                 <a class="pull-right view-more" href="{}">View More</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- skills_companies ends here -->
           <!-- top_locations starts here -->
           {% cache 604800 top_job_locations_in_index %}
@@ -317,10 +320,10 @@
           
         </div>
         <div class="col-md-3 right_container">
-        <div class="strip_box">
+        <!-- <div class="strip_box">
             <div class="strip">Show Your CODING Skills at <span style="color: #202b2e;">Runcode.io</span> (Launching soon)
             </div>
-        </div>
+        </div> -->
           <!-- upload_btn_block starts here -->
           {% if request.user.is_authenticated %}
             {% if request.user.is_jobseeker and not request.user.resume %}

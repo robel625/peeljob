@@ -307,11 +307,11 @@ def postonpeel_fb(job_post):
 
     params['access_token'] = settings.FB_PAGE_ACCESS_TOKEN
     params['name'] = job_name
-    params['caption'] = "http://peeljobs.com"
-    params['actions'] = [{'name': 'get peeljobs', 'link': "http://peeljobs.com/"}]
+    params['caption'] = "http://eeujobs.com"
+    params['actions'] = [{'name': 'get EEUJobs', 'link': "http://eeujobs.com/"}]
 
     params = urllib.parse.urlencode(params)
-    # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_PEELJOBS_PAGEID + "/feed", params).read()
+    # response = urllib.urlopen("https://graph.facebook.com/" + settings.FB_EEUJobs_PAGEID + "/feed", params).read()
     u = requests.post("https://graph.facebook.com/190700467767653/feed", params=params)
     response = u.json()
     # response = json.loads(response)
@@ -656,7 +656,7 @@ def save_codes_and_send_mail(user, request, passwd):
             tech_skill = TechnicalSkill.objects.create(skill=skill[0])
             user.skills.add(tech_skill)
     temp = loader.get_template('email/jobseeker_account.html')
-    subject = "PeelJobs User Account Activation"
+    subject = "EEUJobs User Account Activation"
     url = request.scheme + '://' + request.META[
         'HTTP_HOST'] + "/user/activation/" + str(user.activation_code) + "/"
     rendered = temp.render({'activate_url': url, 'user_email': user.email, 'user_mobile': user.mobile, 'user': user,

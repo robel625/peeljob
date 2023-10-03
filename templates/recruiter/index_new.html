@@ -5,16 +5,16 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# peeljobs: https://ogp.me/ns/fb/peeljobs#">
+  <head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# EEUJobs: https://ogp.me/ns/fb/EEUJobs#">
     <meta property="fb:app_id" content="469881999753251" />
-    <meta property="og:type"   content="peeljobs:job" />
+    <meta property="og:type"   content="EEUJobs:job" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {% block block_title %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:url" content="https://peeljobs.com{{ request.path }}" />
-    <title>Free Job Posting - Peeljobs</title>
+    <meta property="og:url" content="https://eeujobs.com{{ request.path }}" />
+    <title>Free Job Posting - EEUJobs</title>
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{favicon}}"/>
     <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900" rel="stylesheet">
@@ -85,7 +85,7 @@
     <div class="wrapper">
       <!-- navbar starts here -->
       <nav class="navbar navbar-expand-lg  navbar-fixed-top">
-        <a class="navbar-brand" href="{% if request.user.is_agency_recruiter %}{% url "agency:dashboard" %}{% else %}{% url "recruiter:dashboard" %}{% endif %}">Peeljobs</a>
+        <a class="navbar-brand" href="{% if request.user.is_agency_recruiter %}{% url "agency:dashboard" %}{% else %}{% url "recruiter:dashboard" %}{% endif %}">EEUJobs</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
         </button>
@@ -167,7 +167,7 @@
                           </ul>
                       </li>
                     {% endif %}
-                    <li>
+                    <!-- <li>
                         <a><i class="fa fa-user" aria-hidden="true"></i><span>Resume Pool</span></a>
                         <ul class="sub_list">
                             <li><a href="{% url 'agency:resume_pool' %}" class="menu_item"><i
@@ -175,9 +175,9 @@
                             <li><a href="{% url 'agency:resume_upload' %}" class="menu_item"><i
                                     class='fa fa-caret-right'></i>Resume Upload</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                 {% else %}
-                <li>
+                <!-- <li>
                     <a><i class="fa fa-user" aria-hidden="true"></i><span>Resume Pool</span></a>
                     <ul class="sub_list">
                         <li><a href="{% url 'recruiter:resume_pool' %}" class="menu_item"><i
@@ -185,7 +185,7 @@
                         <li><a href="{% url 'recruiter:resume_upload' %}" class="menu_item"><i
                                 class='fa fa-caret-right'></i>Resume Upload</a></li>
                     </ul>
-                    </li>
+                    </li> -->
                 {% endif %}
           </ul>
         </div>

@@ -2,15 +2,15 @@
 {% load page_tags %}
 {% load thumbnail %}
 {% block block_canonical %}
-<link rel="canonical" href="https://peeljobs.com{{ request.path }}"/>
+<link rel="canonical" href="https://eeujobs.com{{ request.path }}"/>
 {% endblock %}
 
 {% block block_title %}
-  <title>Free Job Posting - Job Vacancies - Job search in India - PeelJobs</title>
+  <title>Free Job Posting - Job Vacancies - Job search in Ethiopia - EEUJobs</title>
 
-  <meta name="description" content="PeelJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
+  <meta name="description" content="EEUJobs - Free Job posting. Search & Apply for Full Time, Internship,  Walk In Jobs."/>
 
-  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, peeljobs.com" />
+  <meta name="Keywords" content="job, jobs, tech jobs, it jobs, job sites, job vacancies, find jobs, search jobs, resume tips, job search engines, careers, technology jobs, career search, job descriptions, employment, work, job listings, eeujobs.com" />
 {% endblock %}
 
 {% block stage %}
@@ -228,10 +228,10 @@
           <span class='detail_heading'>Prefered Industry</span><span class='description'>{% if request.user.prefered_industry %}<a href="{}" target="_blank">{{ request.user.prefered_industry.name }}</a>{% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
         <div class="detail_each">
-          <span class='detail_heading'>Current Salary</span><span class='description'>{% if request.user.current_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ request.user.current_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
+          <span class='detail_heading'>Current Salary</span><span class='description'>{% if request.user.current_salary %}Birr {{ request.user.current_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
         <div class="detail_each">
-          <span class='detail_heading'>Expected Salary</span><span class='description'>{% if request.user.expected_salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ request.user.expected_salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
+          <span class='detail_heading'>Expected Salary</span><span class='description'>{% if request.user.expected_salary %}Birr {{ request.user.expected_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
         <div class="detail_each">
           <span class='detail_heading'>Job Role</span><span class='description'>{% if request.user.job_role %}{{ request.user.job_role }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
@@ -267,7 +267,7 @@
           <span class='detail_heading'>To</span><span class='description'>{% if history.to_date == None %}Till Now{% else %}{{ history.to_date }}{%endif%}</span>
         </div>
         <div class="detail_each">
-          <span class='detail_heading'>Salary</span><span class='description'>{% if history.salary %}<i class="fa fa-inr" aria-hidden="true"></i> {{ history.salary|get_formatted_salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
+          <span class='detail_heading'>Salary</span><span class='description'>{% if history.salary %}Birr {{ history.salary }}{% else %}<span class="error">Not Specified</span>{% endif %}</span>
         </div>
       </div>
     {% endfor %}
